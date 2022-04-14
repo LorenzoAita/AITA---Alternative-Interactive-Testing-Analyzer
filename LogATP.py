@@ -1,9 +1,14 @@
 import datetime
 import os
 import time
-
+import numpy as np
+import pandas as pd
+import pyvisa
+from subprocess import Popen
 from lib.Config import *
 from lib.Libs import *
+import warnings
+warnings.filterwarnings('ignore')
 
 # import plotly.graph_objects as go
 # import serial
@@ -14,8 +19,8 @@ rm = pyvisa.ResourceManager()
 
 # variabili di sistema
 namefile = 'Data.csv'
-time_sample = 30
-test_time = 86400*7
+time_sample = 10
+test_time = 3600*24
 path_config = 'Config/'
 device = list(pd.read_excel(path_config + 'Config.xlsx', sheet_name='Strumenti')['ELENCO STRUMENTI'])
 path_save = ''  # '//atp.fimer.com/ATP_ONLINE/LOG/64/'
@@ -32,16 +37,23 @@ if 'wattmeter' in device:
     config_WATT = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Wattmeter')
 
 # Grafico
-# time_refresh = 10
-# plot = [
-#    'V1',
-#    'V2'
-# ]
+time_refresh = 100
+plot = [
+    'Contatto Connettore Interno',
+    'Cavo Connettore Interno',
+    'Contatto Connettore Esterno',
+    'Cavo Splitter',
+    'Tamb Interna',
+    'Tamb Esterna'
+
+
+]
+dati_stamp = pd.DataFrame()
 
 print('>>> Start Config')
 print('>>>')
 if os.path.exists(path_save + namefile):
-    os.remove(path_save + namefile)
+    os.rename(path_save + namefile, path_save + 'Data_'+str(datetime.datetime.now().strftime("%Y_%m_%d__%H_%M")[:])+'.csv')
 col = list()
 col.append('Data')
 if 'inverter' in device:
@@ -79,14 +91,17 @@ while tot_time < test_time:
     print(
         '>>> Tempo\t' + str(datetime.datetime.now().strftime("%Y/%m/%d, %H:%M:%S.%f")[:-2]) + '\tStep #' + str(sample))
     if 'inverter' in device:
+        print('>>> log inverter\t' + str(ip_device))
         for i in telemetry:
-            print('>>> log la telemetry\t' + str(i))
+            #  print('>>> log la telemetry\t' + str(i))
             try:
                 data_eut, status_code = obj_com.get_data(url=i)
                 telemetries.append(data_eut)
             except:
-                telemetries.append(0)
-                print('>>> la telemetry\t' + str(i) + '\tnon risponde')
+                for j in range(0, len(telemetry)-len(telemetries)+1):
+                    telemetries.append(0)
+                break
+                #  print('>>> la telemetry\t' + str(i) + '\tnon risponde')
     if 'logger' in device:
         i = 0
         data_daq = list()
@@ -117,15 +132,21 @@ while tot_time < test_time:
 
     dati_T = pd.DataFrame()
     dati_T = dati_T.append(telemetries)
-    dati = dati.append(dati_T.T, ignore_index=True)
-    # dati_stamp = dati_stamp.append(dati, ignore_index=True)
+    dati = pd.concat([dati, dati_T.T], axis=0, ignore_index=True)
     for i in range(0, len(col)):
         dati.rename(columns={i: col[i]}, inplace=True)
+    dati_stamp = pd.concat([dati_stamp, dati], axis=0, ignore_index=True)
     if sample == 1:
         dati.to_csv(path_save + namefile, sep=',', index=False)
     else:
         dati.to_csv(path_save + namefile, sep=',', mode='a', index=False, header=False)
-    #    plot_runtime(tot_time, step, time_refresh, dati_stamp, plot)
+        if tot_time >= step * time_refresh:
+            step += 1
+            try:
+                Popen('taskkill /F /IM chrome.exe', shell=True)
+                plot_runtime(step, dati_stamp, plot)
+            except:
+                plot_runtime(step, dati_stamp, plot)
     tot_time += time_sample
     print('>>>')
 

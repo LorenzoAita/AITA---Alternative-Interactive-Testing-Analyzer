@@ -1,6 +1,7 @@
 import requests
-import keyboard
 import plotly.graph_objects as go
+from subprocess import Popen
+
 
 class OrionProtocol:
 
@@ -18,28 +19,26 @@ class OrionProtocol:
         """
 
         rsp = requests.get(
-            'http://' + self.ip_connector + '/' + self.ip + '/connector/v1/orion/data/' + self.device_id + '/' + url)
+            'http://' + self.ip_connector + '/' + self.ip + '/connector/v1/orion/data/' + self.device_id + '/' + url,
+            timeout=1)
         if rsp.status_code == 200:
             return str(rsp.json()), str(rsp.status_code)
         else:
-            return str('na'), str(rsp.status_code)
+            return str(0), str(rsp.status_code)
 
-def plot_runtime(tot_time, step, time_refresh, dati_stamp, plot):
-        if tot_time >= step * time_refresh:
-            if step != 0:
-                keyboard.press_and_release('ctrl+w')
-            step += 1
-            fig = go.Figure()
-            fig.update_layout(
-                template='simple_white',
-                legend=dict(orientation="v", x=1.1, y=1)
-            )
-            if step < 5:
-                for i in plot:
-                    fig.add_scatter(x=dati_stamp['Data'], y=dati_stamp[i], mode='lines+markers', name=i)
-                fig.show()
-            else:
-                for i in plot:
-                    fig.add_scatter(x=dati_stamp['Data'], y=dati_stamp[i], mode='lines', name=i)
-                fig.show()
-        return True
+
+def plot_runtime(step_graph, dati_stamp, plot):
+    fig = go.Figure()
+    fig.update_layout(
+        template='simple_white',
+        legend=dict(orientation="v", x=1.1, y=1)
+    )
+    if step_graph < 5:
+        for i in plot:
+            fig.add_scatter(x=dati_stamp['Data'], y=dati_stamp[i], mode='lines+markers', name=i)
+        fig.show()
+    else:
+        for i in plot:
+            fig.add_scatter(x=dati_stamp['Data'], y=dati_stamp[i], mode='lines', name=i)
+        fig.show()
+    return True
