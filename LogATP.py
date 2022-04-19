@@ -19,11 +19,14 @@ rm = pyvisa.ResourceManager()
 
 # variabili di sistema
 namefile = 'Data.csv'
-time_sample = 10
-test_time = 3600*24
 path_config = 'Config/'
 device = list(pd.read_excel(path_config + 'Config.xlsx', sheet_name='Strumenti')['ELENCO STRUMENTI'])
-path_save = ''  # '//atp.fimer.com/ATP_ONLINE/LOG/64/'
+time_sample = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Strumenti')['TEMPO CAMPIONAMENTO'][0]
+test_time = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Strumenti')['TEST TIME'][0]
+if str(pd.read_excel(path_config + 'Config.xlsx', sheet_name='Strumenti')['PERCORSO OUTPUT'][0]) == 'nan':
+    path_save = ''
+else:
+    path_save = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Strumenti')['PERCORSO OUTPUT'][0] # '//atp.fimer.com/ATP_ONLINE/LOG/64/'
 # ORION
 if 'inverter' in device:
     id_device, ip_device, telemetry = config_inverter(path_config)
@@ -37,17 +40,11 @@ if 'wattmeter' in device:
     config_WATT = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Wattmeter')
 
 # Grafico
-time_refresh = 100
-plot = [
-    'Contatto Connettore Interno',
-    'Cavo Connettore Interno',
-    'Contatto Connettore Esterno',
-    'Cavo Splitter',
-    'Tamb Interna',
-    'Tamb Esterna'
-
-
-]
+time_refresh = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Grafico')['REFRESH TIME'][0]
+plot = list()
+for i in range(0, len(pd.read_excel(path_config + 'Config.xlsx', sheet_name='Grafico')['PLOT'])):
+    if str(pd.read_excel(path_config + 'Config.xlsx', sheet_name='Grafico')['PLOT'][i]) != 'nan' and str(pd.read_excel(path_config + 'Config.xlsx', sheet_name='Grafico')['ASSE'][i]) != 'nan':
+        plot.append([pd.read_excel(path_config + 'Config.xlsx', sheet_name='Grafico')['PLOT'][i], pd.read_excel(path_config + 'Config.xlsx', sheet_name='Grafico')['ASSE'][i]])
 dati_stamp = pd.DataFrame()
 
 print('>>> Start Config')
@@ -140,7 +137,7 @@ while tot_time < test_time:
         dati.to_csv(path_save + namefile, sep=',', index=False)
     else:
         dati.to_csv(path_save + namefile, sep=',', mode='a', index=False, header=False)
-        if tot_time >= step * time_refresh:
+        if tot_time >= step * time_refresh and plot != []:
             step += 1
             try:
                 Popen('taskkill /F /IM chrome.exe', shell=True)
@@ -151,4 +148,3 @@ while tot_time < test_time:
     print('>>>')
 
 print('>>> End')
-a = 0
