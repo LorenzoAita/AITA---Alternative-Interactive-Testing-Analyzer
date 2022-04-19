@@ -1,6 +1,8 @@
 # OrionLogger
 Questo programma, momentaneamente, logga le misure dei seguenti strumenti:
-* Agilent34970
+
+* **Qualsiasi inverter con protocollo Orion**
+* **Agilent34970**
   * Termocoppie J
   * Termocoppie K
   * Tensione DC
@@ -9,21 +11,21 @@ Questo programma, momentaneamente, logga le misure dei seguenti strumenti:
   * Corrente AC
   * Frequenza
   * Resistenza
-* Agilent34980
+* **Agilent34980**
   * Termocoppie J
   * Termocoppie K
   * Tensione DC
   * Tensione AC
   * Frequenza
   * Resistenza
-* WT230
+* **WT230**
   * Tensione
   * Corrente
   * Potenza Attiva
   * Potenza Apparente
   * Potenza Reattiva
   * Power Factor
-* WT500
+* **WT500**
   * URMS
   * UMN
   * UDC
@@ -44,7 +46,7 @@ Questo programma, momentaneamente, logga le misure dei seguenti strumenti:
   * UMP
   * IPP
   * IMP
-* WT3000
+* **WT3000**
   * U
   * I
   * P
