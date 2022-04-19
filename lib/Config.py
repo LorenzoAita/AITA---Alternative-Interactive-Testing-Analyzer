@@ -8,6 +8,8 @@ def config_agilent(rm, path):
     path_config = path
     config_DAQ = pd.read_excel(path_config+'Config.xlsx', sheet_name='Agilent')
     porta = config_DAQ['PORTA DAQ'][0]
+    inst = rm.open_resource(porta)
+    a = inst.query('*IDN?').split(',')
     start = 100
     stringa_T = ''
     stringa_K = ''
@@ -17,36 +19,35 @@ def config_agilent(rm, path):
     stringa_IAC = ''
     stringa_Freq = ''
     stringa_Ohm = ''
-    for i in range(0, len(config_DAQ['CASSETTO'])):
+    for i in range(0, len(config_DAQ['CASSETTO ' + str(a[1])])):
         if str(config_DAQ['TIPOLOGIA'][i]) == 'T':
             start += 1
-            stringa_T += str(config_DAQ['CASSETTO'][i])+','
+            stringa_T += str(config_DAQ['CASSETTO ' + str(a[1])][i])+','
         if str(config_DAQ['TIPOLOGIA'][i]) == 'K':
             start += 1
-            stringa_K += str(config_DAQ['CASSETTO'][i])+','
+            stringa_K += str(config_DAQ['CASSETTO ' + str(a[1])][i])+','
         if str(config_DAQ['TIPOLOGIA'][i]) == 'VDC':
             start += 1
-            stringa_VDC += str(config_DAQ['CASSETTO'][i]) + ','
+            stringa_VDC += str(config_DAQ['CASSETTO ' + str(a[1])][i]) + ','
         if str(config_DAQ['TIPOLOGIA'][i]) == 'VAC':
             start += 1
-            stringa_VAC += str(config_DAQ['CASSETTO'][i]) + ','
+            stringa_VAC += str(config_DAQ['CASSETTO ' + str(a[1])][i]) + ','
         if str(config_DAQ['TIPOLOGIA'][i]) == 'IDC':
             start += 1
-            stringa_IDC += str(config_DAQ['CASSETTO'][i]) + ','
+            stringa_IDC += str(config_DAQ['CASSETTO ' + str(a[1])][i]) + ','
         if str(config_DAQ['TIPOLOGIA'][i]) == 'IAC':
             start += 1
-            stringa_IAC += str(config_DAQ['CASSETTO'][i]) + ','
+            stringa_IAC += str(config_DAQ['CASSETTO ' + str(a[1])][i]) + ','
         if str(config_DAQ['TIPOLOGIA'][i]) == 'HZ':
             start += 1
-            stringa_Freq += str(config_DAQ['CASSETTO'][i]) + ','
+            stringa_Freq += str(config_DAQ['CASSETTO ' + str(a[1])][i]) + ','
         if str(config_DAQ['TIPOLOGIA'][i]) == 'OHM':
             start += 1
-            stringa_Ohm += str(config_DAQ['CASSETTO'][i]) + ','
+            stringa_Ohm += str(config_DAQ['CASSETTO ' + str(a[1])][i]) + ','
         if str(config_DAQ['TIPOLOGIA'][i]) == '':
             start += 1
 
     stringa_tot = ''
-    inst = rm.open_resource(porta)
     print('>>> '+inst.query("*IDN?").split('\n')[0])
     inst.write('*RST')
     # CONFIGURAZIONE TERMOCOPPIE TIPO T
