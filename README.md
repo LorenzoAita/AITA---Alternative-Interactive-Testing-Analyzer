@@ -56,4 +56,4 @@ Questo programma, momentaneamente, logga le misure dei seguenti strumenti:
   * IPP
   * IMP
 
-
+Permette inoltre una scansione completa con il bridge **AGILENT E4980A**.
