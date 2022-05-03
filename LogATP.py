@@ -1,19 +1,13 @@
 import datetime
 import os
 import time
-import numpy as np
-import pandas as pd
-import pyvisa
 from subprocess import Popen
 from lib.Config import *
 from lib.Libs import *
 import warnings
+import pyvisa
 warnings.filterwarnings('ignore')
 
-# import plotly.graph_objects as go
-# import serial
-# import socket
-# import keyboard
 session = requests.Session()
 rm = pyvisa.ResourceManager()
 
@@ -73,6 +67,8 @@ if 'Wattmeter' in device:
         if i != '':
             col.append(i)
             stamp_WT.append(i)
+j=0
+k=0
 if 'Bridge' in device:
     logger_bridge, porta_bridge = config_ponte(rm, path_config)
     logger_bridge = logger_bridge.fillna('')
@@ -81,7 +77,13 @@ if 'Bridge' in device:
     for i in logger_bridge:
         if i != '':
             name1 = i[0:2]
-            name2 = name1+'-'+i[2:]
+            name2 = i[2:]  # name1 + '-' + i[2:]
+            if name1 in stamp_bridge:
+                name1 += '_'+str(j)
+                j += 1
+            if name2 in stamp_bridge:
+                name2 += '_'+str(k)
+                k += 1
             # col.append(name1)
             # col.append(name2)
             stamp_bridge.append(name1)

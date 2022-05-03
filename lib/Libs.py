@@ -47,10 +47,9 @@ def plot_runtime(step_graph, dati_stamp, plot):
 def meas_bridge(inst, log, data, path, save):
     config_bridge = pd.read_excel(path + 'Config.xlsx', sheet_name='Bridge')
     freq_start = config_bridge['FREQUENZA'][0]
-    start_0 = freq_start
     freq_end = config_bridge['FREQUENZA'][1]
     freq_sample = config_bridge['FREQUENZA'][2]
-    while freq_end + start_0 > freq_start:
+    while freq_end + 1 > freq_start:
         telemetries = list()
         inst.write('INIT')
         inst.write(':FREQ ' + str(freq_start))
@@ -60,7 +59,7 @@ def meas_bridge(inst, log, data, path, save):
                 inst.write(':FUNC:IMP ' + str(i))
                 a = inst.query('FETCH?').split(',')
                 name1 = i[0:2]
-                name2 = name1 + '-' + i[2:]
+                name2 = i[2:]  # name1 + '-' + i[2:]
                 print('>>> log la telemetry\t' + str(name1) + '\talla frequenza\t' + str(freq_start))
                 telemetries.append(float(a[0]))
                 print('>>> log la telemetry\t' + str(name2) + '\talla frequenza\t' + str(freq_start))
@@ -84,9 +83,11 @@ def meas_bridge(inst, log, data, path, save):
     )
     for i in range(1, len(log)):
         if i % 2 == 0:
-            fig.add_scatter(x=data['Frequenza'], y=data[log[i]], mode='lines', name=log[i], yaxis='y2')
+            fig.add_scatter(x=data['Frequenza'].astype(float), y=data[log[i]].astype(float), mode='lines', name=log[i],
+                            yaxis='y2')
         else:
-            fig.add_scatter(x=data['Frequenza'], y=data[log[i]], mode='lines', name=log[i], yaxis='y')
+            fig.add_scatter(x=data['Frequenza'].astype(float), y=data[log[i]].astype(float), mode='lines', name=log[i],
+                            yaxis='y')
 
     fig.update_layout(
         xaxis=dict(

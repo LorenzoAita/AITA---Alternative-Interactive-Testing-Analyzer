@@ -1,4 +1,3 @@
-import pyvisa
 import pandas as pd
 
 
