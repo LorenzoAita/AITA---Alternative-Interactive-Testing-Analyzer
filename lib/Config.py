@@ -139,5 +139,23 @@ def config_ponte(rm, path):
     inst = rm.open_resource(porta)
     print('>>> ' + inst.query("*IDN?").split('\n')[0])
     inst.write('*RST')
-    #  inst.write(':FUNC:IMP '+str(config_bridge['LABEL'][0]))
+    # Imposto il LVL del bridge
+    lvl = config_bridge['LEVEL'][0]
+    if lvl[-1] == 'V':
+        inst.write(':VOLT '+str(lvl.split('V')[0]))
+    elif lvl[-1] == 'A':
+        inst.write(':CURR '+str(lvl.split('A')[0]))
+
+    # Imposto la velocità di misura
+    MEAS_SPEED = config_bridge['MEAS TIME'][0]
+    inst.write(':APER ' + str(MEAS_SPEED))
+
+    # Imposto la CORREZIONE
+    MEAS_CORR = config_bridge['CORRECTION'][0]
+    inst.write(':CORR:OPEN:STATE OFF')
+    inst.write(':CORR:SHOR:STATE OFF')
+    inst.write(':CORR:LOAD:STATE OFF')
+    if MEAS_CORR != 'OFF':
+        inst.write(':CORR:'+str(MEAS_CORR)+':STATE ON')
+
     return config_bridge['TIPOLOGIA'], porta
