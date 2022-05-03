@@ -49,7 +49,7 @@ dati_stamp = pd.DataFrame()
 
 print('>>> Start Config')
 print('>>>')
-if os.path.exists(path_save + namefile):
+if os.path.exists(path_save + namefile) and 'Bridge' not in device:
     os.rename(path_save + namefile, path_save + 'Data_'+str(datetime.datetime.now().strftime("%Y_%m_%d__%H_%M")[:])+'.csv')
 col = list()
 col.append('Data')
@@ -146,24 +146,24 @@ while tot_time < test_time:
         INSTRUMENT = rm.open_resource(porta_bridge)
         meas_bridge(INSTRUMENT, stamp_bridge, data_bridge, path_config, path_save)
 
-
-    dati_T = pd.DataFrame()
-    dati_T = dati_T.append(telemetries)
-    dati = pd.concat([dati, dati_T.T], axis=0, ignore_index=True)
-    for i in range(0, len(col)):
-        dati.rename(columns={i: col[i]}, inplace=True)
-    dati_stamp = pd.concat([dati_stamp, dati], axis=0, ignore_index=True)
-    if sample == 1:
-        dati.to_csv(path_save + namefile, sep=',', index=False)
-    else:
-        dati.to_csv(path_save + namefile, sep=',', mode='a', index=False, header=False)
-        if tot_time >= step * time_refresh and plot != []:
-            step += 1
-            try:
-                Popen('taskkill /F /IM chrome.exe', shell=True)
-                plot_runtime(step, dati_stamp, plot)
-            except:
-                plot_runtime(step, dati_stamp, plot)
+    if 'Bridge' not in device:
+        dati_T = pd.DataFrame()
+        dati_T = dati_T.append(telemetries)
+        dati = pd.concat([dati, dati_T.T], axis=0, ignore_index=True)
+        for i in range(0, len(col)):
+            dati.rename(columns={i: col[i]}, inplace=True)
+        dati_stamp = pd.concat([dati_stamp, dati], axis=0, ignore_index=True)
+        if sample == 1:
+            dati.to_csv(path_save + namefile, sep=',', index=False)
+        else:
+            dati.to_csv(path_save + namefile, sep=',', mode='a', index=False, header=False)
+            if tot_time >= step * time_refresh and plot != []:
+                step += 1
+                try:
+                    Popen('taskkill /F /IM chrome.exe', shell=True)
+                    plot_runtime(step, dati_stamp, plot)
+                except:
+                    plot_runtime(step, dati_stamp, plot)
     tot_time += time_sample
     print('>>>')
 

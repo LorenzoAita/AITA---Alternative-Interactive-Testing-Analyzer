@@ -82,56 +82,35 @@ def meas_bridge(inst, log, data, path, save):
         template='simple_white',
         legend=dict(orientation="v", x=1.1, y=1)
     )
-    for i in log:
-        if i != 'Frequenza':
-            fig.add_scatter(x=data['Frequenza'], y=data[i], mode='lines', name=i)
+    for i in range(1, len(log)):
+        if i % 2 == 0:
+            fig.add_scatter(x=data['Frequenza'], y=data[log[i]], mode='lines', name=log[i], yaxis='y2')
+        else:
+            fig.add_scatter(x=data['Frequenza'], y=data[log[i]], mode='lines', name=log[i], yaxis='y')
 
     fig.update_layout(
         xaxis=dict(
-            domain=[0.2, 1]
+            domain=[0.2, 1],
+            title='Frequenza [Hz]'
         ),
         yaxis=dict(
-            title='Temperature [°C]',
-            titlefont=dict(
-                color="#1f77b4"
-            ),
-            tickfont=dict(
-                color="#1f77b4"
-            )
+            title='Misura Primaria',
         ),
         yaxis3=dict(
             title='Output Power [W]',
-            titlefont=dict(
-                color="#EC00FF"
-            ),
-            tickfont=dict(
-                color="#EC00FF"
-            ),
             anchor="free",
             overlaying="y",
             side="left",
             position=0.13
         ),
-        yaxis4=dict(
-            title='Current [A]',
-            titlefont=dict(
-                color="#d62728"
-            ),
-            tickfont=dict(
-                color="#d62728"
-            ),
+        yaxis2=dict(
+            title='Misura Secondaria',
             anchor="x",
             overlaying="y",
             side="right"
         ),
-        yaxis2=dict(
+        yaxis4=dict(
             title='Freq. [Hz]',
-            titlefont=dict(
-                color="#000000"
-            ),
-            tickfont=dict(
-                color="#000000"
-            ),
             anchor="free",
             overlaying="y",
             side="right",
