@@ -28,15 +28,15 @@ if str(pd.read_excel(path_config + 'Config.xlsx', sheet_name='Strumenti')['PERCO
 else:
     path_save = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Strumenti')['PERCORSO OUTPUT'][0] # '//atp.fimer.com/ATP_ONLINE/LOG/64/'
 # ORION
-if 'inverter' in device:
+if 'Inverter' in device:
     id_device, ip_device, telemetry = config_inverter(path_config)
 
 # DataLogger
-if 'logger' in device:
+if 'Agilent' in device:
     config_DAQ = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Agilent')
 
 # Wattmetro
-if 'wattmeter' in device:
+if 'Wattmeter' in device:
     config_WATT = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Wattmeter')
 
 # Grafico
@@ -53,11 +53,11 @@ if os.path.exists(path_save + namefile):
     os.rename(path_save + namefile, path_save + 'Data_'+str(datetime.datetime.now().strftime("%Y_%m_%d__%H_%M")[:])+'.csv')
 col = list()
 col.append('Data')
-if 'inverter' in device:
+if 'Inverter' in device:
     obj_com = OrionProtocol(ip=ip_device, device_id=id_device)
     for i in telemetry:
         col.append(i)
-if 'logger' in device:
+if 'Agilent' in device:
     logger_DAQ, porta_DAQ = config_agilent(rm, path_config)
     logger_DAQ = logger_DAQ.fillna('')
     stamp_daq = list()
@@ -65,7 +65,7 @@ if 'logger' in device:
         if i != '':
             col.append(i)
             stamp_daq.append(i)
-if 'wattmeter' in device:
+if 'Wattmeter' in device:
     logger_WT, porta_WT = config_wt(rm, path_config, config_WATT['MODELLO'][0])
     logger_WT = logger_WT.fillna('')
     stamp_WT = list()
@@ -73,6 +73,19 @@ if 'wattmeter' in device:
         if i != '':
             col.append(i)
             stamp_WT.append(i)
+if 'Bridge' in device:
+    logger_bridge, porta_bridge = config_ponte(rm, path_config)
+    logger_bridge = logger_bridge.fillna('')
+    stamp_bridge = list()
+    stamp_bridge.append('Frequenza')
+    for i in logger_bridge:
+        if i != '':
+            name1 = i[0:2]
+            name2 = name1+'-'+i[2:]
+            # col.append(name1)
+            # col.append(name2)
+            stamp_bridge.append(name1)
+            stamp_bridge.append(name2)
 
 tot_time = 0
 step = 0
@@ -87,7 +100,7 @@ while tot_time < test_time:
     time.sleep(time_sample)
     print(
         '>>> Tempo\t' + str(datetime.datetime.now().strftime("%Y/%m/%d, %H:%M:%S.%f")[:-2]) + '\tStep #' + str(sample))
-    if 'inverter' in device:
+    if 'Inverter' in device:
         print('>>> log inverter\t' + str(ip_device))
         for i in telemetry:
             #  print('>>> log la telemetry\t' + str(i))
@@ -99,7 +112,7 @@ while tot_time < test_time:
                     telemetries.append(0)
                 break
                 #  print('>>> la telemetry\t' + str(i) + '\tnon risponde')
-    if 'logger' in device:
+    if 'Agilent' in device:
         i = 0
         data_daq = list()
         print('>>> Apro la Comunicazione con il DAQ\t')
@@ -112,7 +125,7 @@ while tot_time < test_time:
                 telemetries.append(float(j[0:15]))
                 print('>>> log la telemetry\t' + str(stamp_daq[i]))
                 i += 1
-    if 'wattmeter' in device:
+    if 'Wattmeter' in device:
         i = 0
         data_WT = list()
         print('>>> Apro la Comunicazione con il ' + config_WATT['MODELLO'][0])
@@ -126,6 +139,13 @@ while tot_time < test_time:
                 telemetries.append(float(j[0:15]))
                 print('>>> log la telemetry\t' + str(stamp_WT[i]))
                 i += 1
+    if 'Bridge' in device:
+        i = 0
+        data_bridge = pd.DataFrame()
+        print('>>> Apro la Comunicazione con il ponte\t')
+        INSTRUMENT = rm.open_resource(porta_bridge)
+        meas_bridge(INSTRUMENT, stamp_bridge, data_bridge, path_config, path_save)
+
 
     dati_T = pd.DataFrame()
     dati_T = dati_T.append(telemetries)

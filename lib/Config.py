@@ -129,3 +129,16 @@ def config_wt(rm, path, model):
                 inst.write(":NUM:NORM:ITEM" + str(j) + " " + str(config_WT['TIPOLOGIA'][i]) + "," + str(int(config_WT['CHANNEL'][i])))
                 j += 1
     return config_WT['LABEL'], porta
+
+
+def config_ponte(rm, path):
+    print('>>> Config Bridge')
+    print('>>>')
+    path_config = path
+    config_bridge = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Bridge')
+    porta = config_bridge['PORTA BRIDGE'][0]
+    inst = rm.open_resource(porta)
+    print('>>> ' + inst.query("*IDN?").split('\n')[0])
+    inst.write('*RST')
+    #  inst.write(':FUNC:IMP '+str(config_bridge['LABEL'][0]))
+    return config_bridge['TIPOLOGIA'], porta
