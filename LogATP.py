@@ -68,7 +68,6 @@ if 'Wattmeter' in device:
             col.append(i)
             stamp_WT.append(i)
 j=0
-k=0
 if 'Bridge' in device:
     logger_bridge, porta_bridge = config_ponte(rm, path_config)
     logger_bridge = logger_bridge.fillna('')
@@ -82,8 +81,8 @@ if 'Bridge' in device:
                 name1 += '_'+str(j)
                 j += 1
             if name2 in stamp_bridge:
-                name2 += '_'+str(k)
-                k += 1
+                name2 += '_'+str(j)
+                j += 1
             # col.append(name1)
             # col.append(name2)
             stamp_bridge.append(name1)
