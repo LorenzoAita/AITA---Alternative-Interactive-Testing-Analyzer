@@ -1,5 +1,5 @@
 # OrionLogger
-Questo programma, momentaneamente, logga le misure dei seguenti strumenti:
+Questo programma, momentaneamente, logga le misure dei seguenti strumenti oltre che una scansione completa con il bridge **AGILENT E4980A**:
 
 * **Qualsiasi inverter con protocollo Orion**
 * **Agilent34970**
@@ -55,5 +55,3 @@ Questo programma, momentaneamente, logga le misure dei seguenti strumenti:
   * LAMB
   * IPP
   * IMP
-
-
