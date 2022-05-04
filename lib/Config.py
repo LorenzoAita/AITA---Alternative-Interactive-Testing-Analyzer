@@ -153,12 +153,16 @@ def config_ponte(rm, path):
     inst.write(':APER ' + str(MEAS_SPEED))
 
     # Imposto la CORREZIONE
-    MEAS_CORR = config_bridge['CORRECTION'][0]
+    MEAS_CORR = config_bridge['CORRECTION']
+    MEAS_CORR = MEAS_CORR.fillna('')
     inst.write(':CORR:OPEN:STATE OFF')
     inst.write(':CORR:SHOR:STATE OFF')
     inst.write(':CORR:LOAD:STATE OFF')
-    if MEAS_CORR != 'OFF':
-        inst.write(':CORR:'+str(MEAS_CORR)+':STATE ON')
+    if 'OFF' not in MEAS_CORR:
+        for i in MEAS_CORR:
+            if i != '':
+                inst.write(':CORR:'+str(i)+':STATE ON')
+    inst.write(':CORR:LENG '+str(config_bridge['CORRECTION LENGTH'][0]))
 
     return config_bridge['TIPOLOGIA'], porta
 

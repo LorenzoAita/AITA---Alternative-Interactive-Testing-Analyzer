@@ -110,13 +110,13 @@ while tot_time < test_time:
         '>>> Tempo\t' + str(datetime.datetime.now().strftime("%Y/%m/%d, %H:%M:%S.%f")[:-2]) + '\tStep #' + str(sample))
     if 'Inverter' in device:
         print('>>> log inverter\t' + str(ip_device))
-        for i in telemetry:
+        for i in telemetry_inv:
             #  print('>>> log la telemetry\t' + str(i))
             try:
                 data_eut, status_code = obj_com.get_data(url=i)
                 telemetries.append(data_eut)
             except:
-                for j in range(0, len(telemetry)-len(telemetries)+1):
+                for j in range(0, len(telemetry_inv)-len(telemetries)+1):
                     telemetries.append(0)
                 break
                 #  print('>>> la telemetry\t' + str(i) + '\tnon risponde')

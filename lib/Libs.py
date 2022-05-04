@@ -234,109 +234,109 @@ def meas_bridge(inst, log, data, path, save):
 
 
 
-json_config = None
-def read_regs(connection, start_address, length, timeout_reply=1):
-    if timeout_reply != connection.timeout:
-        connection.close()
-        connection.timeout = timeout_reply
-        connection.connect()
-    response = connection.read_holding_registers(address=start_address,
-                                                  count=length,
-                                                  unit=int(json_config["MODBUS_SLAVE_ADDRESS"]))
-    if not response.isError():
-        print(">>> R ADDRESS " + str(start_address) + ":\t" + list_to_string(response.registers))
-        return response.registers
-    else:
-        print(">>> R FAIL ADDRESS " + str(start_address))
-        raise TimeoutError
-
-
-def list_to_string(s):
-    # initialize an empty string
-    str1 = ""
-    try:
-        for ele in s:
-            if type(ele) is int:
-                str1 += str(ele)
-            else:
-                str1 += ele
-            str1 += " "
-    except TypeError:
-        str1 = str(s)
-    except NameError:  # traverse in the string
-        str1 = "none"
-    return str1
-
-def ReadInfo(self, client, info):
-    reg = self.holding_registers[info]
-    result = client.read_holding_registers(reg['address'],
-                                           reg['length'],
-                                           unit=self.slave_address)
-    if not result.isError():
-        if reg['type'] == 'HEXSTRING':
-            decoders = [BinaryPayloadDecoder.fromRegisters([x],
-                                                           byteorder=endianess_converter[
-                                                               self.registers['access_rules']['word_endianness']],
-                                                           wordorder=endianess_converter[
-                                                               self.registers['access_rules'][
-                                                                   'register_endianness']]
-                                                           ) for x in result.registers]
-            value = ""
-            for d in decoders:
-                v = d.decode_16bit_uint()
-                for _ in range(0, 4):
-                    c = v >> 12
-                    if c >= 10:
-                        value = value + chr(ord('a') + c - 10)
-                    else:
-                        value = value + str(c)
-                    v = v << 4
-            value = v
-        elif reg['type'] == 'BYTESTREAM':
-            decoder = BinaryPayloadDecoder.fromRegisters(result.registers,
-                                                         byteorder=endianess_converter[
-                                                             self.registers['access_rules']['word_endianness']],
-                                                         wordorder=endianess_converter[
-                                                             self.registers['access_rules']['register_endianness']]
-                                                         )
-            v = []
-            for i in range(0, len(result.registers)):
-                v.append(decoder.decode_8bit_uint())
-                v.append(decoder.decode_8bit_uint())
-            byteswapped = bytearray(len(v))
-            if self.registers['access_rules']['register_endianness'] == 'LITTLE_ENDIANNESS':
-                byteswapped[0::2] = v[1::2]
-                byteswapped[1::2] = v[0::2]
-            else:
-                byteswapped[0::1] = v[0::1]
-            value = byteswapped
-        else:
-            decoder = BinaryPayloadDecoder.fromRegisters(result.registers,
-                                                         byteorder=endianess_converter[
-                                                             self.registers['access_rules']['word_endianness']],
-                                                         wordorder=endianess_converter[
-                                                             self.registers['access_rules']['register_endianness']]
-                                                         )
-            if reg['type'] == 'UINT':
-                if reg['length'] == 1:
-                    value = decoder.decode_16bit_uint()
-                elif reg['length'] == 2:
-                    value = decoder.decode_32bit_uint()
-                elif reg['length'] == 4:
-                    value = decoder.decode_64bit_uint()
-                else:
-                    raise ValueError(f"Not managed UINT with length {reg['length']}")
-            elif reg['type'] == 'FLOAT':
-                if reg['length'] == 2:
-                    value = decoder.decode_32bit_float()
-                else:
-                    raise ValueError(f"Not managed FLOAT with length {reg['length']}")
-            elif reg['type'] == 'DOUBLE':
-                if reg['length'] == 4:
-                    value = decoder.decode_64bit_float()
-                else:
-                    raise ValueError(f"Not managed DOUBLE with length {reg['length']}")
-
-    else:
-        value = None
-    return value
+# json_config = None
+# def read_regs(connection, start_address, length, timeout_reply=1):
+#     if timeout_reply != connection.timeout:
+#         connection.close()
+#         connection.timeout = timeout_reply
+#         connection.connect()
+#     response = connection.read_holding_registers(address=start_address,
+#                                                   count=length,
+#                                                   unit=int(json_config["MODBUS_SLAVE_ADDRESS"]))
+#     if not response.isError():
+#         print(">>> R ADDRESS " + str(start_address) + ":\t" + list_to_string(response.registers))
+#         return response.registers
+#     else:
+#         print(">>> R FAIL ADDRESS " + str(start_address))
+#         raise TimeoutError
+#
+#
+# def list_to_string(s):
+#     # initialize an empty string
+#     str1 = ""
+#     try:
+#         for ele in s:
+#             if type(ele) is int:
+#                 str1 += str(ele)
+#             else:
+#                 str1 += ele
+#             str1 += " "
+#     except TypeError:
+#         str1 = str(s)
+#     except NameError:  # traverse in the string
+#         str1 = "none"
+#     return str1
+#
+# def ReadInfo(self, client, info):
+#     reg = self.holding_registers[info]
+#     result = client.read_holding_registers(reg['address'],
+#                                            reg['length'],
+#                                            unit=self.slave_address)
+#     if not result.isError():
+#         if reg['type'] == 'HEXSTRING':
+#             decoders = [BinaryPayloadDecoder.fromRegisters([x],
+#                                                            byteorder=endianess_converter[
+#                                                                self.registers['access_rules']['word_endianness']],
+#                                                            wordorder=endianess_converter[
+#                                                                self.registers['access_rules'][
+#                                                                    'register_endianness']]
+#                                                            ) for x in result.registers]
+#             value = ""
+#             for d in decoders:
+#                 v = d.decode_16bit_uint()
+#                 for _ in range(0, 4):
+#                     c = v >> 12
+#                     if c >= 10:
+#                         value = value + chr(ord('a') + c - 10)
+#                     else:
+#                         value = value + str(c)
+#                     v = v << 4
+#             value = v
+#         elif reg['type'] == 'BYTESTREAM':
+#             decoder = BinaryPayloadDecoder.fromRegisters(result.registers,
+#                                                          byteorder=endianess_converter[
+#                                                              self.registers['access_rules']['word_endianness']],
+#                                                          wordorder=endianess_converter[
+#                                                              self.registers['access_rules']['register_endianness']]
+#                                                          )
+#             v = []
+#             for i in range(0, len(result.registers)):
+#                 v.append(decoder.decode_8bit_uint())
+#                 v.append(decoder.decode_8bit_uint())
+#             byteswapped = bytearray(len(v))
+#             if self.registers['access_rules']['register_endianness'] == 'LITTLE_ENDIANNESS':
+#                 byteswapped[0::2] = v[1::2]
+#                 byteswapped[1::2] = v[0::2]
+#             else:
+#                 byteswapped[0::1] = v[0::1]
+#             value = byteswapped
+#         else:
+#             decoder = BinaryPayloadDecoder.fromRegisters(result.registers,
+#                                                          byteorder=endianess_converter[
+#                                                              self.registers['access_rules']['word_endianness']],
+#                                                          wordorder=endianess_converter[
+#                                                              self.registers['access_rules']['register_endianness']]
+#                                                          )
+#             if reg['type'] == 'UINT':
+#                 if reg['length'] == 1:
+#                     value = decoder.decode_16bit_uint()
+#                 elif reg['length'] == 2:
+#                     value = decoder.decode_32bit_uint()
+#                 elif reg['length'] == 4:
+#                     value = decoder.decode_64bit_uint()
+#                 else:
+#                     raise ValueError(f"Not managed UINT with length {reg['length']}")
+#             elif reg['type'] == 'FLOAT':
+#                 if reg['length'] == 2:
+#                     value = decoder.decode_32bit_float()
+#                 else:
+#                     raise ValueError(f"Not managed FLOAT with length {reg['length']}")
+#             elif reg['type'] == 'DOUBLE':
+#                 if reg['length'] == 4:
+#                     value = decoder.decode_64bit_float()
+#                 else:
+#                     raise ValueError(f"Not managed DOUBLE with length {reg['length']}")
+#
+#     else:
+#         value = None
+#     return value
