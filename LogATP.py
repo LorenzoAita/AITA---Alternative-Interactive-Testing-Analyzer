@@ -23,7 +23,11 @@ else:
     path_save = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Strumenti')['PERCORSO OUTPUT'][0] # '//atp.fimer.com/ATP_ONLINE/LOG/64/'
 # ORION
 if 'Inverter' in device:
-    id_device, ip_device, telemetry = config_inverter(path_config)
+    id_device, ip_device, telemetry_inv = config_inverter(path_config)
+
+# Colonnina
+if 'Colonna' in device:
+    telemetry_col, reg, com_colonna = config_inverter(path_config)
 
 # DataLogger
 if 'Agilent' in device:
@@ -49,7 +53,10 @@ col = list()
 col.append('Data')
 if 'Inverter' in device:
     obj_com = OrionProtocol(ip=ip_device, device_id=id_device)
-    for i in telemetry:
+    for i in telemetry_inv:
+        col.append(i)
+if 'Colonna' in device:
+    for i in telemetry_col:
         col.append(i)
 if 'Agilent' in device:
     logger_DAQ, porta_DAQ = config_agilent(rm, path_config)

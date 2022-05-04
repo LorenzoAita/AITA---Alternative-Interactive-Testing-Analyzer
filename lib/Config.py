@@ -1,4 +1,6 @@
 import pandas as pd
+from pymodbus.client.sync import ModbusTcpClient as ModbusClientTCP
+from pymodbus.client.sync import ModbusSerialClient as ModbusClient
 
 
 def config_agilent(rm, path):
@@ -159,3 +161,30 @@ def config_ponte(rm, path):
         inst.write(':CORR:'+str(MEAS_CORR)+':STATE ON')
 
     return config_bridge['TIPOLOGIA'], porta
+
+
+def config_colonnina(path):
+    print('>>> Config Collonna di ricarica')
+    print('>>>')
+    path_config = path
+    config_inv = pd.read_excel(path_config+'Config.xlsx', sheet_name='AC Station')
+    ip = str(config_inv['IP'][0])
+    port = str(config_inv['PORTA'][0].split('-')[0])
+    if config_inv['PORTA'][0].split('-')[1] == 'RTU':
+        port_com = 'COM4'
+        baud_rate = 38400
+        com = ModbusClient(method='rtu',
+                                       port=port_com,
+                                       baudrate=baud_rate,
+                                       timeout=1,
+                                       parity='N',
+                                       stopbits=1,
+                                       strict=False)
+    elif config_inv['PORTA'][0].split('-')[1] == 'TCP':
+        com = ModbusClientTCP(host=ip, port=int(port))
+    telemetrie = list()
+    reg = list()
+    for i in range(0, len(config_inv['TELEMETRIE'])):
+        telemetrie.append(config_inv['TELEMETRIE'][i])
+        reg.append(config_inv['REGISTRO'][i])
+    return telemetrie, reg, com
