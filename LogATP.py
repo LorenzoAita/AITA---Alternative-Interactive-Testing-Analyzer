@@ -82,8 +82,12 @@ if 'Bridge' in device:
     stamp_bridge.append('Frequenza')
     for i in logger_bridge:
         if i != '':
-            name1 = i[0:2]
-            name2 = i[2:]  # name1 + '-' + i[2:]
+            if i in ['RX', 'GB']:
+                name1 = i[0:1]
+                name2 = i[1:]  # name1 + '-' + i[2:]
+            else:
+                name1 = i[0:2]
+                name2 = i[2:]  # name1 + '-' + i[2:]
             if name1 in stamp_bridge:
                 name1 += '_'+str(j)
                 j += 1

@@ -58,8 +58,12 @@ def meas_bridge(inst, log, data, path, save):
             if i != '':
                 inst.write(':FUNC:IMP ' + str(i))
                 a = inst.query('FETCH?').split(',')
-                name1 = i[0:2]
-                name2 = i[2:]  # name1 + '-' + i[2:]
+                if i in ['RX', 'GB']:
+                    name1 = i[0:1]
+                    name2 = i[1:]  # name1 + '-' + i[2:]
+                else:
+                    name1 = i[0:2]
+                    name2 = i[2:]  # name1 + '-' + i[2:]  # name1 + '-' + i[2:]
                 print('>>> log la telemetry\t' + str(name1) + '\talla frequenza\t' + str(freq_start))
                 telemetries.append(float(a[0]))
                 print('>>> log la telemetry\t' + str(name2) + '\talla frequenza\t' + str(freq_start))
