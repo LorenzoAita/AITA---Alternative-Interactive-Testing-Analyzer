@@ -26,6 +26,38 @@ class OrionProtocol:
         else:
             return str(0), str(rsp.status_code)
 
+'''
+    def write(self, url, data, method="POST"):
+        """ nucleic write
+
+        Keyword arguments:
+        url -- message (str)
+        data -- dict, list of tuples, bytes, or file-like object to send in the body (optional)
+        """
+
+        try:
+            if data is not None and method == "POST":
+                # rsp = requests.post('http://' + self.ip_connector + '/' + self.ip + '/connector' + url, json=data)
+                rsp = requests.post('http://' + self.ip_connector + '/' + self.ip + '/connector' + url, json=data, verify=False)
+            elif method == 'DELETE':
+                rsp = requests.delete('http://' + self.ip_connector + '/' + self.ip + '/connector' + url, verify=False)
+            else:
+                # rsp = requests.post('http://' + self.ip_connector + '/' + self.ip + '/connector' + url)
+                rsp = requests.post('http://' + self.ip_connector + '/' + self.ip + '/connector' + url)
+            logger.debug(method + ' >> Orion API response status code is ' + str(rsp.status_code) + ' from url ' + rsp.url)
+            logger.debug(method + "'s body >> " + str(data))
+            if rsp.status_code == 200:
+                return True, rsp.status_code
+            else:
+                logger.warning(
+                    method + ' >> Orion API response status code is ' + str(rsp.status_code) + ' from url ' + rsp.url)
+                return False, rsp.status_code
+        except Exception as e:
+            # uncomment this line below to log error with complete stacktrace
+            # logger.error('Eut not responding ip: ' + str(self.ip), exc_info=sys.exc_info())
+            logger.error('Eut not responding ip: ' + str(self.ip))
+            return False, 500
+'''
 
 def plot_runtime(step_graph, dati_stamp, plot):
     fig = go.Figure()
