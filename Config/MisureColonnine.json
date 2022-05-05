@@ -1,0 +1,3037 @@
+{
+	"id": "standalone",
+	"description": "Standalone WallBox",
+	"store_record_type": "http://power-one.com/device/standalone/v1/",
+	"store_device_type": "standalone",
+	"manufacturer": "Fimer",
+	"model": "Fimer Standalone WallBox",
+	"upgrade_info": {
+		"fw_info": "fw_artifact/supervisor",
+		"device_implementation_id": "C"
+	},
+	"access_rules": {
+		"max_consecutive_registers": 120,
+		"min_poll_interval": 30000,
+		"word_endianness": "BIG_ENDIANNESS",
+		"register_endianness": "LITTLE_ENDIANNESS"
+	},
+	"holding_registers": [
+		{
+			"address": 1000,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SCK1.DEVICECFG.storage.status",
+			"type": "UINT"
+		},
+		{
+			"address": 1001,
+			"length": 1,
+			"access": "RW",
+			"store_id": "RFID.tagToBeAuthorizedByOCPP",
+			"type": "UINT"
+		},
+		{
+			"address": 1002,
+			"length": 1,
+			"access": "RO",
+			"store_id": "RFID.nbByteUid",
+			"type": "UINT"
+		},
+		{
+			"address": 1003,
+			"length": 1,
+			"access": "RW",
+			"store_id": "BUZZER.enable",
+			"type": "UINT"
+		},
+		{
+			"address": 1004,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SCK1.ledrgb.state",
+			"type": "UINT"
+		},
+		{
+			"address": 1005,
+			"length": 1,
+			"access": "RW",
+			"store_id": "ble.enable_debug",
+			"type": "UINT"
+		},
+		{
+			"address": 1006,
+			"length": 1,
+			"access": "RO",
+			"store_id": "MODBUS_TABLE_VERSION",
+			"type": "UINT"
+		},
+		{
+			"address": 1007,
+			"length": 1,
+			"access": "RO",
+			"store_id": "DEV_CONFIG.operation_mode",
+			"type": "UINT"
+		},
+		{
+			"address": 1008,
+			"length": 1,
+			"access": "RO",
+			"store_id": "MONITOR.POS_5V_PG",
+			"type": "UINT"
+		},
+		{
+			"address": 1009,
+			"length": 1,
+			"access": "RO",
+			"store_id": "MONITOR.POS_5V_v",
+			"type": "UINT"
+		},
+		{
+			"address": 1010,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SCK1.socket.storage.standbyPlugLockedUnlocked",
+			"type": "UINT"
+		},
+		{
+			"address": 1011,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SCK1.socket.storage.antivandalEnable",
+			"type": "UINT"
+		},
+		{
+			"address": 1012,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SCK1.socket.storage.wakeupEnable",
+			"type": "UINT"
+		},
+		{
+			"address": 1013,
+			"length": 1,
+			"access": "RW",
+			"store_id": "MOTOR_PLUG_SCK1.storage.initSeqActualMoveTrials_n",
+			"type": "UINT"
+		},
+		{
+			"address": 1014,
+			"length": 1,
+			"access": "RW",
+			"store_id": "MOTOR_PLUG_SCK1.storage.initSeqLockUnlockTrials_n",
+			"type": "UINT"
+		},
+		{
+			"address": 1015,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SCK1.cp.storage.temperatureDeratingT0_c",
+			"type": "UINT"
+		},
+		{
+			"address": 1016,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SCK1.cp.storage.temperatureDeratingT1_c",
+			"type": "UINT"
+		},
+		{
+			"address": 1017,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SCK1.cp.storage.ventilationEnable",
+			"type": "UINT"
+		},
+		{
+			"address": 1018,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SCK1.cp.storage.simplifyModeEnable",
+			"type": "UINT"
+		},
+		{
+			"address": 1019,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SCK1.cp.rechargeTypeDetected",
+			"type": "UINT"
+		},
+		{
+			"address": 1020,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SCK1.cp.status",
+			"type": "UINT"
+		},
+		{
+			"address": 1021,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SCK1.cp.IendCheckBypass",
+			"type": "UINT"
+		},
+		{
+			"address": 1022,
+			"length": 1,
+			"access": "RW",
+			"store_id": "LOADMNGR.storage.mode",
+			"type": "UINT"
+		},
+		{
+			"address": 1023,
+			"length": 1,
+			"access": "RW",
+			"store_id": "LOADMNGR.remote.mode",
+			"type": "UINT"
+		},
+		{
+			"address": 1024,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SCK1.info.plug_is_inserted",
+			"type": "UINT"
+		},
+		{
+			"address": 1025,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SCK1.info.plug_is_locked",
+			"type": "UINT"
+		},
+		{
+			"address": 1026,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SCK1.info.recharge_is_running",
+			"type": "UINT"
+		},
+		{
+			"address": 1027,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SCK1.info.recharge_wait_allowStart",
+			"type": "UINT"
+		},
+		{
+			"address": 1028,
+			"length": 1,
+			"access": "RW",
+			"store_id": "LEDRGB_SCK1.storage.brightness_pc",
+			"type": "UINT"
+		},
+		{
+			"address": 1030,
+			"length": 1,
+			"access": "RW",
+			"store_id": "BUZZER.enableAndDutyCycle",
+			"type": "UINT"
+		},
+		{
+			"address": 1031,
+			"length": 1,
+			"access": "RW",
+			"store_id": "BUZZER.pulseNumber",
+			"type": "UINT"
+		},
+		{
+			"address": 1032,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SCK1.advParams.storage.plgch",
+			"type": "UINT"
+		},
+		{
+			"address": 1033,
+			"length": 1,
+			"access": "RW",
+			"store_id": "ANTITAMPER.enable",
+			"type": "UINT"
+		},
+		{
+			"address": 1034,
+			"length": 1,
+			"access": "RW",
+			"store_id": "ANTITAMPER.alarm",
+			"type": "UINT"
+		},
+		{
+			"address": 1035,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SCKx.ocpp.wallbox_out_of_duty",
+			"type": "UINT"
+		},
+		{
+			"address": 1036,
+			"length": 1,
+			"access": "RW",
+			"store_id": "RTC.write_enable",
+			"type": "UINT"
+		},
+		{
+			"address": 1037,
+			"length": 1,
+			"access": "RW",
+			"store_id": "DPM.amperometer_type",
+			"type": "UINT"
+		},
+		{
+			"address": 1038,
+			"length": 1,
+			"access": "RO",
+			"store_id": "DPM.status",
+			"type": "UINT"
+		},
+		{
+			"address": 1039,
+			"length": 1,
+			"access": "RO",
+			"store_id": "EXT_METER.missing_regs",
+			"type": "UINT"
+		},
+		{
+			"address": 1040,
+			"length": 1,
+			"access": "RO",
+			"store_id": "MOTOR_PLUG_SCK1.motor_state",
+			"type": "UINT"
+		},
+		{
+			"address": 1045,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SCK1.cp.PWMEXT_raw",
+			"type": "UINT"
+		},
+		{
+			"address": 1046,
+			"length": 1,
+			"access": "RW",
+			"store_id": "freeze_mode",
+			"type": "UINT"
+		},
+		{
+			"address": 1047,
+			"length": 1,
+			"access": "RW",
+			"store_id": "DPM.enable",
+			"type": "UINT"
+		},
+		{
+			"address": 1048,
+			"length": 1,
+			"access": "RW",
+			"store_id": "RFID.authorizationStateByOCPP",
+			"type": "UINT"
+		},
+		{
+			"address": 1049,
+			"length": 1,
+			"access": "RW",
+			"store_id": "modbus_uart_rs485_ble.rs485_term_en",
+			"type": "UINT"
+		},
+		{
+			"address": 1050,
+			"length": 1,
+			"access": "RO",
+			"store_id": "Q1.board_is_present",
+			"type": "UINT"
+		},
+		{
+			"address": 1051,
+			"length": 1,
+			"access": "RW",
+			"store_id": "Q1.be_quiet",
+			"type": "UINT"
+		},
+		{
+			"address": 1052,
+			"length": 1,
+			"access": "RW",
+			"store_id": "Q1.reserved",
+			"type": "UINT"
+		},
+		{
+			"address": 1053,
+			"length": 1,
+			"access": "RW",
+			"store_id": "PHASE_BALANCING.enable",
+			"type": "UINT"
+		},
+		{
+			"address": 1054,
+			"length": 1,
+			"access": "RO",
+			"store_id": "PHASE_BALANCING.limitation_active",
+			"type": "UINT"
+		},
+		{
+			"address": 1098,
+			"length": 1,
+			"access": "RO",
+			"store_id": "STORAGE.missing_regs_eeprom",
+			"type": "UINT"
+		},
+		{
+			"address": 1099,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SYS.forceSysReset",
+			"type": "UINT"
+		},
+		{
+			"address": 1100,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SYS.rcc_flag_borrst",
+			"type": "UINT"
+		},
+		{
+			"address": 1101,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SYS.rcc_flag_pinrst",
+			"type": "UINT"
+		},
+		{
+			"address": 1102,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SYS.rcc_flag_porrst",
+			"type": "UINT"
+		},
+		{
+			"address": 1103,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SYS.rcc_flag_sftrst",
+			"type": "UINT"
+		},
+		{
+			"address": 1104,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SYS.rcc_flag_iwdgrst",
+			"type": "UINT"
+		},
+		{
+			"address": 1105,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SYS.rcc_flag_wwdgrst",
+			"type": "UINT"
+		},
+		{
+			"address": 1106,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SYS.rcc_flag_lpwrrst",
+			"type": "UINT"
+		},
+		{
+			"address": 1107,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SYS.optimizeLevel",
+			"type": "UINT"
+		},
+		{
+			"address": 1108,
+			"length": 1,
+			"access": "RO",
+			"store_id": "AD7415.readErrorCount",
+			"type": "UINT"
+		},
+		{
+			"address": 1109,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SCKx.rfid.storage.vendor",
+			"type": "UINT"
+		},
+		{
+			"address": 1110,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SCKx.rfid.storage.enable",
+			"type": "UINT"
+		},
+		{
+			"address": 1111,
+			"length": 1,
+			"access": "RO",
+			"store_id": "RFID.refreshCounter",
+			"type": "UINT"
+		},
+		{
+			"address": 1112,
+			"length": 1,
+			"access": "RO",
+			"store_id": "HWCONFIG.hwcfg0",
+			"type": "UINT"
+		},
+		{
+			"address": 1113,
+			"length": 1,
+			"access": "RO",
+			"store_id": "HWCONFIG.hwcfg1",
+			"type": "UINT"
+		},
+		{
+			"address": 1114,
+			"length": 1,
+			"access": "RO",
+			"store_id": "HWCONFIG.hwcfg2",
+			"type": "UINT"
+		},
+		{
+			"address": 1115,
+			"length": 1,
+			"access": "RO",
+			"store_id": "HWCONFIG.hwcfg3",
+			"type": "UINT"
+		},
+		{
+			"address": 1116,
+			"length": 1,
+			"access": "RO",
+			"store_id": "HWCONFIG.hwCfg",
+			"type": "UINT"
+		},
+		{
+			"address": 1117,
+			"length": 1,
+			"access": "RW",
+			"store_id": "MBPRGMODE_ENABLE",
+			"type": "UINT"
+		},
+		{
+			"address": 1118,
+			"length": 1,
+			"access": "RO",
+			"store_id": "STORAGE.alignFail",
+			"type": "UINT"
+		},
+		{
+			"address": 1119,
+			"length": 1,
+			"access": "RO",
+			"store_id": "MBSLA.rxErrorCount",
+			"type": "UINT"
+		},
+		{
+			"address": 1120,
+			"length": 1,
+			"access": "RO",
+			"store_id": "MBSLA.rxOkCount",
+			"type": "UINT"
+		},
+		{
+			"address": 1121,
+			"length": 1,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.clr_alarms",
+			"type": "UINT"
+		},
+		{
+			"address": 1122,
+			"length": 1,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.msk_alarms",
+			"type": "UINT"
+		},
+		{
+			"address": 1123,
+			"length": 1,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.msk_mon_status",
+			"type": "UINT"
+		},
+		{
+			"address": 1124,
+			"length": 1,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.cap_esr_per",
+			"type": "UINT"
+		},
+		{
+			"address": 1125,
+			"length": 1,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.dtemp_cold_lvl",
+			"type": "UINT"
+		},
+		{
+			"address": 1126,
+			"length": 1,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.dtemp_hot_lvl",
+			"type": "UINT"
+		},
+		{
+			"address": 1127,
+			"length": 1,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.esr_hi_lvl",
+			"type": "UINT"
+		},
+		{
+			"address": 1128,
+			"length": 1,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.cap_lo_lvl",
+			"type": "UINT"
+		},
+		{
+			"address": 1129,
+			"length": 1,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.ctl_reg",
+			"type": "UINT"
+		},
+		{
+			"address": 1130,
+			"length": 1,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.num_caps",
+			"type": "UINT"
+		},
+		{
+			"address": 1131,
+			"length": 1,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.chrg_status",
+			"type": "UINT"
+		},
+		{
+			"address": 1132,
+			"length": 1,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.mon_status",
+			"type": "UINT"
+		},
+		{
+			"address": 1133,
+			"length": 1,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.alarm_reg",
+			"type": "UINT"
+		},
+		{
+			"address": 1134,
+			"length": 1,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.meas_cap",
+			"type": "UINT"
+		},
+		{
+			"address": 1135,
+			"length": 1,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.meas_esr",
+			"type": "UINT"
+		},
+		{
+			"address": 1136,
+			"length": 1,
+			"access": "RO",
+			"store_id": "LTC3350.readErrorCount",
+			"type": "UINT"
+		},
+		{
+			"address": 1137,
+			"length": 1,
+			"access": "RO",
+			"store_id": "LTC3350.readOkCount",
+			"type": "UINT"
+		},
+		{
+			"address": 1138,
+			"length": 1,
+			"access": "RO",
+			"store_id": "FWINFO.major",
+			"type": "UINT"
+		},
+		{
+			"address": 1139,
+			"length": 1,
+			"access": "RO",
+			"store_id": "FWINFO.minor",
+			"type": "UINT"
+		},
+		{
+			"address": 1140,
+			"length": 1,
+			"access": "RO",
+			"store_id": "FWINFO.rev",
+			"type": "UINT"
+		},
+		{
+			"address": 1141,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SCK1.socket.storage.vendor",
+			"type": "UINT"
+		},
+		{
+			"address": 1142,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SCK1.socket.storage.enable",
+			"type": "UINT"
+		},
+		{
+			"address": 1143,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SCK1.contactor.auxK1",
+			"type": "UINT"
+		},
+		{
+			"address": 1144,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SCK1.contactor.auxK2",
+			"type": "UINT"
+		},
+		{
+			"address": 1145,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SCK1.contactor.CommandStatus",
+			"type": "UINT"
+		},
+		{
+			"address": 1146,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SCK1.contactor.FdCheckStatus",
+			"type": "UINT"
+		},
+		{
+			"address": 1147,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SCK1.contactor.storage.vendor",
+			"type": "UINT"
+		},
+		{
+			"address": 1148,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SCK1.contactor.storage.enable",
+			"type": "UINT"
+		},
+		{
+			"address": 1149,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SCK1.contactor.storage.duty_pc",
+			"type": "UINT"
+		},
+		{
+			"address": 1150,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SCK1.rcm.storage.vendor",
+			"type": "UINT"
+		},
+		{
+			"address": 1151,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SCK1.rcm.storage.enable",
+			"type": "UINT"
+		},
+		{
+			"address": 1152,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SCK1.em.storage.vendor",
+			"type": "UINT"
+		},
+		{
+			"address": 1153,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SCK1.em.storage.enable",
+			"type": "UINT"
+		},
+		{
+			"address": 1154,
+			"length": 1,
+			"access": "RO",
+			"store_id": "MOTOR_PLUG_SCK1.actuatorFail",
+			"type": "UINT"
+		},
+		{
+			"address": 1155,
+			"length": 1,
+			"access": "RW",
+			"store_id": "MOTOR_PLUG_SCK1.storage.initSeqCheckDelayTimer_ms",
+			"type": "UINT"
+		},
+		{
+			"address": 1156,
+			"length": 1,
+			"access": "RW",
+			"store_id": "MOTOR_PLUG_SCK1.storage.lockUnlockDelayTimer_ms",
+			"type": "UINT"
+		},
+		{
+			"address": 1157,
+			"length": 1,
+			"access": "RW",
+			"store_id": "MOTOR_PLUG_SCK1.storage.limitSwitchSignalCheckTimer_ms",
+			"type": "UINT"
+		},
+		{
+			"address": 1158,
+			"length": 1,
+			"access": "RW",
+			"store_id": "MOTOR_PLUG_SCK1.storage.limitSwitchSignalCheckTimeout_s",
+			"type": "UINT"
+		},
+		{
+			"address": 1159,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SCK1.cp.state",
+			"type": "UINT"
+		},
+		{
+			"address": 1160,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SCK1.pp.inTheHoleWarning",
+			"type": "UINT"
+		},
+		{
+			"address": 1161,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SCK1.evDiode.status",
+			"type": "HEXSTRING"
+		},
+		{
+			"address": 1162,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SCK1.cp.iextEnable",
+			"type": "UINT"
+		},
+		{
+			"address": 1163,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SCK1.pp.status",
+			"type": "UINT"
+		},
+		{
+			"address": 1164,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SCK1.cp.fsmValue",
+			"type": "UINT"
+		},
+		{
+			"address": 1165,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SCK1.cp.rechargeMode",
+			"type": "UINT"
+		},
+		{
+			"address": 1166,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SCK1.cp.simpleModeHalted",
+			"type": "UINT"
+		},
+		{
+			"address": 1167,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SCK1.cp.ventilationModeHalted",
+			"type": "UINT"
+		},
+		{
+			"address": 1168,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SCK1.cp.simpleModeHaltedCauseIend",
+			"type": "UINT"
+		},
+		{
+			"address": 1169,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SCK1.cp.simpleModeHaltedCauseNot1PH",
+			"type": "UINT"
+		},
+		{
+			"address": 1170,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SCK1.cp.overCurrentHalted",
+			"type": "UINT"
+		},
+		{
+			"address": 1171,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SCK1.cp.overCurrentTrials",
+			"type": "UINT"
+		},
+		{
+			"address": 1172,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SCK1.cp.deviceCfgWrongHalted",
+			"type": "UINT"
+		},
+		{
+			"address": 1173,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SCK1.cp.fullModeHaltedCauseIend",
+			"type": "UINT"
+		},
+		{
+			"address": 1194,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[1 ]GLOBAL_ALARM_12V_UV",
+			"type": "UINT"
+		},
+		{
+			"address": 1195,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[2 ]GLOBAL_ALARM_12V_OV",
+			"type": "UINT"
+		},
+		{
+			"address": 1196,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[3 ]GLOBAL_ALARM_V_CTRL_UV",
+			"type": "UINT"
+		},
+		{
+			"address": 1197,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[4 ]GLOBAL_ALARM_V_CTRL_OV",
+			"type": "UINT"
+		},
+		{
+			"address": 1198,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[5 ]GLOBAL_ALARM_VCAP_OV",
+			"type": "UINT"
+		},
+		{
+			"address": 1199,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[6 ]GLOBAL_ALARM_VCAP_UV_TH2",
+			"type": "UINT"
+		},
+		{
+			"address": 1200,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[7 ]GLOBAL_ALARM_OPERATION_MODE_ERR",
+			"type": "UINT"
+		},
+		{
+			"address": 1201,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[8 ]GLOBAL_ALARM_TC_OT_TH2",
+			"type": "UINT"
+		},
+		{
+			"address": 1202,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[9 ]GLOBAL_ALARM_Q1_PRESENCE_ERR",
+			"type": "UINT"
+		},
+		{
+			"address": 1203,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[10]GLOBAL_ALARM_SCAME_ERR",
+			"type": "UINT"
+		},
+		{
+			"address": 1204,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[11]GLOBAL_ALARM_CORD_ERR",
+			"type": "UINT"
+		},
+		{
+			"address": 1205,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[12]GLOBAL_ALARM_TEMP_COM_ERR",
+			"type": "UINT"
+		},
+		{
+			"address": 1206,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[13]GLOBAL_ALARM_LTC3350_COM_ERR",
+			"type": "UINT"
+		},
+		{
+			"address": 1207,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[14]GLOBAL_ALARM_DPM",
+			"type": "UINT"
+		},
+		{
+			"address": 1208,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[15]GLOBAL_ALARM_V_CTRL_BACKUP",
+			"type": "UINT"
+		},
+		{
+			"address": 1209,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[16]GLOBAL_ALARM_VCAP_UV_TH1",
+			"type": "UINT"
+		},
+		{
+			"address": 1210,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[17]GLOBAL_ALARM_RFID_BOARD",
+			"type": "UINT"
+		},
+		{
+			"address": 1211,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[18]GLOBAL_ALARM_STORAGE_ERR",
+			"type": "UINT"
+		},
+		{
+			"address": 1212,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[19]GLOBAL_ALARM_NONE_4",
+			"type": "UINT"
+		},
+		{
+			"address": 1213,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[20]GLOBAL_ALARM_NONE_5",
+			"type": "UINT"
+		},
+		{
+			"address": 1214,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[21]GLOBAL_ALARM_NONE_6",
+			"type": "UINT"
+		},
+		{
+			"address": 1215,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[22]GLOBAL_ALARM_ANTI_TAMPER",
+			"type": "UINT"
+		},
+		{
+			"address": 1216,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[50]GLOBAL_WARNING_12V_UV",
+			"type": "UINT"
+		},
+		{
+			"address": 1217,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[51]GLOBAL_WARNING_TC_OT_TH1",
+			"type": "UINT"
+		},
+		{
+			"address": 1218,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[52]GLOBAL_WARNING_CONFIG_PH1_PH3",
+			"type": "UINT"
+		},
+		{
+			"address": 1219,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[53]GLOBAL_WARNING_PH3_PHASE_SEQUENCE",
+			"type": "UINT"
+		},
+		{
+			"address": 1220,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[54]GLOBAL_WARNING_BLE_MAC_ERROR",
+			"type": "UINT"
+		},
+		{
+			"address": 1221,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[55]GLOBAL_WARNING_RTC",
+			"type": "UINT"
+		},
+		{
+			"address": 1222,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[56]GLOBAL_WARNING_AMPEROMETER",
+			"type": "UINT"
+		},
+		{
+			"address": 1223,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[100]SCKx_ALARM_CONTACTOR_AUX_K1",
+			"type": "UINT"
+		},
+		{
+			"address": 1224,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[101]SCKx_ALARM_CONTACTOR_AUX_K2",
+			"type": "UINT"
+		},
+		{
+			"address": 1225,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[102]SCKx_ALARM_GND_CTY",
+			"type": "UINT"
+		},
+		{
+			"address": 1226,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[103]SCKx_ALARM_CP_SC",
+			"type": "UINT"
+		},
+		{
+			"address": 1227,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[104]SCKx_ALARM_DIODE_FAULT",
+			"type": "UINT"
+		},
+		{
+			"address": 1228,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[105]SCKx_ALARM_PLUG_FAULT",
+			"type": "UINT"
+		},
+		{
+			"address": 1229,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[106]SCKx_ALARM_SUPPLY_OVERVOLTAGE",
+			"type": "UINT"
+		},
+		{
+			"address": 1230,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[107]SCKx_ALARM_I_L1_OL",
+			"type": "UINT"
+		},
+		{
+			"address": 1231,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[108]SCKx_ALARM_I_L2_OL",
+			"type": "UINT"
+		},
+		{
+			"address": 1232,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[109]SCKx_ALARM_I_L3_OL",
+			"type": "UINT"
+		},
+		{
+			"address": 1233,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[110]SCKx_ALARM_SCKx_ID_X6",
+			"type": "UINT"
+		},
+		{
+			"address": 1234,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[111]SCKx_ALARM_SCKx_ID_X30",
+			"type": "UINT"
+		},
+		{
+			"address": 1235,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[112]SCKx_ALARM_ID_ERROR",
+			"type": "UINT"
+		},
+		{
+			"address": 1236,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[113]SCKx_ALARM_RCM_TRIP",
+			"type": "UINT"
+		},
+		{
+			"address": 1237,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[114]SCKx_ALARM_PHASE_UNBALANCE",
+			"type": "UINT"
+		},
+		{
+			"address": 1238,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[115]SCKx_ALARM_PP_OK_CP_FAIL",
+			"type": "UINT"
+		},
+		{
+			"address": 1239,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[116]SCKx_ALARM_CP_OK_PP_FAIL",
+			"type": "UINT"
+		},
+		{
+			"address": 1240,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[117]SCKx_ALARM_PLUG_STILL_INSERTED",
+			"type": "UINT"
+		},
+		{
+			"address": 1241,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[118]SCKx_ALARM_GPD_ERR",
+			"type": "UINT"
+		},
+		{
+			"address": 1242,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[119]SCKx_ALARM_CP_OPEN_CIRCUIT",
+			"type": "UINT"
+		},
+		{
+			"address": 1243,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[120]SCKx_ALARM_SIMP_NO_1PH_HALT",
+			"type": "UINT"
+		},
+		{
+			"address": 1244,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[121]SCKx_ALARM_DEVICECFG_WRONG_HALT",
+			"type": "UINT"
+		},
+		{
+			"address": 1245,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[122]SCKx_ALARM_SOCKET_SHUTTER",
+			"type": "UINT"
+		},
+		{
+			"address": 1246,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[150]SCKx_WARNING_PPHIGHTHRESHOLD",
+			"type": "UINT"
+		},
+		{
+			"address": 1247,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[151]SCKx_WARNING_PPLOWTHRESHOLD",
+			"type": "UINT"
+		},
+		{
+			"address": 1248,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[152]SCKx_WARNING_SIMP_NOT_AVAIL",
+			"type": "UINT"
+		},
+		{
+			"address": 1249,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[153]SCKx_WARNING_VENT_NOT_AVAIL",
+			"type": "UINT"
+		},
+		{
+			"address": 1250,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[154]SCKx_WARNING_SIMP_STOPPED",
+			"type": "UINT"
+		},
+		{
+			"address": 1251,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[155]SCKx_WARNING_VENT_STOPPED",
+			"type": "UINT"
+		},
+		{
+			"address": 1252,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[156]SCKx_WARNING_SUPPLY_UNDERVOLTAGE",
+			"type": "UINT"
+		},
+		{
+			"address": 1253,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[157]SCKx_WARNING_I_Lx_OL_HALT",
+			"type": "UINT"
+		},
+		{
+			"address": 1254,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[158]SCKx_WARNING_FULL_IEND_HALT",
+			"type": "UINT"
+		},
+		{
+			"address": 1255,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[159]SCKx_WARNING_WAKEUP_IS_RUNNING",
+			"type": "UINT"
+		},
+		{
+			"address": 1256,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[160]SCKx_WARNING_MISSING_REGS_IN_EE",
+			"type": "UINT"
+		},
+		{
+			"address": 1257,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[161]SCKx_WARNING_NONE_1",
+			"type": "UINT"
+		},
+		{
+			"address": 1258,
+			"length": 1,
+			"access": "RO",
+			"store_id": "JBCOREIDX[162]SCKx_WARNING_NONE_2",
+			"type": "UINT"
+		},
+		{
+			"address": 1259,
+			"length": 1,
+			"access": "RW",
+			"store_id": "PRODUCTFSM.allowStart",
+			"type": "UINT"
+		},
+		{
+			"address": 1261,
+			"length": 1,
+			"access": "RW",
+			"store_id": "PRODUCTFSM.requireReservation",
+			"type": "UINT"
+		},
+		{
+			"address": 1262,
+			"length": 1,
+			"access": "RW",
+			"store_id": "PRODUCTFSM.requireSuspension",
+			"type": "UINT"
+		},
+		{
+			"address": 1264,
+			"length": 1,
+			"access": "RO",
+			"store_id": "RAMLOG.lastAlarm",
+			"type": "UINT"
+		},
+		{
+			"address": 1265,
+			"length": 1,
+			"access": "RW",
+			"store_id": "RAMLOG.idx",
+			"type": "UINT"
+		},
+		{
+			"address": 1266,
+			"length": 1,
+			"access": "RO",
+			"store_id": "RAMLOG.alarmAtIdx",
+			"type": "UINT"
+		},
+		{
+			"address": 1267,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SCKx.ocpp.storage.vendor",
+			"type": "UINT"
+		},
+		{
+			"address": 1268,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SCKx.ocpp.storage.enable",
+			"type": "UINT"
+		},
+		{
+			"address": 1270,
+			"length": 1,
+			"access": "RW",
+			"store_id": "BUZZER.test_jingle",
+			"type": "UINT"
+		},
+		{
+			"address": 1271,
+			"length": 1,
+			"access": "RO",
+			"store_id": "cs.active.sessionStatus",
+			"type": "UINT"
+		},
+		{
+			"address": 1272,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SCK1.cp.debug.energyMeter.simulatorEnable",
+			"type": "UINT"
+		},
+		{
+			"address": 1273,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SCK1.cp.debug.overCurrent.simulatorEnable",
+			"type": "UINT"
+		},
+		{
+			"address": 1274,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SCK1.cp.debug.derating.simulatorEnable",
+			"type": "UINT"
+		},
+		{
+			"address": 1275,
+			"length": 1,
+			"access": "RW",
+			"store_id": "BUZZER.pwmOnTimer",
+			"type": "UINT"
+		},
+		{
+			"address": 1276,
+			"length": 1,
+			"access": "RW",
+			"store_id": "BUZZER.pwmOffTimer",
+			"type": "UINT"
+		},
+		{
+			"address": 1277,
+			"length": 1,
+			"access": "RO",
+			"store_id": "CONSTREGISTERS.reg_u16",
+			"type": "UINT"
+		},
+		{
+			"address": 1278,
+			"length": 1,
+			"access": "RW",
+			"store_id": "RFID.white_list_read_index",
+			"type": "UINT"
+		},
+		{
+			"address": 1279,
+			"length": 1,
+			"access": "RW",
+			"store_id": "RFID.white_list_write_index",
+			"type": "UINT"
+		},
+		{
+			"address": 1280,
+			"length": 1,
+			"access": "RO",
+			"store_id": "RFID.white_list_max_index",
+			"type": "UINT"
+		},
+		{
+			"address": 1281,
+			"length": 1,
+			"access": "RW",
+			"store_id": "Q1_charging_state_machine",
+			"type": "UINT"
+		},
+		{
+			"address": 1282,
+			"length": 1,
+			"access": "RO",
+			"store_id": "RFID.white_list_tag_number",
+			"type": "UINT"
+		},
+		{
+			"address": 1317,
+			"length": 2,
+			"access": "RO",
+			"store_id": "TIM.uptimeCounter[min]",
+			"type": "UINT"
+		},
+		{
+			"address": 1321,
+			"length": 2,
+			"access": "RO",
+			"store_id": "CONSTREGISTERS.reg_u32",
+			"type": "UINT"
+		},
+		{
+			"address": 1323,
+			"length": 2,
+			"access": "RW",
+			"store_id": "Q1_transaction_id",
+			"type": "UINT"
+		},
+		{
+			"address": 1370,
+			"length": 2,
+			"access": "RW",
+			"store_id": "AD7415.storage.temperatureOffset_c",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1372,
+			"length": 2,
+			"access": "RO",
+			"store_id": "AD7415.decoded.temperature_c",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1374,
+			"length": 2,
+			"access": "RO",
+			"store_id": "SICONV.UP_ADC_PK_HISIDE_v",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1376,
+			"length": 2,
+			"access": "RO",
+			"store_id": "SICONV.UP_ADC_PK_LOSIDE_v",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1378,
+			"length": 2,
+			"access": "RO",
+			"store_id": "SICONV.UP_ADC_PP_v",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1380,
+			"length": 2,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.vcapfb_dac",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1382,
+			"length": 2,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.vshunt",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1384,
+			"length": 2,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.cap_uv_lvl",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1386,
+			"length": 2,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.cap_ov_lvl",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1388,
+			"length": 2,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.gpi_uv_lvl",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1390,
+			"length": 2,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.gpi_ov_lvl",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1392,
+			"length": 2,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.vin_uv_lvl",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1394,
+			"length": 2,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.vin_ov_lvl",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1396,
+			"length": 2,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.vcap_uv_lvl",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1398,
+			"length": 2,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.vcap_ov_lvl",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1400,
+			"length": 2,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.vout_uv_lvl",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1402,
+			"length": 2,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.vout_ov_lvl",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1404,
+			"length": 2,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.iin_oc_lvl",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1406,
+			"length": 2,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.ichg_uc_lvl",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1408,
+			"length": 2,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.meas_vcap1",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1410,
+			"length": 2,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.meas_vcap2",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1412,
+			"length": 2,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.meas_vcap3",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1414,
+			"length": 2,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.meas_vcap4",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1416,
+			"length": 2,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.meas_gpi",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1418,
+			"length": 2,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.meas_vin",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1420,
+			"length": 2,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.meas_vcap",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1422,
+			"length": 2,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.meas_vout",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1424,
+			"length": 2,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.meas_iin",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1426,
+			"length": 2,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.meas_ichg",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1428,
+			"length": 2,
+			"access": "RO",
+			"store_id": "LTC3350.DECODED.meas_dtemp",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1430,
+			"length": 2,
+			"access": "RO",
+			"store_id": "SCK1.cp.PK_LOSIDE_v",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1432,
+			"length": 2,
+			"access": "RO",
+			"store_id": "SCK1.cp.PK_HISIDE_v",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1434,
+			"length": 2,
+			"access": "RO",
+			"store_id": "SCK1.cp.IL3_a",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1436,
+			"length": 2,
+			"access": "RO",
+			"store_id": "SCK1.cp.IL2_a",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1438,
+			"length": 2,
+			"access": "RO",
+			"store_id": "SCK1.cp.IL1_a",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1440,
+			"length": 2,
+			"access": "RO",
+			"store_id": "SCK1.pp.IMAX_CABLE_r",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1442,
+			"length": 2,
+			"access": "RO",
+			"store_id": "SCK1.pp.IMAX_CABLE_a",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1444,
+			"length": 2,
+			"access": "RO",
+			"store_id": "SCK1.pp.IMAX_CABLE_v",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1446,
+			"length": 2,
+			"access": "RW",
+			"store_id": "SCK1.cp.IEXT_a",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1448,
+			"length": 2,
+			"access": "RO",
+			"store_id": "SCK1.cp.IAV_a",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1450,
+			"length": 2,
+			"access": "RO",
+			"store_id": "SCK1.cp.imaxEvse_a",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1452,
+			"length": 2,
+			"access": "RO",
+			"store_id": "SCK1.cp.pmaxEvse_kw",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1454,
+			"length": 2,
+			"access": "RO",
+			"store_id": "SCK1.cpPwmDuty_pc",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1456,
+			"length": 2,
+			"access": "RO",
+			"store_id": "SCK1.cp.ITHERM_a",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1458,
+			"length": 2,
+			"access": "RW",
+			"store_id": "SCK1.cp.storage.IendCharge_a",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1460,
+			"length": 2,
+			"access": "RW",
+			"store_id": "SCK1.cp.storage.simplifyModeImax_a",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1462,
+			"length": 2,
+			"access": "RW",
+			"store_id": "SCK1.ExternalSchedulerSetpoint",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1464,
+			"length": 2,
+			"access": "RO",
+			"store_id": "SCK1.evDiode.faultTrigValue_v",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1466,
+			"length": 2,
+			"access": "RW",
+			"store_id": "SCK1.cp.storage.phXovercurrentMultiplier_a",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1474,
+			"length": 2,
+			"access": "RW",
+			"store_id": "ALARMSWARNINGSx.storage.global_alarm_12v_ov",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1476,
+			"length": 2,
+			"access": "RW",
+			"store_id": "ALARMSWARNINGSx.storage.global_alarm_v_ctrl_uv",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1478,
+			"length": 2,
+			"access": "RW",
+			"store_id": "ALARMSWARNINGSx.storage.global_alarm_v_ctrl_ov",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1480,
+			"length": 2,
+			"access": "RW",
+			"store_id": "ALARMSWARNINGSx.storage.global_alarm_vcap_ov",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1482,
+			"length": 2,
+			"access": "RW",
+			"store_id": "ALARMSWARNINGSx.storage.global_alarm_vcap_uv_th2",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1484,
+			"length": 2,
+			"access": "RW",
+			"store_id": "ALARMSWARNINGSx.storage.global_alarm_tc_ot_th2_min",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1486,
+			"length": 2,
+			"access": "RW",
+			"store_id": "ALARMSWARNINGSx.storage.global_alarm_tc_ot_th2_max",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1488,
+			"length": 2,
+			"access": "RW",
+			"store_id": "ALARMSWARNINGSx.storage.global_warning_v_ctrl_backup",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1490,
+			"length": 2,
+			"access": "RW",
+			"store_id": "ALARMSWARNINGSx.storage.global_warning_tc_ot_th1_min",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1492,
+			"length": 2,
+			"access": "RW",
+			"store_id": "ALARMSWARNINGSx.storage.global_warning_tc_ot_th1_max",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1494,
+			"length": 2,
+			"access": "RW",
+			"store_id": "LOADMNGR.storage.pmax_w",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1496,
+			"length": 2,
+			"access": "RW",
+			"store_id": "LOADMNGR.storage.imax_a",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1498,
+			"length": 2,
+			"access": "RW",
+			"store_id": "LOADMNGR.remote.pmax_w",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1500,
+			"length": 2,
+			"access": "RW",
+			"store_id": "LOADMNGR.remote.imax_a",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1502,
+			"length": 2,
+			"access": "RW",
+			"store_id": "SCK1.cp.debug.energyMeter.L1current",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1504,
+			"length": 2,
+			"access": "RW",
+			"store_id": "SCK1.cp.debug.energyMeter.L2current",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1506,
+			"length": 2,
+			"access": "RW",
+			"store_id": "SCK1.cp.debug.energyMeter.L3current",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1508,
+			"length": 2,
+			"access": "RW",
+			"store_id": "SCK1.cp.debug.overCurrent.L1XovercurrentMultiplier_a",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1510,
+			"length": 2,
+			"access": "RW",
+			"store_id": "SCK1.cp.debug.overCurrent.L2XovercurrentMultiplier_a",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1512,
+			"length": 2,
+			"access": "RW",
+			"store_id": "SCK1.cp.debug.overCurrent.L3XovercurrentMultiplier_a",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1514,
+			"length": 2,
+			"access": "RW",
+			"store_id": "SCK1.cp.debug.derating.ad7415_c",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1516,
+			"length": 2,
+			"access": "RO",
+			"store_id": "SCK1.cp.PWMEXT_pc",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1518,
+			"length": 2,
+			"access": "RO",
+			"store_id": "SCK1.cp.IEXT_FROM_PWMEXT_a",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1520,
+			"length": 2,
+			"access": "RW",
+			"store_id": "SCK1.advParams.storage.cuimx_a",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1522,
+			"length": 2,
+			"access": "RW",
+			"store_id": "DPM.i_eff_threshold_single_ph",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1524,
+			"length": 2,
+			"access": "RW",
+			"store_id": "DPM.i_max_eff_provider_1ph",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1526,
+			"length": 2,
+			"access": "RO",
+			"store_id": "DPM.i_eff_sensor",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1528,
+			"length": 2,
+			"access": "RO",
+			"store_id": "DPM.i_eff_charge_available",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1530,
+			"length": 2,
+			"access": "RO",
+			"store_id": "CONSTREGISTERS.reg_float",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1532,
+			"length": 2,
+			"access": "RO",
+			"store_id": "SCK1.cp.pwmDutyRaw",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1534,
+			"length": 2,
+			"access": "RW",
+			"store_id": "DPM.i_max_eff_single_phase_3ph",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1536,
+			"length": 2,
+			"access": "RW",
+			"store_id": "DPM.i_max_eff_provider_3ph",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1538,
+			"length": 2,
+			"access": "RO",
+			"store_id": "PHASE_BALANCING.I_imbalance",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1540,
+			"length": 2,
+			"access": "RW",
+			"store_id": "PHASE_BALANCING.I_imbalance_limit",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1542,
+			"length": 2,
+			"access": "RO",
+			"store_id": "PHASE_BALANCING.I_imbalance_control",
+			"type": "FLOAT"
+		},
+		{
+			"address": 1561,
+			"length": 4,
+			"access": "RO",
+			"store_id": "RFID.tag_approved_ID",
+			"type": "HEXSTRING"
+		},
+		{
+			"address": 1565,
+			"length": 4,
+			"access": "RO",
+			"store_id": "RFID.NFCa_ID",
+			"type": "HEXSTRING"
+		},
+		{
+			"address": 1569,
+			"length": 4,
+			"access": "RW",
+			"store_id": "RFID.tag_master_ID",
+			"type": "HEXSTRING"
+		},
+		{
+			"address": 1573,
+			"length": 4,
+			"access": "RW",
+			"store_id": "RFID.white_list_read_tag_ID",
+			"type": "HEXSTRING"
+		},
+		{
+			"address": 1577,
+			"length": 4,
+			"access": "RW",
+			"store_id": "RFID.white_list_write_tag_ID",
+			"type": "HEXSTRING"
+		},
+		{
+			"address": 1581,
+			"length": 4,
+			"access": "RO",
+			"store_id": "RTC.read_unix_epoch_time_sec",
+			"type": "UINT"
+		},
+		{
+			"address": 1585,
+			"length": 4,
+			"access": "RW",
+			"store_id": "RTC.write_unix_epoch_time_sec",
+			"type": "UINT"
+		},
+		{
+			"address": 1618,
+			"length": 4,
+			"access": "RO",
+			"store_id": "METERx.SCK1.measure.item.voltageL1_v",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1622,
+			"length": 4,
+			"access": "RO",
+			"store_id": "METERx.SCK1.measure.item.voltageL2_v",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1626,
+			"length": 4,
+			"access": "RO",
+			"store_id": "METERx.SCK1.measure.item.voltageL3_v",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1630,
+			"length": 4,
+			"access": "RO",
+			"store_id": "METERx.SCK1.measure.item.currentL1_a",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1634,
+			"length": 4,
+			"access": "RO",
+			"store_id": "METERx.SCK1.measure.item.currentL2_a",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1638,
+			"length": 4,
+			"access": "RO",
+			"store_id": "METERx.SCK1.measure.item.currentL3_a",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1642,
+			"length": 4,
+			"access": "RO",
+			"store_id": "METERx.SCK1.measure.item.active_powerL1_kw",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1646,
+			"length": 4,
+			"access": "RO",
+			"store_id": "METERx.SCK1.measure.item.active_powerL2_kw",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1650,
+			"length": 4,
+			"access": "RO",
+			"store_id": "METERx.SCK1.measure.item.active_powerL3_kw",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1654,
+			"length": 4,
+			"access": "RO",
+			"store_id": "METERx.SCK1.measure.item.activeTotalPower_kw",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1658,
+			"length": 4,
+			"access": "RO",
+			"store_id": "METERx.SCK1.measure.item.reactiveTotalPower_kvar",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1662,
+			"length": 4,
+			"access": "RO",
+			"store_id": "METERx.SCK1.measure.item.apparentTotalPower_kva",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1666,
+			"length": 4,
+			"access": "RO",
+			"store_id": "METERx.SCK1.measure.item.frequency_hz",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1670,
+			"length": 4,
+			"access": "RO",
+			"store_id": "METERx.SCK1.measure.item.powerFactor",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1674,
+			"length": 4,
+			"access": "RO",
+			"store_id": "METERx.SCK1.measure.item.activeImport_kwh",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1678,
+			"length": 4,
+			"access": "RO",
+			"store_id": "METERx.SCK1.measure.item.activeExport_kwh",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1682,
+			"length": 4,
+			"access": "RO",
+			"store_id": "METERx.SCK1.measure.item.reactiveImport_kvarh",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1686,
+			"length": 4,
+			"access": "RO",
+			"store_id": "METERx.SCK1.measure.item.reactiveExport_kvarh",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1690,
+			"length": 4,
+			"access": "RO",
+			"store_id": "METERx.SCK1.measure.item.activeImportBeforeCurrentSession_kwh",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1710,
+			"length": 4,
+			"access": "RO",
+			"store_id": "CONSTREGISTERS.reg_double",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1750,
+			"length": 4,
+			"access": "RO",
+			"store_id": "EXT_METER.voltageL1_v",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1754,
+			"length": 4,
+			"access": "RO",
+			"store_id": "EXT_METER.voltageL2_v",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1758,
+			"length": 4,
+			"access": "RO",
+			"store_id": "EXT_METER.voltageL3_v",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1762,
+			"length": 4,
+			"access": "RO",
+			"store_id": "EXT_METER.currentL1_a",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1766,
+			"length": 4,
+			"access": "RO",
+			"store_id": "EXT_METER.currentL2_a",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1770,
+			"length": 4,
+			"access": "RO",
+			"store_id": "EXT_METER.currentL3_a",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1774,
+			"length": 4,
+			"access": "RO",
+			"store_id": "EXT_METER.active_powerL1_w",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1778,
+			"length": 4,
+			"access": "RO",
+			"store_id": "EXT_METER.active_powerL2_w",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1782,
+			"length": 4,
+			"access": "RO",
+			"store_id": "EXT_METER.active_powerL3_w",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1786,
+			"length": 4,
+			"access": "RO",
+			"store_id": "EXT_METER.activeTotalPower_w",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1790,
+			"length": 4,
+			"access": "RO",
+			"store_id": "EXT_METER.apparentTotalPower_va",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1794,
+			"length": 4,
+			"access": "RO",
+			"store_id": "EXT_METER.reactiveTotalPower_var",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1798,
+			"length": 4,
+			"access": "RO",
+			"store_id": "EXT_METER.powerFactor",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1802,
+			"length": 4,
+			"access": "RO",
+			"store_id": "EXT_METER.frequency_hz",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1806,
+			"length": 4,
+			"access": "RO",
+			"store_id": "EXT_METER.activeImport_kwh",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1810,
+			"length": 4,
+			"access": "RO",
+			"store_id": "EXT_METER.activeExport_kwh",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 1903,
+			"length": 16,
+			"access": "RO",
+			"store_id": "ble.random_key",
+			"type": "BYTESTREAM"
+		},
+		{
+			"address": 1919,
+			"length": 8,
+			"access": "RW",
+			"store_id": "ble.md5_app",
+			"type": "BYTESTREAM"
+		},
+		{
+			"address": 1927,
+			"length": 1,
+			"access": "RW",
+			"store_id": "ble.app_md5_cmd",
+			"type": "UINT"
+		},
+		{
+			"address": 1928,
+			"length": 1,
+			"access": "RO",
+			"store_id": "ble.authorized",
+			"type": "UINT"
+		},
+		{
+			"address": 1929,
+			"length": 3,
+			"access": "RO",
+			"store_id": "ble.mac",
+			"type": "BYTESTREAM"
+		},
+		{
+			"address": 1932,
+			"length": 1,
+			"access": "RO",
+			"store_id": "ble.fw_version",
+			"type": "UINT"
+		},
+		{
+			"address": 2000,
+			"length": 8,
+			"access": "RW",
+			"store_id": "STRING.WORM",
+			"type": "ASCIISTRING"
+		},
+		{
+			"address": 2008,
+			"length": 8,
+			"access": "RW",
+			"store_id": "STRING.PN",
+			"type": "ASCIISTRING"
+		},
+		{
+			"address": 2016,
+			"length": 8,
+			"access": "RW",
+			"store_id": "STRING.SN",
+			"type": "ASCIISTRING"
+		},
+		{
+			"address": 2024,
+			"length": 10,
+			"access": "RW",
+			"store_id": "STRING.PK",
+			"type": "ASCIISTRING"
+		},
+		{
+			"address": 2034,
+			"length": 8,
+			"access": "RW",
+			"store_id": "STRING.MOD",
+			"type": "ASCIISTRING"
+		},
+		{
+			"address": 2042,
+			"length": 8,
+			"access": "RW",
+			"store_id": "STRING.VEND",
+			"type": "ASCIISTRING"
+		},
+		{
+			"address": 2100,
+			"length": 1,
+			"access": "RO",
+			"store_id": "fw_state_fw_context",
+			"type": "UINT"
+		},
+		{
+			"address": 2101,
+			"length": 1,
+			"access": "RO",
+			"store_id": "Bootloader version H",
+			"type": "UINT"
+		},
+		{
+			"address": 2102,
+			"length": 1,
+			"access": "RO",
+			"store_id": "Bootloader version M",
+			"type": "UINT"
+		},
+		{
+			"address": 2103,
+			"length": 1,
+			"access": "RO",
+			"store_id": "Bootloader version m",
+			"type": "UINT"
+		},
+		{
+			"address": 2104,
+			"length": 1,
+			"access": "RO",
+			"store_id": "Bootloader version L",
+			"type": "UINT"
+		},
+		{
+			"address": 2105,
+			"length": 1,
+			"access": "RW",
+			"store_id": "apply fw reboot",
+			"type": "UINT"
+		},
+		{
+			"address": 2106,
+			"length": 1,
+			"access": "RO",
+			"store_id": "fw reboot state",
+			"type": "UINT"
+		},
+		{
+			"address": 2107,
+			"length": 256,
+			"access": "RO",
+			"store_id": "fw_header",
+			"type": "BYTESTREAM"
+		},
+		{
+			"address": 2363,
+			"length": 1,
+			"access": "RW",
+			"store_id": "apply erase for storage",
+			"type": "UINT"
+		},
+		{
+			"address": 2364,
+			"length": 1,
+			"access": "RO",
+			"store_id": "erase storage state",
+			"type": "UINT"
+		},
+		{
+			"address": 2365,
+			"length": 1,
+			"access": "RW",
+			"store_id": "write image block",
+			"type": "UINT"
+		},
+		{
+			"address": 2366,
+			"length": 1,
+			"access": "RO",
+			"store_id": "write image block state",
+			"type": "UINT"
+		},
+		{
+			"address": 2367,
+			"length": 64,
+			"access": "RO",
+			"store_id": "fw image block",
+			"type": "BYTESTREAM"
+		},
+		{
+			"address": 2500,
+			"length": 1,
+			"access": "RO",
+			"store_id": "STACK.watermark__IDLE",
+			"type": "UINT"
+		},
+		{
+			"address": 2501,
+			"length": 1,
+			"access": "RO",
+			"store_id": "STACK.watermark__CPMNGRTASK",
+			"type": "UINT"
+		},
+		{
+			"address": 2502,
+			"length": 1,
+			"access": "RO",
+			"store_id": "STACK.watermark__MOTORTASK",
+			"type": "UINT"
+		},
+		{
+			"address": 2503,
+			"length": 1,
+			"access": "RO",
+			"store_id": "STACK.watermark__tasks_monitoring",
+			"type": "UINT"
+		},
+		{
+			"address": 2504,
+			"length": 1,
+			"access": "RO",
+			"store_id": "STACK.watermark__main_task",
+			"type": "UINT"
+		},
+		{
+			"address": 2505,
+			"length": 1,
+			"access": "RO",
+			"store_id": "STACK.watermark__RFIDTASK",
+			"type": "UINT"
+		},
+		{
+			"address": 2506,
+			"length": 1,
+			"access": "RO",
+			"store_id": "STACK.watermark__I2CTASK",
+			"type": "UINT"
+		},
+		{
+			"address": 2507,
+			"length": 1,
+			"access": "RO",
+			"store_id": "STACK.watermark__COMMONTASK",
+			"type": "UINT"
+		},
+		{
+			"address": 2508,
+			"length": 1,
+			"access": "RO",
+			"store_id": "STACK.watermark__meter_task",
+			"type": "UINT"
+		},
+		{
+			"address": 2509,
+			"length": 1,
+			"access": "RO",
+			"store_id": "STACK.watermark__RCMTASK",
+			"type": "UINT"
+		},
+		{
+			"address": 2510,
+			"length": 1,
+			"access": "RO",
+			"store_id": "STACK.watermark__RFID_ISR_TASK",
+			"type": "UINT"
+		},
+		{
+			"address": 2511,
+			"length": 1,
+			"access": "RO",
+			"store_id": "STACK.watermark__OPENAMP_TX_TASK",
+			"type": "UINT"
+		},
+		{
+			"address": 2512,
+			"length": 1,
+			"access": "RO",
+			"store_id": "STACK.watermark__debug_suite_task",
+			"type": "UINT"
+		},
+		{
+			"address": 2710,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SESSIONSTORAGE.trigger",
+			"type": "UINT"
+		},
+		{
+			"address": 2711,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SESSIONSTORAGE.command",
+			"type": "UINT"
+		},
+		{
+			"address": 2712,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SESSIONSTORAGE.tag_index",
+			"type": "UINT"
+		},
+		{
+			"address": 2713,
+			"length": 4,
+			"access": "RW",
+			"store_id": "SESSIONSTORAGE.tag_id",
+			"type": "HEXSTRING"
+		},
+		{
+			"address": 2724,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.state",
+			"type": "UINT"
+		},
+		{
+			"address": 2725,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.number_of_session_saved",
+			"type": "UINT"
+		},
+		{
+			"address": 2726,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.number_of_tag_saved",
+			"type": "UINT"
+		},
+		{
+			"address": 2727,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.index_last_log_saved",
+			"type": "UINT"
+		},
+		{
+			"address": 2734,
+			"length": 2,
+			"access": "RO",
+			"store_id": "SESSIONINFO.charging_time_s_in_progress",
+			"type": "UINT"
+		},
+		{
+			"address": 2736,
+			"length": 4,
+			"access": "RO",
+			"store_id": "SESSIONINFO.imported_energy_kWh_in_progress",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 2750,
+			"length": 4,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.accumulator_log.data_time_UTC_first_charge",
+			"type": "UINT"
+		},
+		{
+			"address": 2754,
+			"length": 4,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.accumulator_log.data_time_UTC_last_charge",
+			"type": "UINT"
+		},
+		{
+			"address": 2758,
+			"length": 4,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.accumulator_log.tag_id",
+			"type": "HEXSTRING"
+		},
+		{
+			"address": 2762,
+			"length": 4,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.accumulator_log.total_imported_energy_kWh",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 2766,
+			"length": 2,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.accumulator_log.total_time_elapsed",
+			"type": "UINT"
+		},
+		{
+			"address": 2768,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.accumulator_log.num_of_charge_session",
+			"type": "UINT"
+		},
+		{
+			"address": 2769,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.accumulator_log.reserved[0]",
+			"type": "UINT"
+		},
+		{
+			"address": 2770,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.accumulator_log.reserved[1]",
+			"type": "UINT"
+		},
+		{
+			"address": 2771,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.accumulator_log.reserved[2]",
+			"type": "UINT"
+		},
+		{
+			"address": 2772,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.accumulator_log.reserved[3]",
+			"type": "UINT"
+		},
+		{
+			"address": 2773,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.accumulator_log.reserved[4]",
+			"type": "UINT"
+		},
+		{
+			"address": 2774,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.accumulator_log.reserved[5]",
+			"type": "UINT"
+		},
+		{
+			"address": 2775,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.accumulator_log.reserved[6]",
+			"type": "UINT"
+		},
+		{
+			"address": 2776,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.accumulator_log.reserved[7]",
+			"type": "UINT"
+		},
+		{
+			"address": 2777,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.accumulator_log.reserved[8]",
+			"type": "UINT"
+		},
+		{
+			"address": 2778,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.accumulator_log.reserved[9]",
+			"type": "UINT"
+		},
+		{
+			"address": 2779,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.accumulator_log.reserved[10]",
+			"type": "UINT"
+		},
+		{
+			"address": 2780,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.accumulator_log.reserved[11]",
+			"type": "UINT"
+		},
+		{
+			"address": 2781,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.accumulator_log.reserved[12]",
+			"type": "UINT"
+		},
+		{
+			"address": 2782,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.accumulator_log.reserved[13]",
+			"type": "UINT"
+		},
+		{
+			"address": 2783,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.accumulator_log.reserved[14]",
+			"type": "UINT"
+		},
+		{
+			"address": 2784,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.accumulator_log.reserved[15]",
+			"type": "UINT"
+		},
+		{
+			"address": 2785,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.accumulator_log.reserved[16]",
+			"type": "UINT"
+		},
+		{
+			"address": 2786,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.accumulator_log.reserved[17]",
+			"type": "UINT"
+		},
+		{
+			"address": 2787,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.accumulator_log.reserved[18]",
+			"type": "UINT"
+		},
+		{
+			"address": 2788,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.accumulator_log.reserved[19]",
+			"type": "UINT"
+		},
+		{
+			"address": 2789,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.accumulator_log.reserved[20]",
+			"type": "UINT"
+		},
+		{
+			"address": 2790,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.accumulator_log.reserved[21]",
+			"type": "UINT"
+		},
+		{
+			"address": 2791,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.accumulator_log.reserved[22]",
+			"type": "UINT"
+		},
+		{
+			"address": 2792,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.accumulator_log.reserved[23]",
+			"type": "UINT"
+		},
+		{
+			"address": 2800,
+			"length": 2,
+			"access": "RW",
+			"store_id": "SESSIONSTORAGE.test_session_log.charging_time_s",
+			"type": "UINT"
+		},
+		{
+			"address": 2802,
+			"length": 4,
+			"access": "RW",
+			"store_id": "SESSIONSTORAGE.test_session_log.imported_energy_kWh",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 2806,
+			"length": 4,
+			"access": "RW",
+			"store_id": "SESSIONSTORAGE.test_session_log.start_time_UTC",
+			"type": "UINT"
+		},
+		{
+			"address": 2810,
+			"length": 4,
+			"access": "RW",
+			"store_id": "SESSIONSTORAGE.test_session_log.tag_id",
+			"type": "HEXSTRING"
+		},
+		{
+			"address": 2814,
+			"length": 1,
+			"access": "RW",
+			"store_id": "SESSIONSTORAGE.test_session_log.reserved",
+			"type": "UINT"
+		},
+		{
+			"address": 2820,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.session_index",
+			"type": "UINT"
+		},
+		{
+			"address": 2821,
+			"length": 2,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.session_log.charging_time_s",
+			"type": "UINT"
+		},
+		{
+			"address": 2823,
+			"length": 4,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.session_log.imported_energy_kWh",
+			"type": "DOUBLE"
+		},
+		{
+			"address": 2827,
+			"length": 4,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.session_log.start_time_UTC",
+			"type": "UINT"
+		},
+		{
+			"address": 2831,
+			"length": 4,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.session_log.tag_id",
+			"type": "HEXSTRING"
+		},
+		{
+			"address": 2835,
+			"length": 1,
+			"access": "RO",
+			"store_id": "SESSIONSTORAGE.session_log.reserved",
+			"type": "UINT"
+		}
+	]
+}

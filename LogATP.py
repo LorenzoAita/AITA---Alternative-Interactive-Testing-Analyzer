@@ -26,8 +26,8 @@ if 'Inverter' in device:
     id_device, ip_device, telemetry_inv = config_inverter(path_config)
 
 # Colonnina
-if 'Colonna' in device:
-    telemetry_col, reg, com_colonna = config_inverter(path_config)
+if 'Colonnina' in device:
+    telemetry_col, reg, com_colonna = config_colonnina(path_config)
 
 # DataLogger
 if 'Agilent' in device:
@@ -58,7 +58,7 @@ if 'Inverter' in device:
     obj_com = OrionProtocol(ip=ip_device, device_id=id_device)
     for i in telemetry_inv:
         col.append(i)
-if 'Colonna' in device:
+if 'Colonnina' in device:
     for i in telemetry_col:
         col.append(i)
 if 'Agilent' in device:
@@ -135,6 +135,12 @@ while tot_time < test_time:
                     telemetries.append(0)
                 break
                 #  print('>>> la telemetry\t' + str(i) + '\tnon risponde')
+    if 'Colonnina' in device:
+        print('>>> log colonnina\t' + str(com_colonna))
+        for i in range(0, len(telemetry_col)):
+            print('>>> log la telemetry\t' + str(telemetry_col[i]) + '\tal registro\t' + str(reg[i]))
+            data_col = ReadCol(reg[i], com_colonna)
+            telemetries.append(data_col)
     if 'Agilent' in device:
         i = 0
         data_daq = list()

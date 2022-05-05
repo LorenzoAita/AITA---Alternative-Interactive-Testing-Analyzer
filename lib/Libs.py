@@ -2,6 +2,7 @@ import requests
 import plotly.graph_objects as go
 import pandas as pd
 from pymodbus.payload import BinaryPayloadDecoder
+import struct
 
 class OrionProtocol:
 
@@ -26,6 +27,38 @@ class OrionProtocol:
         else:
             return str(0), str(rsp.status_code)
 
+'''
+    def write(self, url, data, method="POST"):
+        """ nucleic write
+
+        Keyword arguments:
+        url -- message (str)
+        data -- dict, list of tuples, bytes, or file-like object to send in the body (optional)
+        """
+
+        try:
+            if data is not None and method == "POST":
+                # rsp = requests.post('http://' + self.ip_connector + '/' + self.ip + '/connector' + url, json=data)
+                rsp = requests.post('http://' + self.ip_connector + '/' + self.ip + '/connector' + url, json=data, verify=False)
+            elif method == 'DELETE':
+                rsp = requests.delete('http://' + self.ip_connector + '/' + self.ip + '/connector' + url, verify=False)
+            else:
+                # rsp = requests.post('http://' + self.ip_connector + '/' + self.ip + '/connector' + url)
+                rsp = requests.post('http://' + self.ip_connector + '/' + self.ip + '/connector' + url)
+            logger.debug(method + ' >> Orion API response status code is ' + str(rsp.status_code) + ' from url ' + rsp.url)
+            logger.debug(method + "'s body >> " + str(data))
+            if rsp.status_code == 200:
+                return True, rsp.status_code
+            else:
+                logger.warning(
+                    method + ' >> Orion API response status code is ' + str(rsp.status_code) + ' from url ' + rsp.url)
+                return False, rsp.status_code
+        except Exception as e:
+            # uncomment this line below to log error with complete stacktrace
+            # logger.error('Eut not responding ip: ' + str(self.ip), exc_info=sys.exc_info())
+            logger.error('Eut not responding ip: ' + str(self.ip))
+            return False, 500
+'''
 
 def plot_runtime(step_graph, dati_stamp, plot):
     fig = go.Figure()
@@ -271,76 +304,45 @@ def meas_bridge(inst, log, data, path, save):
 #         str1 = "none"
 #     return str1
 #
-# def ReadInfo(self, client, info):
-#     reg = self.holding_registers[info]
-#     result = client.read_holding_registers(reg['address'],
-#                                            reg['length'],
-#                                            unit=self.slave_address)
-#     if not result.isError():
-#         if reg['type'] == 'HEXSTRING':
-#             decoders = [BinaryPayloadDecoder.fromRegisters([x],
-#                                                            byteorder=endianess_converter[
-#                                                                self.registers['access_rules']['word_endianness']],
-#                                                            wordorder=endianess_converter[
-#                                                                self.registers['access_rules'][
-#                                                                    'register_endianness']]
-#                                                            ) for x in result.registers]
-#             value = ""
-#             for d in decoders:
-#                 v = d.decode_16bit_uint()
-#                 for _ in range(0, 4):
-#                     c = v >> 12
-#                     if c >= 10:
-#                         value = value + chr(ord('a') + c - 10)
-#                     else:
-#                         value = value + str(c)
-#                     v = v << 4
-#             value = v
-#         elif reg['type'] == 'BYTESTREAM':
-#             decoder = BinaryPayloadDecoder.fromRegisters(result.registers,
-#                                                          byteorder=endianess_converter[
-#                                                              self.registers['access_rules']['word_endianness']],
-#                                                          wordorder=endianess_converter[
-#                                                              self.registers['access_rules']['register_endianness']]
-#                                                          )
-#             v = []
-#             for i in range(0, len(result.registers)):
-#                 v.append(decoder.decode_8bit_uint())
-#                 v.append(decoder.decode_8bit_uint())
-#             byteswapped = bytearray(len(v))
-#             if self.registers['access_rules']['register_endianness'] == 'LITTLE_ENDIANNESS':
-#                 byteswapped[0::2] = v[1::2]
-#                 byteswapped[1::2] = v[0::2]
-#             else:
-#                 byteswapped[0::1] = v[0::1]
-#             value = byteswapped
-#         else:
-#             decoder = BinaryPayloadDecoder.fromRegisters(result.registers,
-#                                                          byteorder=endianess_converter[
-#                                                              self.registers['access_rules']['word_endianness']],
-#                                                          wordorder=endianess_converter[
-#                                                              self.registers['access_rules']['register_endianness']]
-#                                                          )
-#             if reg['type'] == 'UINT':
-#                 if reg['length'] == 1:
-#                     value = decoder.decode_16bit_uint()
-#                 elif reg['length'] == 2:
-#                     value = decoder.decode_32bit_uint()
-#                 elif reg['length'] == 4:
-#                     value = decoder.decode_64bit_uint()
-#                 else:
-#                     raise ValueError(f"Not managed UINT with length {reg['length']}")
-#             elif reg['type'] == 'FLOAT':
-#                 if reg['length'] == 2:
-#                     value = decoder.decode_32bit_float()
-#                 else:
-#                     raise ValueError(f"Not managed FLOAT with length {reg['length']}")
-#             elif reg['type'] == 'DOUBLE':
-#                 if reg['length'] == 4:
-#                     value = decoder.decode_64bit_float()
-#                 else:
-#                     raise ValueError(f"Not managed DOUBLE with length {reg['length']}")
-#
-#     else:
-#         value = None
-#     return value
+def ReadCol(reg, client):
+     result = client.read_holding_registers(reg['address'],
+                                            reg['length'],
+                                            unit=1) #da modificare con l'addr del registro modbus
+     data_type = reg['type']
+     number = 0
+     if not result.isError():
+         if data_type == "uint8":
+             number = result.pop()
+         elif data_type == "uint16":
+             number = result.pop()
+         elif data_type == "hex":
+             number = result.pop()
+         elif data_type == "uint32":
+             number = result.pop()
+             number = number << 16
+             number = number | result.pop()
+         elif data_type == "uint64":
+             number = result.pop()
+             number = number << 16
+             number = number | result.pop()
+             number = number << 16
+             number = number | result.pop()
+             number = number << 16
+             number = number | result.pop()
+         elif data_type == "float":
+             number = result.pop()
+             number = number << 16
+             number = number | result.pop()
+             number = struct.unpack('>f', number.to_bytes(4, 'big'))[0]
+         elif data_type == "double":
+             number = result.pop()
+             number = number << 16
+             number = number | result.pop()
+             number = number << 16
+             number = number | result.pop()
+             number = number << 16
+             number = number | result.pop()
+             number = struct.unpack('>d', number.to_bytes(8, 'big'))[0]
+         elif data_type == "list":
+             pass
+     return number
