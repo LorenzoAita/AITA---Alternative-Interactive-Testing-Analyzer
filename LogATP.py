@@ -136,8 +136,8 @@ while tot_time < test_time:
                 break
                 #  print('>>> la telemetry\t' + str(i) + '\tnon risponde')
     if 'Colonnina' in device:
-        print('>>> log colonnina\t' + str(ip_device))
-        for i in telemetry_inv:
+        print('>>> log colonnina\t' + str(com_colonna))
+        for i in telemetry_col:
             #  print('>>> log la telemetry\t' + str(i))
             try:
                 data_eut, status_code = obj_com.get_data(url=i)
