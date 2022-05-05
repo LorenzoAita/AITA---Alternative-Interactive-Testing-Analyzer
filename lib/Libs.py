@@ -82,6 +82,7 @@ def meas_bridge(inst, log, data, path, save):
     freq_start = config_bridge['FREQUENZA'][0]
     freq_end = config_bridge['FREQUENZA'][1]
     freq_sample = config_bridge['FREQUENZA'][2]
+    nome_file = config_bridge['NOME FILE'][0]
     while freq_end + 1 > freq_start:
         telemetries = list()
         inst.write('INIT')
@@ -111,7 +112,7 @@ def meas_bridge(inst, log, data, path, save):
         data = pd.concat([data, dati], axis=0, ignore_index=True)
 
     print('>>> Salvo i dati\t')
-    data.to_csv(save + 'DataBridge.csv', sep=',', index=False)
+    data.to_csv(save + nome_file + '.csv', sep=',', index=False)
     print('>>> Salvo il grafico\t')
     fig = go.Figure()
     fig.update_layout(
@@ -159,7 +160,7 @@ def meas_bridge(inst, log, data, path, save):
         hovermode=False
     )
 
-    fig.write_image(save + 'FigBridge.png', width=1920, height=1080)
+    fig.write_image(save + nome_file + '.png', width=1920, height=1080)
     # Add dropdown
     fig.update_layout(
         updatemenus=[
@@ -242,7 +243,7 @@ def meas_bridge(inst, log, data, path, save):
             # ),
         ]
     )
-    fig.write_html(save + 'FigBridge.html', auto_open=False,
+    fig.write_html(save + nome_file + '.html', auto_open=False,
                    config={'modeBarButtonsToAdd': [  # 'drawline',
                        # 'drawclosedpath',
                        # 'drawcircle',
