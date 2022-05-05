@@ -21,6 +21,8 @@ if str(pd.read_excel(path_config + 'Config.xlsx', sheet_name='Strumenti')['PERCO
     path_save = ''
 else:
     path_save = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Strumenti')['PERCORSO OUTPUT'][0] # '//atp.fimer.com/ATP_ONLINE/LOG/64/'
+    if not os.path.exists(path_save):
+        os.makedirs(path_save)
 # ORION
 if 'Inverter' in device:
     id_device, ip_device, telemetry_inv = config_inverter(path_config)
