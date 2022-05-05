@@ -12,15 +12,19 @@ session = requests.Session()
 rm = pyvisa.ResourceManager()
 
 # variabili di sistema
-namefile = 'Data.csv'
 path_config = 'Config/'
 device = list(pd.read_excel(path_config + 'Config.xlsx', sheet_name='Strumenti')['ELENCO STRUMENTI'])
 time_sample = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Strumenti')['TEMPO CAMPIONAMENTO'][0]
 test_time = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Strumenti')['TEST TIME'][0]
+namefile = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Strumenti')['NOME OUTPUT'][0]
+if str(namefile) == 'nan':
+    namefile = 'Data'
 if str(pd.read_excel(path_config + 'Config.xlsx', sheet_name='Strumenti')['PERCORSO OUTPUT'][0]) == 'nan':
     path_save = ''
 else:
     path_save = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Strumenti')['PERCORSO OUTPUT'][0] # '//atp.fimer.com/ATP_ONLINE/LOG/64/'
+    if not os.path.exists(path_save):
+        os.makedirs(path_save)
 # ORION
 if 'Inverter' in device:
     id_device, ip_device, telemetry_inv = config_inverter(path_config)
@@ -50,8 +54,8 @@ dati_stamp = pd.DataFrame()
 
 print('>>> Start Config')
 print('>>>')
-if os.path.exists(path_save + namefile) and 'Bridge' not in device:
-    os.rename(path_save + namefile, path_save + 'Data_'+str(datetime.datetime.now().strftime("%Y_%m_%d__%H_%M")[:])+'.csv')
+if os.path.exists(path_save + namefile + '.csv') and 'Bridge' not in device:
+    os.rename(path_save + namefile + '.csv', path_save + 'Data_'+str(datetime.datetime.now().strftime("%Y_%m_%d__%H_%M")[:])+'.csv')
 col = list()
 col.append('Data')
 if 'Inverter' in device:
@@ -197,9 +201,9 @@ while tot_time < test_time:
             dati.rename(columns={i: col[i]}, inplace=True)
         dati_stamp = pd.concat([dati_stamp, dati], axis=0, ignore_index=True)
         if sample == 1:
-            dati.to_csv(path_save + namefile, sep=',', index=False)
+            dati.to_csv(path_save + namefile + '.csv', sep=',', index=False)
         else:
-            dati.to_csv(path_save + namefile, sep=',', mode='a', index=False, header=False)
+            dati.to_csv(path_save + namefile + '.csv', sep=',', mode='a', index=False, header=False)
             if tot_time >= step * time_refresh and plot != []:
                 step += 1
                 try:
