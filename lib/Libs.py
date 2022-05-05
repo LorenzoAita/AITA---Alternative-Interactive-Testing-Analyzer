@@ -270,7 +270,6 @@ def meas_bridge(inst, log, data, path, save):
     return True
 
 
-
 # json_config = None
 # def read_regs(connection, start_address, length, timeout_reply=1):
 #     if timeout_reply != connection.timeout:
