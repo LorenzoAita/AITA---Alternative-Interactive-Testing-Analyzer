@@ -137,16 +137,10 @@ while tot_time < test_time:
                 #  print('>>> la telemetry\t' + str(i) + '\tnon risponde')
     if 'Colonnina' in device:
         print('>>> log colonnina\t' + str(com_colonna))
-        for i in telemetry_col:
-            #  print('>>> log la telemetry\t' + str(i))
-            try:
-                data_eut, status_code = obj_com.get_data(url=i)
-                telemetries.append(data_eut)
-            except:
-                for j in range(0, len(telemetry_inv)-len(telemetries)+1):
-                    telemetries.append(0)
-                break
-                #  print('>>> la telemetry\t' + str(i) + '\tnon risponde')
+        for i in range(0, len(telemetry_col)):
+            print('>>> log la telemetry\t' + str(telemetry_col[i]) + '\tal registro\t' + str(reg[i]))
+            data_col = ReadCol(reg[i], com_colonna)
+            telemetries.append(data_col)
     if 'Agilent' in device:
         i = 0
         data_daq = list()

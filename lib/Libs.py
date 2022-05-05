@@ -304,7 +304,7 @@ def meas_bridge(inst, log, data, path, save):
 #         str1 = "none"
 #     return str1
 #
-def ReadInfo(reg, client):
+def ReadCol(reg, client):
      result = client.read_holding_registers(reg['address'],
                                             reg['length'],
                                             unit=1) #da modificare con l'addr del registro modbus
