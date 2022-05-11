@@ -31,7 +31,7 @@ if 'Inverter' in device:
 
 # Colonnina
 if 'Colonnina' in device:
-    telemetry_col, reg, com_colonna = config_colonnina(path_config)
+    telemetry_col, reg, com_colonna, addresses = config_colonnina(path_config)
 
 # DataLogger
 if 'Agilent' in device:
@@ -143,7 +143,7 @@ while tot_time < test_time:
         print('>>> log colonnina\t' + str(com_colonna))
         for i in range(0, len(telemetry_col)):
             print('>>> log la telemetry\t' + str(telemetry_col[i]) + '\tal registro\t' + str(reg[i]))
-            data_col = ReadCol(reg[i], com_colonna)
+            data_col = ReadCol(reg[i], com_colonna, addresses[i])
             telemetries.append(data_col)
     if 'Agilent' in device:
         i = 0

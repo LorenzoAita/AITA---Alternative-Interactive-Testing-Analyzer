@@ -4,6 +4,7 @@ import pandas as pd
 from pymodbus.payload import BinaryPayloadDecoder
 import struct
 
+
 class OrionProtocol:
 
     def __init__(self, ip, device_id):
@@ -26,6 +27,7 @@ class OrionProtocol:
             return str(rsp.json()), str(rsp.status_code)
         else:
             return str(0), str(rsp.status_code)
+
 
 '''
     def write(self, url, data, method="POST"):
@@ -59,6 +61,7 @@ class OrionProtocol:
             logger.error('Eut not responding ip: ' + str(self.ip))
             return False, 500
 '''
+
 
 def plot_runtime(step_graph, dati_stamp, plot):
     fig = go.Figure()
@@ -304,45 +307,45 @@ def meas_bridge(inst, log, data, path, save):
 #         str1 = "none"
 #     return str1
 #
-def ReadCol(reg, client):
-     result = client.read_holding_registers(reg['address'],
-                                            reg['length'],
-                                            unit=1) #da modificare con l'addr del registro modbus
-     data_type = reg['type']
-     number = 0
-     if not result.isError():
-         if data_type == "uint8":
-             number = result.pop()
-         elif data_type == "uint16":
-             number = result.pop()
-         elif data_type == "hex":
-             number = result.pop()
-         elif data_type == "uint32":
-             number = result.pop()
-             number = number << 16
-             number = number | result.pop()
-         elif data_type == "uint64":
-             number = result.pop()
-             number = number << 16
-             number = number | result.pop()
-             number = number << 16
-             number = number | result.pop()
-             number = number << 16
-             number = number | result.pop()
-         elif data_type == "float":
-             number = result.pop()
-             number = number << 16
-             number = number | result.pop()
-             number = struct.unpack('>f', number.to_bytes(4, 'big'))[0]
-         elif data_type == "double":
-             number = result.pop()
-             number = number << 16
-             number = number | result.pop()
-             number = number << 16
-             number = number | result.pop()
-             number = number << 16
-             number = number | result.pop()
-             number = struct.unpack('>d', number.to_bytes(8, 'big'))[0]
-         elif data_type == "list":
-             pass
-     return number
+def ReadCol(reg, client, add):
+    result = client.read_holding_registers(reg['address'],
+                                           reg['length'],
+                                           unit=add)  # da modificare con l'addr del registro modbus
+    result2 = result.registers
+    data_type = reg['type']
+    number = 0
+    if not result.isError():
+        if data_type == "UINT":
+            if len(result2) == 1:
+                number = result2.pop()
+            elif len(result2) == 2:
+                number = result2.pop()
+                number = number << 16
+                number = number | result2.pop()
+            elif len(result2) == 4:
+                number = result2.pop()
+                number = number << 16
+                number = number | result2.pop()
+                number = number << 16
+                number = number | result2.pop()
+                number = number << 16
+                number = number | result2.pop()
+        elif data_type == "hex":
+            number = result2.pop()
+        elif data_type == "FLOAT":
+            number = result2.pop()
+            number = number << 16
+            number = number | result2.pop()
+            number = struct.unpack('>f', number.to_bytes(4, 'big'))[0]
+        elif data_type == "DOUBLE":
+            number = result2.pop()
+            number = number << 16
+            number = number | result2.pop()
+            number = number << 16
+            number = number | result2.pop()
+            number = number << 16
+            number = number | result2.pop()
+            number = struct.unpack('>d', number.to_bytes(8, 'big'))[0]
+        elif data_type == "list":
+            pass
+    return number

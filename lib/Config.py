@@ -173,25 +173,28 @@ def config_colonnina(path):
     path_config = path
     config_inv = pd.read_excel(path_config+'Config.xlsx', sheet_name='Colonnina')
     ip = str(config_inv['IP'][0])
-    port = str(config_inv['PORTA'][0].split('-')[0])
+    port = str(config_inv['PORTA'][0])
     com = 0
-    #if config_inv['PORTA'][0].split('-')[1] == 'RTU':
-    #    port_com = 'COM4'
-    #    baud_rate = 38400
-    #    com = ModbusClient(method='rtu',
-    #                                   port=port_com,
-    #                                   baudrate=baud_rate,
-    #                                   timeout=1,
-    #                                   parity='N',
-    #                                   stopbits=1,
-    #                                   strict=False)
-    #elif config_inv['PORTA'][0].split('-')[1] == 'TCP':
-    #    com = ModbusClientTCP(host=ip, port=int(port))
+    if config_inv['MODALITA\''][0] == 'RTU':
+        baud_rate = 115200
+        com = ModbusClient(method='rtu',
+                                       port=ip,
+                                       baudrate=baud_rate,
+                                       timeout=1,
+                                       parity='N',
+                                       stopbits=1,
+                                       strict=False)
+    elif config_inv['PORTA'][0] == 'TCP':
+        com = ModbusClientTCP(host=ip, port=int(port))
+    add = config_inv['ADDRESS'][0]
     telemetrie = list()
     reg = list()
-    for i in range(0, len(config_inv['TELEMETRIE'])):
-        telemetrie.append(config_inv['TELEMETRIE'][i])
-        reg.append(config_inv['REGISTRO'][i])
+    addresses = list()
+    for j in range(0, int(add)):
+        for i in range(0, len(config_inv['TELEMETRIE'])):
+            telemetrie.append(config_inv['TELEMETRIE'][i]+'_Add'+str(j+1))
+            reg.append(config_inv['REGISTRO'][i])
+            addresses.append(j+1)
 
     misure = list()
     read_js = json.load(open(path_config+'MisureColonnine.json'))
@@ -199,4 +202,4 @@ def config_colonnina(path):
         for j in  read_js["holding_registers"]:
             if i == j["address"]:
                 misure.append(j)
-    return telemetrie, misure, com
+    return telemetrie, misure, com, addresses
