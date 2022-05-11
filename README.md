@@ -1,4 +1,4 @@
-# OrionLogger
+# AITA - Alternative Interactive Testing Analyzer
 Questo programma, momentaneamente, logga le misure dei seguenti strumenti oltre che una scansione completa con il bridge **AGILENT E4980A**:
 
 * **Qualsiasi inverter con protocollo Orion**
