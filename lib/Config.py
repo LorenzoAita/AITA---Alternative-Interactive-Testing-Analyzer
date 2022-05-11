@@ -173,7 +173,6 @@ def config_colonnina(path):
     path_config = path
     config_inv = pd.read_excel(path_config+'Config.xlsx', sheet_name='Colonnina')
     ip = str(config_inv['IP'][0])
-    port = str(config_inv['PORTA'][0])
     com = 0
     if config_inv['MODALITA\''][0] == 'RTU':
         baud_rate = 115200
@@ -184,7 +183,8 @@ def config_colonnina(path):
                                        parity='N',
                                        stopbits=1,
                                        strict=False)
-    elif config_inv['PORTA'][0] == 'TCP':
+    elif config_inv['MODALITA\''][0] == 'TCP':
+        port = int(config_inv['PORTA'][0])
         com = ModbusClientTCP(host=ip, port=int(port))
     add = config_inv['ADDRESS'][0]
     telemetrie = list()
