@@ -43,14 +43,14 @@ if 'Wattmeter' in device:
 # Wattmetro2
 if 'Wattmeter2' in device:
     config_WATT2 = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Wattmeter2')
-
-# Grafico
-time_refresh = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Grafico')['REFRESH TIME'][0]
-plot = list()
-for i in range(0, len(pd.read_excel(path_config + 'Config.xlsx', sheet_name='Grafico')['PLOT'])):
-    if str(pd.read_excel(path_config + 'Config.xlsx', sheet_name='Grafico')['PLOT'][i]) != 'nan' and str(pd.read_excel(path_config + 'Config.xlsx', sheet_name='Grafico')['ASSE'][i]) != 'nan':
-        plot.append([pd.read_excel(path_config + 'Config.xlsx', sheet_name='Grafico')['PLOT'][i], pd.read_excel(path_config + 'Config.xlsx', sheet_name='Grafico')['ASSE'][i]])
-dati_stamp = pd.DataFrame()
+if 'Grafico' in device:
+    # Grafico
+    time_refresh = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Grafico')['REFRESH TIME'][0]
+    plot = list()
+    for i in range(0, len(pd.read_excel(path_config + 'Config.xlsx', sheet_name='Grafico')['PLOT'])):
+        if str(pd.read_excel(path_config + 'Config.xlsx', sheet_name='Grafico')['PLOT'][i]) != 'nan' and str(pd.read_excel(path_config + 'Config.xlsx', sheet_name='Grafico')['ASSE'][i]) != 'nan':
+            plot.append([pd.read_excel(path_config + 'Config.xlsx', sheet_name='Grafico')['PLOT'][i], pd.read_excel(path_config + 'Config.xlsx', sheet_name='Grafico')['ASSE'][i]])
+    dati_stamp = pd.DataFrame()
 
 print('>>> Start Config')
 print('>>>')
@@ -142,7 +142,7 @@ while tot_time < test_time:
     if 'Colonnina' in device:
         print('>>> log colonnina\t' + str(com_colonna))
         for i in range(0, len(telemetry_col)):
-            print('>>> log la telemetry\t' + str(telemetry_col[i]) + '\tal registro\t' + str(reg[i]))
+            #print('>>> log la telemetry\t' + str(telemetry_col[i]) + '\tal registro\t' + str(reg[i]))
             data_col = ReadCol(reg[i], com_colonna, addresses[i])
             telemetries.append(data_col)
     if 'Agilent' in device:
@@ -204,13 +204,14 @@ while tot_time < test_time:
             dati.to_csv(path_save + namefile + '.csv', sep=',', index=False)
         else:
             dati.to_csv(path_save + namefile + '.csv', sep=',', mode='a', index=False, header=False)
-            if tot_time >= step * time_refresh and plot != []:
-                step += 1
-                try:
-                    Popen('taskkill /F /IM chrome.exe', shell=True)
-                    plot_runtime(step, dati_stamp, plot)
-                except:
-                    plot_runtime(step, dati_stamp, plot)
+            if 'Grafico' in device:
+                if tot_time >= step * time_refresh and plot != []:
+                    step += 1
+                    try:
+                        Popen('taskkill /F /IM chrome.exe', shell=True)
+                        plot_runtime(step, dati_stamp, plot)
+                    except:
+                        plot_runtime(step, dati_stamp, plot)
     tot_time += time_sample
     print('>>>')
 

@@ -85,7 +85,7 @@ def meas_bridge(inst, log, data, path, save):
     freq_start = config_bridge['FREQUENZA'][0]
     freq_end = config_bridge['FREQUENZA'][1]
     freq_sample = config_bridge['FREQUENZA'][2]
-    nome_file = config_bridge['NOME FILE'][0]
+    nome_file = pd.read_excel(path + 'Config.xlsx', sheet_name='Strumenti')['NOME OUTPUT'][0]
     while freq_end + 1 > freq_start:
         telemetries = list()
         inst.write('INIT')
