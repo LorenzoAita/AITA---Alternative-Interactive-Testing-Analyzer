@@ -1,13 +1,13 @@
 import datetime
 import os
 import time
-from subprocess import Popen
 from lib.Config import *
 from lib.Libs import *
 import warnings
 import pyvisa
+import keyboard
+import pandas as pd
 warnings.filterwarnings('ignore')
-
 session = requests.Session()
 rm = pyvisa.ResourceManager()
 
@@ -22,7 +22,8 @@ if str(namefile) == 'nan':
 if str(pd.read_excel(path_config + 'Config.xlsx', sheet_name='Strumenti')['PERCORSO OUTPUT'][0]) == 'nan':
     path_save = ''
 else:
-    path_save = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Strumenti')['PERCORSO OUTPUT'][0] # '//atp.fimer.com/ATP_ONLINE/LOG/64/'
+    path_save = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Strumenti')['PERCORSO OUTPUT'][
+        0]  # '//atp.fimer.com/ATP_ONLINE/LOG/64/'
     if not os.path.exists(path_save):
         os.makedirs(path_save)
 # ORION
@@ -43,21 +44,24 @@ if 'Wattmeter' in device:
 # Wattmetro2
 if 'Wattmeter2' in device:
     config_WATT2 = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Wattmeter2')
-if 'Grafico' in device:
-    # Grafico
-    time_refresh = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Grafico')['REFRESH TIME'][0]
-    plot = list()
-    for i in range(0, len(pd.read_excel(path_config + 'Config.xlsx', sheet_name='Grafico')['PLOT'])):
-        if str(pd.read_excel(path_config + 'Config.xlsx', sheet_name='Grafico')['PLOT'][i]) != 'nan' and str(pd.read_excel(path_config + 'Config.xlsx', sheet_name='Grafico')['ASSE'][i]) != 'nan':
-            plot.append([pd.read_excel(path_config + 'Config.xlsx', sheet_name='Grafico')['PLOT'][i], pd.read_excel(path_config + 'Config.xlsx', sheet_name='Grafico')['ASSE'][i]])
-    dati_stamp = pd.DataFrame()
+# if 'Grafico' in device:
+#     # Grafico
+#     time_refresh = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Grafico')['REFRESH TIME'][0]
+#     plot = list()
+#     for i in range(0, len(pd.read_excel(path_config + 'Config.xlsx', sheet_name='Grafico')['PLOT'])):
+#         if str(pd.read_excel(path_config + 'Config.xlsx', sheet_name='Grafico')['PLOT'][i]) != 'nan' and str(
+#                 pd.read_excel(path_config + 'Config.xlsx', sheet_name='Grafico')['ASSE'][i]) != 'nan':
+#             plot.append([pd.read_excel(path_config + 'Config.xlsx', sheet_name='Grafico')['PLOT'][i],
+#                          pd.read_excel(path_config + 'Config.xlsx', sheet_name='Grafico')['ASSE'][i]])
 
+dati_stamp = pd.DataFrame()
 print('>>> Start Config')
 print('>>>')
 if os.path.exists(path_save + namefile + '.csv') and 'Bridge' not in device:
-    os.rename(path_save + namefile + '.csv', path_save + 'Data_'+str(datetime.datetime.now().strftime("%Y_%m_%d__%H_%M")[:])+'.csv')
+    os.rename(path_save + namefile + '.csv',
+              path_save + 'Data_' + str(datetime.datetime.now().strftime("%Y_%m_%d__%H_%M")[:]) + '.csv')
 col = list()
-col.append('Data')
+col.append('Date')
 if 'Inverter' in device:
     obj_com = OrionProtocol(ip=ip_device, device_id=id_device)
     for i in telemetry_inv:
@@ -89,7 +93,7 @@ if 'Wattmeter2' in device:
         if i != '':
             col.append(i)
             stamp_WT2.append(i)
-j=0
+j = 0
 if 'Bridge' in device:
     logger_bridge, porta_bridge = config_ponte(rm, path_config)
     logger_bridge = logger_bridge.fillna('')
@@ -104,10 +108,10 @@ if 'Bridge' in device:
                 name1 = i[0:2]
                 name2 = i[2:]  # name1 + '-' + i[2:]
             if name1 in stamp_bridge:
-                name1 += '_'+str(j)
+                name1 += '_' + str(j)
                 j += 1
             if name2 in stamp_bridge:
-                name2 += '_'+str(j)
+                name2 += '_' + str(j)
                 j += 1
             # col.append(name1)
             # col.append(name2)
@@ -120,11 +124,11 @@ sample = 0
 print('>>> Start Log')
 print('>>>')
 while tot_time < test_time:
+    time.sleep(time_sample)
     sample += 1
     dati = pd.DataFrame()
     telemetries = list()
     telemetries.append(datetime.datetime.now())
-    time.sleep(time_sample)
     print(
         '>>> Tempo\t' + str(datetime.datetime.now().strftime("%Y/%m/%d, %H:%M:%S.%f")[:-2]) + '\tStep #' + str(sample))
     if 'Inverter' in device:
@@ -135,14 +139,14 @@ while tot_time < test_time:
                 data_eut, status_code = obj_com.get_data(url=i)
                 telemetries.append(data_eut)
             except:
-                for j in range(0, len(telemetry_inv)-len(telemetries)+1):
+                for j in range(0, len(telemetry_inv) - len(telemetries) + 1):
                     telemetries.append(0)
                 break
                 #  print('>>> la telemetry\t' + str(i) + '\tnon risponde')
     if 'Colonnina' in device:
         print('>>> log colonnina\t' + str(com_colonna))
         for i in range(0, len(telemetry_col)):
-            #print('>>> log la telemetry\t' + str(telemetry_col[i]) + '\tal registro\t' + str(reg[i]))
+            # print('>>> log la telemetry\t' + str(telemetry_col[i]) + '\tal registro\t' + str(reg[i]))
             data_col = ReadCol(reg[i], com_colonna, addresses[i])
             telemetries.append(data_col)
     if 'Agilent' in device:
@@ -200,18 +204,23 @@ while tot_time < test_time:
         for i in range(0, len(col)):
             dati.rename(columns={i: col[i]}, inplace=True)
         dati_stamp = pd.concat([dati_stamp, dati], axis=0, ignore_index=True)
+
         if sample == 1:
             dati.to_csv(path_save + namefile + '.csv', sep=',', index=False)
+            #os.system('python VisualDati.py')
         else:
             dati.to_csv(path_save + namefile + '.csv', sep=',', mode='a', index=False, header=False)
-            if 'Grafico' in device:
-                if tot_time >= step * time_refresh and plot != []:
-                    step += 1
-                    try:
-                        Popen('taskkill /F /IM chrome.exe', shell=True)
-                        plot_runtime(step, dati_stamp, plot)
-                    except:
-                        plot_runtime(step, dati_stamp, plot)
+            #os.system('python VisualDati.py')
+            # if 'Grafico' in device:
+            #     if tot_time >= step * time_refresh and plot != []:
+            #         step += 1
+            #         try:
+            #             # Popen('taskkill /F /IM chrome.exe', shell=True)
+            #             keyboard.press_and_release('ctrl+w')
+            #             plot_runtime(step, dati_stamp, plot)
+            #         except:
+            #             plot_runtime(step, dati_stamp, plot)
+
     tot_time += time_sample
     print('>>>')
 

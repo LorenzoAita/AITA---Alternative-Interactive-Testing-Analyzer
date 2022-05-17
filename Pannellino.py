@@ -1,6 +1,6 @@
 from tkinter import *
 import os
-import time
+import subprocess
 import pandas as pd
 
 
@@ -623,8 +623,8 @@ class MyWindow:
 
         self.b1 = Button(newWindow, text='Start Test', command=self.start_test, width=width, bg='lightgreen')
         self.b1.place(x=250, y=240)
-        self.b2 = Button(newWindow, text='Stop Test', command=self.end_test, width=width, bg='red')
-        self.b2.place(x=450, y=240)
+        # self.b2 = Button(newWindow, text='Visual Data', command=self.end_test, width=width, bg='lightblue')
+        # self.b2.place(x=450, y=240)
 
     def start_test(self):
         strumenti = list()
@@ -696,6 +696,7 @@ class MyWindow:
         # writer.close()
 
     def end_test(self):
+        os.system('python VisualDati.py')
         #writer.close()
         quit()
 
@@ -705,7 +706,10 @@ bg = "#f5f6f7"
 title_window = 'Comandi per PLC'
 
 path_config = 'Config/'
-writer = pd.ExcelWriter(path_config + 'Config.xlsx', engine='openpyxl')
+if os.path.exists(path_config + 'Config.xlsx'):
+    writer = pd.ExcelWriter(path_config + 'Config.xlsx', engine='openpyxl', mode='a', if_sheet_exists='replace')
+else:
+    writer = pd.ExcelWriter(path_config + 'Config.xlsx', engine='openpyxl')
 
 # height=1
 width = 20

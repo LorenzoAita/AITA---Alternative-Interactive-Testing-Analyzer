@@ -1,7 +1,6 @@
 import requests
 import plotly.graph_objects as go
 import pandas as pd
-from pymodbus.payload import BinaryPayloadDecoder
 import struct
 
 
@@ -14,11 +13,6 @@ class OrionProtocol:
         self.timeout = 30
 
     def get_data(self, url):
-        """ get data
-
-        Keyword arguments:
-        url -- attribute object (str)
-        """
 
         rsp = requests.get(
             'http://' + self.ip_connector + '/' + self.ip + '/connector/v1/orion/data/' + self.device_id + '/' + url,
@@ -28,54 +22,122 @@ class OrionProtocol:
         else:
             return str(0), str(rsp.status_code)
 
-
-'''
-    def write(self, url, data, method="POST"):
-        """ nucleic write
-
-        Keyword arguments:
-        url -- message (str)
-        data -- dict, list of tuples, bytes, or file-like object to send in the body (optional)
-        """
-
-        try:
-            if data is not None and method == "POST":
-                # rsp = requests.post('http://' + self.ip_connector + '/' + self.ip + '/connector' + url, json=data)
-                rsp = requests.post('http://' + self.ip_connector + '/' + self.ip + '/connector' + url, json=data, verify=False)
-            elif method == 'DELETE':
-                rsp = requests.delete('http://' + self.ip_connector + '/' + self.ip + '/connector' + url, verify=False)
-            else:
-                # rsp = requests.post('http://' + self.ip_connector + '/' + self.ip + '/connector' + url)
-                rsp = requests.post('http://' + self.ip_connector + '/' + self.ip + '/connector' + url)
-            logger.debug(method + ' >> Orion API response status code is ' + str(rsp.status_code) + ' from url ' + rsp.url)
-            logger.debug(method + "'s body >> " + str(data))
-            if rsp.status_code == 200:
-                return True, rsp.status_code
-            else:
-                logger.warning(
-                    method + ' >> Orion API response status code is ' + str(rsp.status_code) + ' from url ' + rsp.url)
-                return False, rsp.status_code
-        except Exception as e:
-            # uncomment this line below to log error with complete stacktrace
-            # logger.error('Eut not responding ip: ' + str(self.ip), exc_info=sys.exc_info())
-            logger.error('Eut not responding ip: ' + str(self.ip))
-            return False, 500
-'''
+    # def write(self, url, data, method="POST"):
+    #     """ nucleic write
+    #
+    #     Keyword arguments:
+    #     url -- message (str)
+    #     data -- dict, list of tuples, bytes, or file-like object to send in the body (optional)
+    #     """
+    #
+    #     try:
+    #         if data is not None and method == "POST":
+    #             # rsp = requests.post('http://' + self.ip_connector + '/' + self.ip + '/connector' + url, json=data)
+    #             rsp = requests.post('http://' + self.ip_connector + '/' + self.ip + '/connector' + url, json=data, verify=False)
+    #         elif method == 'DELETE':
+    #             rsp = requests.delete('http://' + self.ip_connector + '/' + self.ip + '/connector' + url, verify=False)
+    #         else:
+    #             # rsp = requests.post('http://' + self.ip_connector + '/' + self.ip + '/connector' + url)
+    #             rsp = requests.post('http://' + self.ip_connector + '/' + self.ip + '/connector' + url)
+    #         logger.debug(method + ' >> Orion API response status code is ' + str(rsp.status_code) + ' from url ' + rsp.url)
+    #         logger.debug(method + "'s body >> " + str(data))
+    #         if rsp.status_code == 200:
+    #             return True, rsp.status_code
+    #         else:
+    #             logger.warning(
+    #                 method + ' >> Orion API response status code is ' + str(rsp.status_code) + ' from url ' + rsp.url)
+    #             return False, rsp.status_code
+    #     except Exception as e:
+    #         # uncomment this line below to log error with complete stacktrace
+    #         # logger.error('Eut not responding ip: ' + str(self.ip), exc_info=sys.exc_info())
+    #         logger.error('Eut not responding ip: ' + str(self.ip))
+    #         return False, 500
 
 
 def plot_runtime(step_graph, dati_stamp, plot):
     fig = go.Figure()
     fig.update_layout(
         template='simple_white',
-        legend=dict(orientation="v", x=1.1, y=1)
+        legend=dict(orientation="v", x=1.1, y=1),
+        xaxis=dict(
+            domain=[0.2, 0.8]
+        ),
+        yaxis=dict(
+            title='Temperature [°C]',
+            titlefont=dict(
+                color="#1f77b4"
+            ),
+            tickfont=dict(
+                color="#1f77b4"
+            )
+        ),
+        yaxis3=dict(
+            title='Power [W]',
+            titlefont=dict(
+                color="#EC00FF"
+            ),
+            tickfont=dict(
+                color="#EC00FF"
+            ),
+            anchor="free",
+            overlaying="y",
+            side="left",
+            position=0.13
+        ),
+        yaxis4=dict(
+            title='Text',
+            titlefont=dict(
+                color="#d62728"
+            ),
+            tickfont=dict(
+                color="#d62728"
+            ),
+            anchor="x",
+            overlaying="y",
+            side="right"
+        ),
+        yaxis2=dict(
+            title='Voltage [V]',
+            titlefont=dict(
+                color="#000000"
+            ),
+            tickfont=dict(
+                color="#000000"
+            ),
+            anchor="free",
+            overlaying="y",
+            side="right",
+            position=0.95
+        )
     )
     if step_graph < 5:
-        for i in plot:
-            fig.add_scatter(x=dati_stamp['Data'], y=dati_stamp[i], mode='lines+markers', name=i)
+        for i in range(0, len(plot)):
+            if plot[i][1] == 'W':
+                fig.add_scatter(x=dati_stamp['Date'], y=dati_stamp[plot[i][0]], mode='lines', yaxis='y4',
+                                name=plot[i][0])
+            elif plot[i][1] == 'V':
+                fig.add_scatter(x=dati_stamp['Date'], y=dati_stamp[plot[i][0]], mode='lines', yaxis='y2',
+                                name=plot[i][0])
+            elif plot[i][1] == 'P':
+                fig.add_scatter(x=dati_stamp['Date'], y=dati_stamp[plot[i][0]], mode='lines', yaxis='y3',
+                                name=plot[i][0])
+            elif plot[i][1] == 'T':
+                fig.add_scatter(x=dati_stamp['Date'], y=dati_stamp[plot[i][0]], mode='lines', yaxis='y', name=plot[i][0])
         fig.show()
     else:
-        for i in plot:
-            fig.add_scatter(x=dati_stamp['Data'], y=dati_stamp[i], mode='lines', name=i)
+        for i in range(0, len(plot)):
+            if plot[i][1] == 'W':
+                fig.add_scatter(x=dati_stamp['Date'], y=dati_stamp[plot[i][0]], mode='lines', yaxis='y4',
+                                name=plot[i][0])
+            elif plot[i][1] == 'V':
+                fig.add_scatter(x=dati_stamp['Date'], y=dati_stamp[plot[i][0]], mode='lines', yaxis='y2',
+                                name=plot[i][0])
+            elif plot[i][1] == 'P':
+                fig.add_scatter(x=dati_stamp['Date'], y=dati_stamp[plot[i][0]], mode='lines', yaxis='y3',
+                                name=plot[i][0])
+            elif plot[i][1] == 'T':
+                fig.add_scatter(x=dati_stamp['Date'], y=dati_stamp[plot[i][0]], mode='lines', yaxis='y',
+                                name=plot[i][0])
         fig.show()
     return True
 

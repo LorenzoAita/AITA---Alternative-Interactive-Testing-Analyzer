@@ -1,43 +1,16 @@
-# import pandas as pd
-#
-# path = 'Config/'
-# config_bridge = pd.read_excel(path + 'Config.xlsx', sheet_name='Colonnina')
-#
-# a = ''
-# for i in config_bridge['READ ME']:
-#     a += str(i) + ' '
-#
-# print(a)
+import tkinter
+from tkinter import *
+from PIL import Image, ImageTk
 
-# !/usr/bin/env python
-# -*- coding: utf-8 -*-
+root = Tk()
 
-import tkinter as tk
+# Create a photoimage object of the image in the path
+image1 = Image.open(r"C:\Users\ITLOAIT\Desktop\rrr\RunTimeGraph.png")
+test = ImageTk.PhotoImage(image1)
 
-window = tk.Tk()
-window.title('My Window')
-window.geometry('100x100')
+label1 = tkinter.Label(image=test)
+label1.image = test
 
-l = tk.Label(window, bg='white', width=20, text='empty')
-l.pack()
-
-
-def print_selection():
-    if (var1.get() == 1) & (var2.get() == 0):
-        l.config(text='I love Python ')
-    elif (var1.get() == 0) & (var2.get() == 1):
-        l.config(text='I love C++')
-    elif (var1.get() == 0) & (var2.get() == 0):
-        l.config(text='I do not anything')
-    else:
-        l.config(text='I love both')
-
-
-var1 = tk.IntVar()
-var2 = tk.IntVar()
-c1 = tk.Checkbutton(window, text='Python', variable=var1, onvalue=1, offvalue=0, command=print_selection)
-c1.pack()
-c2 = tk.Checkbutton(window, text='C++', variable=var2, onvalue=1, offvalue=0, command=print_selection)
-c2.pack()
-
-window.mainloop()
+# Position image
+label1.place(x=100, y=100)
+root.mainloop()
