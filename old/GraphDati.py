@@ -6,7 +6,7 @@ import pandas as pd
 import time
 import plotly.graph_objects as go
 
-path_config = r'./Config/'
+path_config = r'../Config/'
 device = list(pd.read_excel(path_config + 'Config.xlsx', sheet_name='Strumenti')['ELENCO STRUMENTI'])
 
 
@@ -14,12 +14,12 @@ class TestApp(Frame):
     def __init__(self, parent=None):
         self.parent = parent
         Frame.__init__(self)
-        self.main = self.master
-        # w, h = self.main.winfo_screenwidth(), self.main.winfo_screenheight()
-        self.main.geometry("1800x950+0+0")
-        # self.main.attributes('-fullscreen', True)
-        self.main.title('Table Data')
-        f = Frame(self.main)
+        self.pippo = self.master
+        # w, h = self.pippo.winfo_screenwidth(), self.pippo.winfo_screenheight()
+        self.pippo.geometry("1800x950+0+0")
+        # self.pippo.attributes('-fullscreen', True)
+        self.pippo.title('Table Data')
+        f = Frame(self.pippo)
         f.pack(fill=BOTH, expand=1)
         # df = TableModel.getSampleData()
         namefile = pd.read_excel(r'.\Config\Config.xlsx', sheet_name='Strumenti')['NOME OUTPUT'][0]
@@ -33,7 +33,7 @@ class TestApp(Frame):
                                 dataframe=pd.read_csv(path_save + namefile + '.csv'),
                                 showtoolbar=True, showstatusbar=True)
         pt.show()
-        self.main.after(20000, lambda: self.main.destroy())
+        self.pippo.after(20000, lambda: self.pippo.destroy())
         return
 
 
@@ -41,10 +41,10 @@ class TestGraph(Frame):
     def __init__(self, parent=None):
         self.parent = parent
         Frame.__init__(self)
-        self.main = self.master
-        self.main.geometry("1800x950+0+0")
-        self.main.title('Graph Data')
-        f = Frame(self.main)
+        self.pippo = self.master
+        self.pippo.geometry("1800x950+0+0")
+        self.pippo.title('Graph Data')
+        f = Frame(self.pippo)
         f.pack(fill=BOTH, expand=1)
         namefile = pd.read_excel(r'.\Config\Config.xlsx', sheet_name='Strumenti')['NOME OUTPUT'][0]
         if str(namefile) == 'nan':
@@ -136,14 +136,14 @@ class TestGraph(Frame):
         label1.image = test
         label1.place(x=10, y=10)
 
-        self.main.after(int(time_refresh * 1000), lambda: self.main.destroy())
+        self.pippo.after(int(time_refresh * 1000), lambda: self.pippo.destroy())
         return
 
 
-time.sleep(pd.read_excel(r'.\Config\Config.xlsx', sheet_name='Strumenti')['TEMPO CAMPIONAMENTO'][0] + 10)
-while True:
-    # app = TestApp()
-    # app.mainloop()
-    if 'Grafico' in device:
-        app_w = TestGraph()
-        app_w.mainloop()
+time.sleep(pd.read_excel(r'.\Config\Config.xlsx', sheet_name='Strumenti')['TEMPO CAMPIONAMENTO'][0] + 13)
+
+# app = TestApp()
+# app.mainloop()
+if 'Grafico' in device:
+    app_w = TestGraph()
+    app_w.mainloop()

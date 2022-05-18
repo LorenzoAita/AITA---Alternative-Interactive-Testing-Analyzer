@@ -1,6 +1,7 @@
 from tkinter import *
+import tkinter
 from PIL import ImageTk, Image
-from pandastable import Table, TableModel
+from pandastable import Table#, TableModel
 import pandas as pd
 import time
 import plotly.graph_objects as go
@@ -40,12 +41,10 @@ class TestGraph(Frame):
     def __init__(self, parent=None):
         self.parent = parent
         Frame.__init__(self)
-        self.main = self.master
-        # w, h = self.main.winfo_screenwidth(), self.main.winfo_screenheight()
-        self.main.geometry("1800x950+0+0")
-        # self.main.attributes('-fullscreen', True)
-        self.main.title('Graph Data')
-        f = Frame(self.main)
+        self.pippo = self.master
+        self.pippo.geometry("1800x950+0+0")
+        self.pippo.title('Graph Data')
+        f = Frame(self.pippo)
         f.pack(fill=BOTH, expand=1)
         namefile = pd.read_excel(r'.\Config\Config.xlsx', sheet_name='Strumenti')['NOME OUTPUT'][0]
         if str(namefile) == 'nan':
@@ -130,19 +129,22 @@ class TestGraph(Frame):
             elif plot[i][1] == 'T':
                 fig.add_scatter(x=plot_df['Date'], y=plot_df[plot[i][0]], mode='lines', yaxis='y',
                                 name=plot[i][0])
-        fig.write_image(path_save + "RunTimeGraph.png")
-        img = Image.open(path_save + "RunTimeGraph.png")
-        tkimage = ImageTk.PhotoImage(img)
-        self.lbl = Label(self.main, image=tkimage)
-        self.lbl.place(x=10, y=10)
-        self.main.after(time_refresh * 1000, lambda: self.main.destroy())
+        fig.write_image(path_save + "\RunTimeGraph.png", width=1750, height=900)
+        image1 = Image.open(path_save + "\RunTimeGraph.png")
+        test = ImageTk.PhotoImage(image1)
+        label1 = tkinter.Label(image=test)
+        label1.image = test
+        label1.place(x=10, y=10)
+
+        self.pippo.after(int(time_refresh * 1000), lambda: self.pippo.destroy())
         return
 
 
-time.sleep(pd.read_excel('.\Config\Config.xlsx', sheet_name='Strumenti')['TEMPO CAMPIONAMENTO'][0] + 10)
-while True:
-    app = TestApp()
-    app.mainloop()
-    # if 'Grafico' in device:
-    #     app_w = TestGraph()
-    #     app_w.mainloop()
+def main_grid():
+    time.sleep(pd.read_excel('.\Config\Config.xlsx', sheet_name='Strumenti')['TEMPO CAMPIONAMENTO'][0] + 10)
+    while True:
+        app = TestApp()
+        app.mainloop()
+        if 'Grafico' in device:
+             app_w = TestGraph()
+             app_w.mainloop()
