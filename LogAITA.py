@@ -29,7 +29,7 @@ def main_log():
             os.makedirs(path_save)
     # ORION
     if 'Inverter' in device:
-        id_device, ip_device, telemetry_inv = config_inverter(path_config)
+        id_device, ip_device, telemetry_inv, label_inv = config_inverter(path_config)
 
     # Colonnina
     if 'Colonnina' in device:
@@ -65,7 +65,7 @@ def main_log():
     col.append('Date')
     if 'Inverter' in device:
         obj_com = OrionProtocol(ip=ip_device, device_id=id_device)
-        for i in telemetry_inv:
+        for i in label_inv:
             col.append(i)
     if 'Colonnina' in device:
         for i in telemetry_col:
@@ -158,14 +158,15 @@ def main_log():
             INSTRUMENT.write('INIT')
             time.sleep(0.05)
             a = INSTRUMENT.query('FETCH?').split(',')
+            print('>>> log il DAQ\t')
             for j in a:
                 if '+' in j or '-' in j:
                     telemetries.append(float(j[0:15]))
-                    print('>>> log la telemetry\t' + str(stamp_daq[i]))
+                    # print('>>> log la telemetry\t' + str(stamp_daq[i]))
                     i += 1
         if 'Wattmeter' in device:
             i = 0
-            data_WT = list()
+            # data_WT = list()
             print('>>> Apro la Comunicazione con il ' + config_WATT['MODELLO'][0])
             INSTRUMENT = rm.open_resource(porta_WT)
             if config_WATT['MODELLO'][0] == 'WT230':
@@ -175,11 +176,11 @@ def main_log():
             for j in a:
                 if '+' in j or '-' in j:
                     telemetries.append(float(j[0:15]))
-                    print('>>> log la telemetry\t' + str(stamp_WT[i]))
+                    # print('>>> log la telemetry\t' + str(stamp_WT[i]))
                     i += 1
         if 'Wattmeter2' in device:
             i = 0
-            data_WT2 = list()
+            # data_WT2 = list()
             print('>>> Apro la Comunicazione con il ' + config_WATT2['MODELLO'][0])
             INSTRUMENT = rm.open_resource(porta_WT2)
             if config_WATT2['MODELLO'][0] == 'WT230':
@@ -189,7 +190,7 @@ def main_log():
             for j in a:
                 if '+' in j or '-' in j:
                     telemetries.append(float(j[0:15]))
-                    print('>>> log la telemetry\t' + str(stamp_WT2[i]))
+                    # print('>>> log la telemetry\t' + str(stamp_WT2[i]))
                     i += 1
         if 'Bridge' in device:
             i = 0

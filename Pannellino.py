@@ -28,7 +28,6 @@ class myThread (threading.Thread):
           VisualDati.main_grid()
 
 
-# funzioni per  il PLC
 class MyWindow:
     def __init__(self, win):
         # self.lbl1 = Label(win, text='Config. Agilent', bg=bg)
@@ -324,64 +323,72 @@ class MyWindow:
 
         self.lbl1 = Label(newWindow, text='Ip o COM', bg=bg)
         self.lbl2 = Label(newWindow, text='Seriale', bg=bg)
-        self.lbl5 = Label(newWindow, text='Telemetrie', bg=bg)
+        self.lbl3 = Label(newWindow, text='Telemetrie', bg=bg)
+        self.lbl4 = Label(newWindow, text='Label', bg=bg)
 
         self.t1 = Entry(newWindow, bd=3)
         self.t2 = Entry(newWindow, bd=3)
-        self.t5 = Text(newWindow, height=20, width=30, bd=3)
+        self.t3 = Text(newWindow, height=20, width=30, bd=3)
+        self.t4 = Text(newWindow, height=20, width=20, bd=3)
 
         self.lbl1.place(x=100, y=30)
         self.t1.place(x=100, y=70)
         self.lbl2.place(x=200, y=30)
         self.t2.place(x=200, y=70)
 
-        self.lbl5.place(x=100, y=130)
-        self.t5.place(x=100, y=170, height=500)
+        self.lbl3.place(x=100, y=130)
+        self.t3.place(x=100, y=170, height=500)
+        self.lbl4.place(x=300, y=130)
+        self.t4.place(x=300, y=170, height=500)
 
         self.b1 = Button(newWindow, text='Config', command=self.send_inv, width=width, bg='lightgreen')
-        self.b1.place(x=190, y=700)
+        self.b1.place(x=365, y=65)
 
     def agilent(self):
         newWindow = Toplevel(window)
         newWindow.title("Datalogger Config")
-        newWindow.geometry("850x800")
+        newWindow.geometry("1050x800")
 
         self.lbl1 = Label(newWindow, text='Modello', bg=bg)
         self.lbl2 = Label(newWindow, text='Porta', bg=bg)
+        self.lbl5 = Label(newWindow, text='Canale', bg=bg)
         self.lbl3 = Label(newWindow, text='Misura', bg=bg)
         self.lbl4 = Label(newWindow, text='Label', bg=bg)
 
         OPTIONS = ["34970", "34980"]
-        WT = StringVar(newWindow)
-        WT.set(OPTIONS[0])  # default value
-        self.t1 = OptionMenu(newWindow, WT, *OPTIONS)
+        self.WT = StringVar(newWindow)
+        self.WT.set(OPTIONS[0])  # default value
+        self.t1 = OptionMenu(newWindow, self.WT, *OPTIONS)
         self.t1.pack()
 
         self.t2 = Entry(newWindow, bd=3)
         self.t3 = Text(newWindow, bd=3, height=20, width=30)
         self.t4 = Text(newWindow, bd=3, height=20, width=30)
+        self.t5 = Text(newWindow, bd=3, height=20, width=30)
 
         self.lbl1.place(x=100, y=30)
         self.t1.place(x=100, y=60)
         self.lbl2.place(x=250, y=30)
         self.t2.place(x=250, y=70)
 
-        self.lbl3.place(x=100, y=100)
-        self.t3.place(x=100, y=130, height=600, width=200)
-        self.lbl4.place(x=300, y=100)
-        self.t4.place(x=300, y=130, height=600, width=200)
+        self.lbl5.place(x=100, y=100)
+        self.t5.place(x=100, y=130, height=600, width=200)
+        self.lbl3.place(x=300, y=100)
+        self.t3.place(x=300, y=130, height=600, width=200)
+        self.lbl4.place(x=500, y=100)
+        self.t4.place(x=500, y=130, height=600, width=200)
 
         TEXT1 = 'READ ME:\r\r - Misura Agilent:\r\tOHM\r\tT\r\tK\r\tVDC\r\tVAC\r\tHZ\r\tIDC\r\tIAC'
         self.lbl10 = Label(newWindow, text=TEXT1, justify='left', bg=bg)
-        self.lbl10.place(x=500, y=30)
+        self.lbl10.place(x=710, y=130)
 
         TEXT2 = '\r\r \rresistenza\rtermocoppia T\rtermocoppia K\rTensione dc\rTensione ' \
                 'ac\rFrequenza\rCorrente dc (SOLO 34970)\rCorrente ac (SOLO 34970)'
         self.lbl10 = Label(newWindow, text=TEXT2, justify='left', bg=bg)
-        self.lbl10.place(x=630, y=30)
+        self.lbl10.place(x=840, y=130)
 
         self.b1 = Button(newWindow, text='Config', command=self.send_agilent, width=width, bg='lightgreen')
-        self.b1.place(x=500, y=300)
+        self.b1.place(x=710, y=400)
 
     def send_colonna(self):
         excel_config = pd.DataFrame()  # .read_excel(path_config + 'Config.xlsx', sheet_name='Colonnina')
@@ -420,13 +427,17 @@ class MyWindow:
     def send_inv(self):
         excel_config = pd.DataFrame()  # .read_excel(path_config + 'Config.xlsx', sheet_name='Colonnina')
         # nome = ['Ip o COM', 'Porta', 'Modalità', 'Address', 'Telemetrie', 'Registri']
-        value = [self.t1.get(), self.t2.get(), list(self.t5.get("1.0", 'end-1c').split('\n'))]
+        value = [self.t1.get(), self.t2.get(), list(self.t3.get("1.0", 'end-1c').split('\n')),
+                 list(self.t4.get("1.0", 'end-1c').split('\n'))]
         excel_config['IP DEVICE'] = list(value[0])
         df1 = pd.DataFrame()
         df1['ID'] = list(value[1])
         excel_config = pd.concat([excel_config, df1], axis=1)
         df1 = pd.DataFrame()
         df1['TELEMETRIE'] = list(value[2])
+        excel_config = pd.concat([excel_config, df1], axis=1)
+        df1 = pd.DataFrame()
+        df1['LABEL'] = list(value[3])
         excel_config = pd.concat([excel_config, df1], axis=1)
         del df1
         excel_config.to_excel(writer, sheet_name='Inverter', index=False)
@@ -522,45 +533,12 @@ class MyWindow:
 
     def send_agilent(self):
         excel_config = pd.DataFrame()
-        value = ['', self.t2.get(), self.t3.get("1.0", 'end-1c').split('\n'), self.t4.get("1.0", 'end-1c').split('\n')]
-        list_34970 = list()
-        for i in [101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 112, 111, 113, 114, 115,
-                  116, 117, 118, 119, 120, 121, 122, 201, 202, 203, 204, 205, 206, 207, 208,
-                  209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 301,
-                  302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316,
-                  317, 318, 319, 320, 321, 322]:
-            list_34970.append(i)
-        list_34980 = list()
-        for i in [1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012, 1013,
-                  1014, 1015, 1016, 1017, 1018, 1019, 1020, 1021, 1022, 1023, 1024, 1025, 1026,
-                  1027, 1028, 1029, 1030, 1031, 1032, 1033, 1034, 1035, 1036, 1037, 1038, 1039,
-                  1040, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012,
-                  2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025,
-                  2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2034, 2035, 2036, 2037, 2038,
-                  2039, 2040, 3001, 3002, 3003, 3004, 3005, 3006, 3007, 3008, 3009, 3010, 3011,
-                  3012, 3013, 3014, 3015, 3016, 3017, 3018, 3019, 3020, 3021, 3022, 3023, 3024,
-                  3025, 3026, 3027, 3028, 3029, 3030, 3031, 3032, 3033, 3034, 3035, 3036, 3037,
-                  3038, 3039, 3040, 4001, 4002, 4003, 4004, 4005, 4006, 4007, 4008, 4009, 4010,
-                  4011, 4012, 4013, 4014, 4015, 4016, 4017, 4018, 4019, 4020, 4021, 4022, 4023,
-                  4024, 4025, 4026, 4027, 4028, 4029, 4030, 4031, 4032, 4033, 4034, 4035, 4036,
-                  4037, 4038, 4039, 4040, 5001, 5002, 5003, 5004, 5005, 5006, 5007, 5008, 5009,
-                  5010, 5011, 5012, 5013, 5014, 5015, 5016, 5017, 5018, 5019, 5020, 5021, 5022,
-                  5023, 5024, 5025, 5026, 5027, 5028, 5029, 5030, 5031, 5032, 5033, 5034, 5035,
-                  5036, 5037, 5038, 5039, 5040, 6001, 6002, 6003, 6004, 6005, 6006, 6007, 6008,
-                  6009, 6010, 6011, 6012, 6013, 6014, 6015, 6016, 6017, 6018, 6019, 6020, 6021,
-                  6022, 6023, 6024, 6025, 6026, 6027, 6028, 6029, 6030, 6031, 6032, 6033, 6034,
-                  6035, 6036, 6037, 6038, 6039, 6040, 7001, 7002, 7003, 7004, 7005, 7006, 7007,
-                  7008, 7009, 7010, 7011, 7012, 7013, 7014, 7015, 7016, 7017, 7018, 7019, 7020,
-                  7021, 7022, 7023, 7024, 7025, 7026, 7027, 7028, 7029, 7030, 7031, 7032, 7033,
-                  7034, 7035, 7036, 7037, 7038, 7039, 7040, 8001, 8002, 8003, 8004, 8005, 8006,
-                  8007, 8008, 8009, 8010, 8011, 8012, 8013, 8014, 8015, 8016, 8017, 8018, 8019,
-                  8020, 8021, 8022, 8023, 8024, 8025, 8026, 8027, 8028, 8029, 8030, 8031, 8032,
-                  8033, 8034, 8035, 8036, 8037, 8038, 8039, 8040]:
-            list_34980.append(i)
-        excel_config['CASSETTI 34970'] = list_34970
-        df1 = pd.DataFrame()
-        df1['CASSETTI 34980'] = list_34980
-        excel_config = pd.concat([excel_config, df1], axis=1)
+        value = [self.t5.get("1.0", 'end-1c').split('\n'), self.t2.get(), self.t3.get("1.0", 'end-1c').split('\n'),
+                 self.t4.get("1.0", 'end-1c').split('\n'), self.WT.get()]
+        list_cassetto = list()
+        for i in value[0]:
+            list_cassetto.append(i)
+        excel_config['CASSETTI '+str(value[4])] = list_cassetto
         df1 = pd.DataFrame()
         df1['PORTA DAQ'] = list(value[1])
         excel_config = pd.concat([excel_config, df1], axis=1)
@@ -577,7 +555,7 @@ class MyWindow:
     def start(self):
         newWindow = Toplevel(window)
         newWindow.title("Test Config")
-        newWindow.geometry("1100x350")
+        newWindow.geometry("800x350")
 
         self.t1 = IntVar()
         c1 = Checkbutton(newWindow, text='Bridge', variable=self.t1, onvalue=1, offvalue=0)
@@ -597,9 +575,9 @@ class MyWindow:
         self.t6 = IntVar()
         c6 = Checkbutton(newWindow, text='Colonnina', variable=self.t6, onvalue=1, offvalue=0)
         c6.pack()
-        self.tg = IntVar()
-        c7 = Checkbutton(newWindow, text='Grafico Real Time', variable=self.tg, onvalue=1, offvalue=0)
-        c7.pack()
+        # self.tg = IntVar()
+        # c7 = Checkbutton(newWindow, text='Grafico Real Time', variable=self.tg, onvalue=1, offvalue=0)
+        # c7.pack()
         self.lbl1 = Label(newWindow, text='Strumenti', bg=bg)
         self.lbl1.place(x=50, y=20)
         c1.place(x=50, y=50)
@@ -608,7 +586,7 @@ class MyWindow:
         c4.place(x=50, y=170)
         c5.place(x=50, y=210)
         c6.place(x=50, y=250)
-        c7.place(x=50, y=290)
+        # c7.place(x=50, y=290)
 
         self.lbl2 = Label(newWindow, text='Percorso Output', bg=bg)
         self.t7 = Text(newWindow, bd=3, height=1, width=16)
@@ -630,20 +608,20 @@ class MyWindow:
         self.lbl5.place(x=450, y=120)
         self.t10.place(x=450, y=150)
 
-        self.lbl6 = Label(newWindow, text='Grandezze da graficare', bg=bg)
-        self.t11 = Text(newWindow, bd=3, height=10, width=20)
-        self.lbl6.place(x=650, y=20)
-        self.t11.place(x=650, y=50)
-
-        self.lbl7 = Label(newWindow, text='Asse di riferimento', bg=bg)
-        self.t12 = Text(newWindow, bd=3, height=10, width=20)
-        self.lbl7.place(x=870, y=20)
-        self.t12.place(x=870, y=50)
-
-        self.lbl8 = Label(newWindow, text='Refresh del grafico', bg=bg)
-        self.t13 = Entry(newWindow, bd=3)
-        self.lbl8.place(x=650, y=270)
-        self.t13.place(x=650, y=300)
+        # self.lbl6 = Label(newWindow, text='Grandezze da graficare', bg=bg)
+        # self.t11 = Text(newWindow, bd=3, height=10, width=20)
+        # self.lbl6.place(x=650, y=20)
+        # self.t11.place(x=650, y=50)
+        #
+        # self.lbl7 = Label(newWindow, text='Asse di riferimento', bg=bg)
+        # self.t12 = Text(newWindow, bd=3, height=10, width=20)
+        # self.lbl7.place(x=870, y=20)
+        # self.t12.place(x=870, y=50)
+        #
+        # self.lbl8 = Label(newWindow, text='Refresh del grafico', bg=bg)
+        # self.t13 = Entry(newWindow, bd=3)
+        # self.lbl8.place(x=650, y=270)
+        # self.t13.place(x=650, y=300)
 
         self.b1 = Button(newWindow, text='Start Test', command=self.start_test, width=width, bg='lightgreen')
         self.b1.place(x=250, y=240)
@@ -664,29 +642,29 @@ class MyWindow:
             strumenti.append('Inverter')
         if self.t6.get() != 0:
             strumenti.append('Colonnina')
-        if self.tg.get() != 0:
-            strumenti.append('Grafico')
-
-        value = [self.t11.get("1.0", 'end-1c').split('\n'), self.t12.get("1.0", 'end-1c').split('\n'), self.t13.get()]
-        excel_config = pd.DataFrame()
-        list_app = list()
-        for i in value[0]:
-            list_app.append(i)
-        excel_config['PLOT'] = list_app
-        df1 = pd.DataFrame()
-        list_app = list()
-        for i in value[1]:
-            list_app.append(i)
-        df1['ASSE'] = list_app
-        excel_config = pd.concat([excel_config, df1], axis=1)
-        df1 = pd.DataFrame()
-        list_app = list()
-        list_app.append(value[2])
-        df1['REFRESH TIME'] = list_app
-        excel_config = pd.concat([excel_config, df1], axis=1)
-        del df1, list_app
-        excel_config.to_excel(writer, sheet_name='Grafico', index=False)
-        writer.save()
+        # if self.tg.get() != 0:
+        #     strumenti.append('Grafico')
+        #
+        # value = [self.t11.get("1.0", 'end-1c').split('\n'), self.t12.get("1.0", 'end-1c').split('\n'), self.t13.get()]
+        # excel_config = pd.DataFrame()
+        # list_app = list()
+        # for i in value[0]:
+        #     list_app.append(i)
+        # excel_config['PLOT'] = list_app
+        # df1 = pd.DataFrame()
+        # list_app = list()
+        # for i in value[1]:
+        #     list_app.append(i)
+        # df1['ASSE'] = list_app
+        # excel_config = pd.concat([excel_config, df1], axis=1)
+        # df1 = pd.DataFrame()
+        # list_app = list()
+        # list_app.append(value[2])
+        # df1['REFRESH TIME'] = list_app
+        # excel_config = pd.concat([excel_config, df1], axis=1)
+        # del df1, list_app
+        # excel_config.to_excel(writer, sheet_name='Grafico', index=False)
+        # writer.save()
 
         value = [self.t7.get("1.0", 'end-1c').split('\n'), self.t8.get("1.0", 'end-1c').split('\n'),
                  self.t9.get(), self.t10.get()]
@@ -748,6 +726,6 @@ width = 20
 
 window = Tk()
 mywin = MyWindow(window)
-window.title('AITA')
+window.title('AITA - Config. Pannel')
 window.geometry("550x200")
 window.mainloop()

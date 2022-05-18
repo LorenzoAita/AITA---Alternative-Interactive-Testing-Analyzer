@@ -103,7 +103,10 @@ def config_inverter(path):
     telemetrie = list()
     for i in config_inv['TELEMETRIE']:
         telemetrie.append(i)
-    return id, ip, telemetrie
+    label = list()
+    for i in config_inv['LABEL']:
+        label.append(i)
+    return id, ip, telemetrie, label
 
 
 def config_wt(rm, path, model):
