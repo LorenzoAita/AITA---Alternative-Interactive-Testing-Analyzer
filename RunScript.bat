@@ -1,11 +1,11 @@
 ::[Bat To Exe Converter]
 ::
 ::YAwzoRdxOk+EWAjk
-::fBw5plQjdCyDJGyX8VAjFDJgYCujFV+GIrAP4/z0/9aOr0ohWO04d7DT/5exKeMc5AvtdplN
+::fBw5plQjdCyDJGyX8VAjFDJgYCujFV+GIrof/eX+4f6UnmoUQMoqerP0yL2BLswc7ULhZ6ok231mlMQLAyRQWzGUZww7pyBLtWvl
 ::YAwzuBVtJxjWCl3EqQJgSA==
 ::ZR4luwNxJguZRRnk
 ::Yhs/ulQjdF+5
-::cxAkpRVqdFKZSTk=
+::cxAkpRVqdFKZSzk=
 ::cBs/ulQjdF+5
 ::ZR41oxFsdFKZSDk=
 ::eBoioBt6dFKZSDk=
@@ -26,14 +26,18 @@
 ::ZQ0/vhVqMQ3MEVWAtB9wSA==
 ::Zg8zqx1/OA3MEVWAtB9wSA==
 ::dhA7pRFwIByZRRnk
-::Zh4grVQjdCyDJGyX8VAjFDJgYCujFV+GIrof/eX+4f6UnmoUQMoqerP0yL2BLswc7ULhZ6oM/0572IZMFEgKMBeza28=
+::Zh4grVQjdCyDJGyX8VAjFDJgYCujFV+GIrof/eX+4f6UnmoUQMoqerP0yL2BLswc7ULhZ6oM/0572IZMWk9adwblaxcxyQ==
 ::YB416Ek+ZG8=
 ::
 ::
 ::978f952a14a936cc963da21a135fa983
+echo off
 cls
 
-
+start img\ATP.png
+timeout 3
+for /F "tokens=2 delims= " %%i in ('tasklist /v /fo table ^| findstr /i ATP') do set pid=%%i
+taskkill /PID %pid%
 python Pannellino.py
 
-pause
+echo QUIT
