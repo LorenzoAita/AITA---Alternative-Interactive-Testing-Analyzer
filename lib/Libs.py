@@ -22,36 +22,10 @@ class OrionProtocol:
         else:
             return str(0), str(rsp.status_code)
 
-    # def write(self, url, data, method="POST"):
-    #     """ nucleic write
-    #
-    #     Keyword arguments:
-    #     url -- message (str)
-    #     data -- dict, list of tuples, bytes, or file-like object to send in the body (optional)
-    #     """
-    #
-    #     try:
-    #         if data is not None and method == "POST":
-    #             # rsp = requests.post('http://' + self.ip_connector + '/' + self.ip + '/connector' + url, json=data)
-    #             rsp = requests.post('http://' + self.ip_connector + '/' + self.ip + '/connector' + url, json=data, verify=False)
-    #         elif method == 'DELETE':
-    #             rsp = requests.delete('http://' + self.ip_connector + '/' + self.ip + '/connector' + url, verify=False)
-    #         else:
-    #             # rsp = requests.post('http://' + self.ip_connector + '/' + self.ip + '/connector' + url)
-    #             rsp = requests.post('http://' + self.ip_connector + '/' + self.ip + '/connector' + url)
-    #         logger.debug(method + ' >> Orion API response status code is ' + str(rsp.status_code) + ' from url ' + rsp.url)
-    #         logger.debug(method + "'s body >> " + str(data))
-    #         if rsp.status_code == 200:
-    #             return True, rsp.status_code
-    #         else:
-    #             logger.warning(
-    #                 method + ' >> Orion API response status code is ' + str(rsp.status_code) + ' from url ' + rsp.url)
-    #             return False, rsp.status_code
-    #     except Exception as e:
-    #         # uncomment this line below to log error with complete stacktrace
-    #         # logger.error('Eut not responding ip: ' + str(self.ip), exc_info=sys.exc_info())
-    #         logger.error('Eut not responding ip: ' + str(self.ip))
-    #         return False, 500
+    def write(self, url, data):
+        rsp = self.get_data('/mppt/_1/set_user_voltage_ref')
+        '/2105L10299/mppt/_1/configuration_reg/en'
+        rsp = requests.post('http://' + self.ip_connector + '/' + self.ip + '/connector/v1/orion/data/' + self.device_id + url, json=data, verify=False)
 
 
 def plot_runtime(step_graph, dati_stamp, plot):
@@ -122,7 +96,8 @@ def plot_runtime(step_graph, dati_stamp, plot):
                 fig.add_scatter(x=dati_stamp['Date'], y=dati_stamp[plot[i][0]], mode='lines', yaxis='y3',
                                 name=plot[i][0])
             elif plot[i][1] == 'T':
-                fig.add_scatter(x=dati_stamp['Date'], y=dati_stamp[plot[i][0]], mode='lines', yaxis='y', name=plot[i][0])
+                fig.add_scatter(x=dati_stamp['Date'], y=dati_stamp[plot[i][0]], mode='lines', yaxis='y',
+                                name=plot[i][0])
         fig.show()
     else:
         for i in range(0, len(plot)):
@@ -146,9 +121,19 @@ def meas_bridge(inst, log, data, path, save):
     config_bridge = pd.read_excel(path + 'Config.xlsx', sheet_name='Bridge')
     freq_start = config_bridge['FREQUENZA'][0]
     freq_end = config_bridge['FREQUENZA'][1]
-    freq_sample = config_bridge['FREQUENZA'][2]
+    #freq_sample = config_bridge['FREQUENZA'][2]
     nome_file = pd.read_excel(path + 'Config.xlsx', sheet_name='Strumenti')['NOME OUTPUT'][0]
     while freq_end + 1 > freq_start:
+        if freq_start < 1e6:
+            freq_sample = 1e4
+        if freq_start < 1e5:
+            freq_sample = 1e3
+        if freq_start < 1e4:
+            freq_sample = 1e2
+        if freq_start < 1e3:
+            freq_sample = 1e1
+        if freq_start < 1e2:
+            freq_sample = 1e0
         telemetries = list()
         inst.write('INIT')
         inst.write(':FREQ ' + str(freq_start))
@@ -372,7 +357,8 @@ def meas_bridge(inst, log, data, path, save):
 def ReadCol(reg, client, add):
     result = client.read_holding_registers(reg['address'],
                                            reg['length'],
-                                           unit=add)  # da modificare con l'addr del registro modbus
+                                           unit=add,
+                                           timeout=1)  # da modificare con l'addr del registro modbus
     result2 = result.registers
     data_type = reg['type']
     number = 0
@@ -411,3 +397,40 @@ def ReadCol(reg, client, add):
         elif data_type == "list":
             pass
     return number
+
+
+def WriteCol(reg, client, value, add):
+    result = client.write_registers(reg,
+                                    value,
+                                    unit=add)  # da modificare con l'addr del registro modbus
+    return True
+
+
+
+class Regatron:
+    def __init__(self, porta, rm):
+        self.porta = porta
+        self.rm = rm
+
+    def stato(self, stato):
+        INSTRUMENT_alim = self.rm.open_resource(self.porta)
+        if stato == 1:
+            INSTRUMENT_alim.write("OUTP ON")
+        elif stato == 0:
+            INSTRUMENT_alim.write("OUTP OFF")
+
+    def power(self, pow):
+        INSTRUMENT_alim = self.rm.open_resource(self.porta)
+        INSTRUMENT_alim.write("POW "+str(pow))
+
+    def voltage(self, volt):
+        INSTRUMENT_alim = self.rm.open_resource(self.porta)
+        INSTRUMENT_alim.write("VOLT "+str(volt))
+
+    def current(self, cur):
+        INSTRUMENT_alim = self.rm.open_resource(self.porta)
+        INSTRUMENT_alim.write("CURR "+str(cur))
+
+    def curva(self, stato):
+        INSTRUMENT_alim = self.rm.open_resource(self.porta)
+        INSTRUMENT_alim.write("topc:reg:writ #H5cc7,  "+str(stato))

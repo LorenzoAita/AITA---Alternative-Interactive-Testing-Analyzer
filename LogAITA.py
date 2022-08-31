@@ -36,7 +36,7 @@ def main_log():
         telemetry_col, reg, com_colonna, addresses = config_colonnina(path_config)
 
     # DataLogger
-    if 'Agilent' in device:
+    if 'Datalogger' in device:
         config_DAQ = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Agilent')
 
     # Wattmetro
@@ -60,7 +60,7 @@ def main_log():
     print('>>>')
     if os.path.exists(path_save + namefile + '.csv') and 'Bridge' not in device:
         os.rename(path_save + namefile + '.csv',
-                  path_save + 'Data_' + str(datetime.datetime.now().strftime("%Y_%m_%d__%H_%M")[:]) + '.csv')
+                  path_save + 'Data_' + str(datetime.datetime.now().strftime("%Y_%m_%d__%H_%M_%S")[:]) + '.csv')
     col = list()
     col.append('Date')
     if 'Inverter' in device:
@@ -70,7 +70,7 @@ def main_log():
     if 'Colonnina' in device:
         for i in telemetry_col:
             col.append(i)
-    if 'Agilent' in device:
+    if 'Datalogger' in device:
         logger_DAQ, porta_DAQ = config_agilent(rm, path_config)
         logger_DAQ = logger_DAQ.fillna('')
         stamp_daq = list()
@@ -87,7 +87,7 @@ def main_log():
                 col.append(i)
                 stamp_WT.append(i)
     if 'Wattmeter2' in device:
-        logger_WT2, porta_WT2 = config_wt(rm, path_config, config_WATT['MODELLO'][0])
+        logger_WT2, porta_WT2 = config_wt2(rm, path_config, config_WATT['MODELLO'][0])
         logger_WT2 = logger_WT2.fillna('')
         stamp_WT2 = list()
         for i in logger_WT2:
@@ -122,6 +122,8 @@ def main_log():
     tot_time = 0
     step = 0
     sample = 0
+
+
     print('>>> Start Log')
     print('>>>')
     while tot_time < test_time:
@@ -143,14 +145,19 @@ def main_log():
                     for j in range(0, len(telemetry_inv) - len(telemetries) + 1):
                         telemetries.append(0)
                     break
-                    #  print('>>> la telemetry\t' + str(i) + '\tnon risponde')
+                    # #  print('>>> la telemetry\t' + str(i) + '\tnon risponde')
         if 'Colonnina' in device:
             print('>>> log colonnina\t' + str(com_colonna))
             for i in range(0, len(telemetry_col)):
                 # print('>>> log la telemetry\t' + str(telemetry_col[i]) + '\tal registro\t' + str(reg[i]))
-                data_col = ReadCol(reg[i], com_colonna, addresses[i])
-                telemetries.append(data_col)
-        if 'Agilent' in device:
+                try:
+                    data_col = ReadCol(reg[i], com_colonna, addresses[i])
+                    telemetries.append(data_col)
+                except:
+                    for j in range(0, len(telemetry_col) - len(telemetries) + 1):
+                        telemetries.append(0)
+                    break
+        if 'Datalogger' in device:
             i = 0
             data_daq = list()
             print('>>> Apro la Comunicazione con il DAQ\t')

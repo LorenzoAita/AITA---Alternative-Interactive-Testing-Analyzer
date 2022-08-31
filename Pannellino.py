@@ -7,6 +7,7 @@ import pandas as pd
 # import GraphDati
 import LogAITA
 import VisualDati
+import TestSeq
 
 exitFlag = 0
 
@@ -19,11 +20,11 @@ class myThread (threading.Thread):
        self.run_script = run_script
 
     def run(self):
-       print ("Starting " + self.name)
+       #print ("Starting " + self.name)
        if self.run_script == 0:
           LogAITA.main_log()
-       # if self.run_script == 1:
-       #    GraphDati.main_graph()
+       if self.run_script == 1:
+          TestSeq.main_test()
        if self.run_script == 2:
           VisualDati.main_grid()
 
@@ -429,9 +430,13 @@ class MyWindow:
         # nome = ['Ip o COM', 'Porta', 'Modalità', 'Address', 'Telemetrie', 'Registri']
         value = [self.t1.get(), self.t2.get(), list(self.t3.get("1.0", 'end-1c').split('\n')),
                  list(self.t4.get("1.0", 'end-1c').split('\n'))]
-        excel_config['IP DEVICE'] = list(value[0])
+        list_app = list()
+        list_app.append(value[0])
+        excel_config['IP DEVICE'] = list_app
         df1 = pd.DataFrame()
-        df1['ID'] = list(value[1])
+        list_app = list()
+        list_app.append(value[1])
+        df1['ID'] = list_app
         excel_config = pd.concat([excel_config, df1], axis=1)
         df1 = pd.DataFrame()
         df1['TELEMETRIE'] = list(value[2])
@@ -492,7 +497,7 @@ class MyWindow:
         excel_config = pd.DataFrame()  # .read_excel(path_config + 'Config.xlsx', sheet_name='Colonnina')
         # nome = ['Ip o COM', 'Porta', 'Modalità', 'Address', 'Telemetrie', 'Registri']
         value = [self.WT.get(), self.t2.get(), self.t3.get("1.0", 'end-1c').split('\n'),
-                 self.t4.get("1.0", 'end-1c').split('\n')]
+                 self.t4.get("1.0", 'end-1c').split('\n'), self.t5.get("1.0", 'end-1c').split('\n')]
         excel_config['PORTA WT'] = list(value[1])
         df1 = pd.DataFrame()
         df1['MODELLO'] = list(value[0])
@@ -538,7 +543,7 @@ class MyWindow:
         list_cassetto = list()
         for i in value[0]:
             list_cassetto.append(i)
-        excel_config['CASSETTI '+str(value[4])] = list_cassetto
+        excel_config['CASSETTO '+str(value[4])] = list_cassetto
         df1 = pd.DataFrame()
         df1['PORTA DAQ'] = list(value[1])
         excel_config = pd.concat([excel_config, df1], axis=1)
@@ -698,12 +703,12 @@ class MyWindow:
         # Create new threads
         thread1 = myThread(1, "Log", 1, 0)
         thread2 = myThread(2, "RealTime", 2, 2)
-        # thread3 = myThread(3, "Thread-3", 3, 1)
+        thread3 = myThread(3, "TestSeq", 3, 1)
 
         # Start new Threads
         thread1.start()
         thread2.start()
-        # thread3.start()
+        thread3.start()
 
     def end_test(self):
         # os.system('python VisualDati.py')

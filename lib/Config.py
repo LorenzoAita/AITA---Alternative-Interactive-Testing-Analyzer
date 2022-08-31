@@ -11,6 +11,10 @@ def config_agilent(rm, path):
     porta = config_DAQ['PORTA DAQ'][0]
     inst = rm.open_resource(porta)
     a = inst.query('*IDN?').split(',')
+    if a[1] == '34972A' or a[1] == '34970A':
+        a[1] = '34970'
+    else:
+        a[1] = '34980'
     start = 100
     stringa_T = ''
     stringa_K = ''
@@ -114,6 +118,32 @@ def config_wt(rm, path, model):
     print('>>>')
     path_config = path
     config_WT = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Wattmeter')
+    porta = config_WT['PORTA WT'][0]
+    inst = rm.open_resource(porta)
+    print('>>> ' + inst.query("*IDN?").split('\n')[0])
+    if model == 'WT230':
+        inst.write('MEAS:NORM:ITEM:PRES CLE')
+        for i in range(0, len(config_WT['CHANNEL'])):
+            if str(config_WT['CHANNEL'][i]) != 'nan':
+                inst.write("MEASURE:NORMAL:ITEM:"+str(config_WT['TIPOLOGIA'][i])+":ELEMENT"+str(int(config_WT['CHANNEL'][i]))+" ON")
+    if model == 'WT500' or model == 'WT3000':
+        inst.write(':NUM:NORM:CLE ALL')
+        if model == 'WT500':
+            inst.write(':NUM:FORM ASC')
+            inst.write(':NUM:NORM:NUM 200')
+        j = 1
+        for i in range(0, len(config_WT['CHANNEL'])):
+            if str(config_WT['CHANNEL'][i]) != 'nan':
+                inst.write(":NUM:NORM:ITEM" + str(j) + " " + str(config_WT['TIPOLOGIA'][i]) + "," + str(int(config_WT['CHANNEL'][i])))
+                j += 1
+    return config_WT['LABEL'], porta
+
+
+def config_wt2(rm, path, model):
+    print('>>> Config Wattmeter')
+    print('>>>')
+    path_config = path
+    config_WT = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Wattmeter2')
     porta = config_WT['PORTA WT'][0]
     inst = rm.open_resource(porta)
     print('>>> ' + inst.query("*IDN?").split('\n')[0])
