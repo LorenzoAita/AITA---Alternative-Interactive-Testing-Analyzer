@@ -9,3 +9,17 @@ old/aaa.py
 old/bbb.py
 old/GraphDati.py
 aaa.py
+*.pyc
+__pycache__/LogAITA.cpython-37.pyc
+Config/Config.xlsx
+Config/~$Config_test.xlsx
+lib/__pycache__/Config.cpython-37.pyc
+Config/Config.xlsx
+lib/__pycache__/Config.cpython-37.pyc
+*.pyc
+lib/__pycache__/Config.cpython-37.pyc
+lib/__pycache__/Libs.cpython-38.pyc
+Config/Config.xlsx
+lib/__pycache__/Config.cpython-37.pyc
+lib/__pycache__/Libs.cpython-37.pyc
+lib/__pycache__/Libs.cpython-38.pyc
