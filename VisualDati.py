@@ -184,20 +184,27 @@ class MyWindow:
 
 
 def main_grid():
-    width = 20
-    window2 = Tk()
-    window2.title('AITA - Run Time Log')
-    window2.geometry("500x100")
-    MyWindow(window2, width)
-    # b1 = Button(window2, text='Raw Data', command=data(window2), width=width, bg='lightgreen')
-    # b2 = Button(window2, text='Grafico', command=graph(window2), width=width, bg='lightblue')
-    # b1.place(x=100, y=25)
-    # b2.place(x=270, y=25)
-    window2.mainloop()
-    # while True:
-    #     app = TestApp()
-    #     app.mainloop()
-    #     if 'Grafico' in device:
-    #          app_w = TestGraph()
-    #          app_w.mainloop()
+    try:
+        width = 20
+        window2 = Tk()
+        window2.title('AITA - Run Time Log')
+        window2.geometry("500x100")
+        MyWindow(window2, width)
+        # b1 = Button(window2, text='Raw Data', command=data(window2), width=width, bg='lightgreen')
+        # b2 = Button(window2, text='Grafico', command=graph(window2), width=width, bg='lightblue')
+        # b1.place(x=100, y=25)
+        # b2.place(x=270, y=25)
+        window2.mainloop()
+        # while True:
+        #     app = TestApp()
+        #     app.mainloop()
+        #     if 'Grafico' in device:
+        #          app_w = TestGraph()
+        #          app_w.mainloop()
+
+    except:
+        path_watchdog = r'S:\@Solar\Reliability Laboratory\0_Stazioni di Test\10_AITA\0_misc/watchdog.txt'
+        file_object = open(path_watchdog, "W")
+        file_object.write('3')
+        file_object.close()
 

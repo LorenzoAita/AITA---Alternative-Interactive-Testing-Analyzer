@@ -8,6 +8,7 @@ import pandas as pd
 import LogAITA
 import VisualDati
 import TestSeq
+import Watchdog
 
 exitFlag = 0
 
@@ -27,7 +28,8 @@ class myThread (threading.Thread):
           TestSeq.main_test()
        if self.run_script == 2:
           VisualDati.main_grid()
-
+       if self.run_script == 3:
+           Watchdog.main()
 
 class MyWindow:
     def __init__(self, win):
@@ -704,6 +706,7 @@ class MyWindow:
         thread1 = myThread(1, "Log", 1, 0)
         thread2 = myThread(2, "RealTime", 2, 2)
         thread3 = myThread(3, "TestSeq", 3, 1)
+        thread3 = myThread(4, "Watchdog", 4, 3)
 
         # Start new Threads
         thread1.start()
