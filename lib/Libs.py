@@ -445,7 +445,7 @@ class Weiss():
         self.timeout = 30
 
     def set_temp_hum(self, value_T, value_h):
-        cc = serial.Serial(port='COM3', baudrate=9600, parity="N", stopbits=1, timeout=.3, bytesize=8)
+        cc = serial.Serial(port=self.com, baudrate=9600, parity="N", stopbits=1, timeout=.3, bytesize=8)
         cc.write(bytes('$01I\r', 'utf-8'))
         time.sleep(6)
         if value_T < 0:
