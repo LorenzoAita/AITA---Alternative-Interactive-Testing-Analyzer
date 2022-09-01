@@ -23,9 +23,9 @@ class OrionProtocol:
             return str(0), str(rsp.status_code)
 
     def write(self, url, data):
-        rsp = self.get_data('/mppt/_1/set_user_voltage_ref')
-        '/2105L10299/mppt/_1/configuration_reg/en'
-        rsp = requests.post('http://' + self.ip_connector + '/' + self.ip + '/connector/v1/orion/data/' + self.device_id + url, json=data, verify=False)
+        rsp = requests.post(
+            'http://' + self.ip_connector + '/' + self.ip + '/connector/v1/orion/data/' + self.device_id + '/' + url,
+            json=data, verify=False)
 
 
 def plot_runtime(step_graph, dati_stamp, plot):
@@ -121,7 +121,7 @@ def meas_bridge(inst, log, data, path, save):
     config_bridge = pd.read_excel(path + 'Config.xlsx', sheet_name='Bridge')
     freq_start = config_bridge['FREQUENZA'][0]
     freq_end = config_bridge['FREQUENZA'][1]
-    #freq_sample = config_bridge['FREQUENZA'][2]
+    # freq_sample = config_bridge['FREQUENZA'][2]
     nome_file = pd.read_excel(path + 'Config.xlsx', sheet_name='Strumenti')['NOME OUTPUT'][0]
     while freq_end + 1 > freq_start:
         if freq_start < 1e6:
@@ -406,7 +406,6 @@ def WriteCol(reg, client, value, add):
     return True
 
 
-
 class Regatron:
     def __init__(self, porta, rm):
         self.porta = porta
@@ -421,16 +420,16 @@ class Regatron:
 
     def power(self, pow):
         INSTRUMENT_alim = self.rm.open_resource(self.porta)
-        INSTRUMENT_alim.write("POW "+str(pow))
+        INSTRUMENT_alim.write("POW " + str(pow))
 
     def voltage(self, volt):
         INSTRUMENT_alim = self.rm.open_resource(self.porta)
-        INSTRUMENT_alim.write("VOLT "+str(volt))
+        INSTRUMENT_alim.write("VOLT " + str(volt))
 
     def current(self, cur):
         INSTRUMENT_alim = self.rm.open_resource(self.porta)
-        INSTRUMENT_alim.write("CURR "+str(cur))
+        INSTRUMENT_alim.write("CURR " + str(cur))
 
     def curva(self, stato):
         INSTRUMENT_alim = self.rm.open_resource(self.porta)
-        INSTRUMENT_alim.write("topc:reg:writ #H5cc7,  "+str(stato))
+        INSTRUMENT_alim.write("topc:reg:writ #H5cc7,  " + str(stato))

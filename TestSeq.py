@@ -3,6 +3,8 @@ import serial
 import pandas as pd
 import pyvisa
 import requests
+
+from lib.Config import config_colonnina
 from lib.Libs import *
 
 
@@ -299,6 +301,16 @@ def main_test():
                         alim.current(cmd['ALIM_CURR'][i])
                         time.sleep(0.2)
                         alim.stato(cmd['ALIM_ON/OFF'][i])
+
+                # ora gestisco gli inverter
+                for j in range(0, len(test['INV_PORTA'])):
+                    if str(cmd['INV_VAR'][j]) not in ['2', 'nan', '2.0'] and str(test['INV_VAR'][j]) != 'nan':
+                        OrionProtocol.write(test['INV_VAR'][j], test['INV_VAL'][j])
+                for j in range(0, len(test['COL_PORTA'])):
+                    telemetry_col, reg, com_colonna, addresses = config_colonnina(path_config)
+                    if str(cmd['COL_VAR'][j]) not in ['2', 'nan', '2.0'] and str(test['COL_VAR'][j]) != 'nan':
+                        for k in addresses:
+                            WriteCol(test['COL_VAR'][j], com_colonna, test['COL_VAL'][j], k)
 
                 time.sleep(cmd['TEMPO'][i])
 
