@@ -433,3 +433,16 @@ class Regatron:
     def curva(self, stato):
         INSTRUMENT_alim = self.rm.open_resource(self.porta)
         INSTRUMENT_alim.write("topc:reg:writ #H5cc7,  " + str(stato))
+
+
+class Weiss():
+    def __init__(self, com):
+        self.com = com
+        self.bound_rate = 38400
+        self.timeout = 30
+
+    def set_temp(self, value):
+        resp = '0020.0 0000.0 0062.0 0000.0 0015.0 01000000000000000000000000000000\r'
+
+    def set_hum(self, value):
+        resp = '0020.0 0000.0 0062.0 0000.0 0015.0 01000000000000000000000000000000\r'
