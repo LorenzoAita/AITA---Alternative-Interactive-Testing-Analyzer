@@ -23,3 +23,5 @@ Config/Config.xlsx
 lib/__pycache__/Config.cpython-37.pyc
 lib/__pycache__/Libs.cpython-37.pyc
 lib/__pycache__/Libs.cpython-38.pyc
+.idea/AITA---Alternative-Interactive-Testing-Analyzer.iml
+.idea/inspectionProfiles/profiles_settings.xml
