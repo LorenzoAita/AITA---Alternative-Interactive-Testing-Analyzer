@@ -2,6 +2,8 @@ import requests
 import plotly.graph_objects as go
 import pandas as pd
 import struct
+import time
+import serial
 
 
 class OrionProtocol:
@@ -436,13 +438,26 @@ class Regatron:
 
 
 class Weiss():
-    def __init__(self, com):
-        self.com = com
+    def __init__(self):
+        test = pd.read_excel(path_config + 'Config_test.xlsx', sheet_name='Test')
+        self.com = test['CC_PORTA']
         self.bound_rate = 38400
         self.timeout = 30
 
-    def set_temp(self, value):
-        resp = '0020.0 0000.0 0062.0 0000.0 0015.0 01000000000000000000000000000000\r'
+    def set_temp_hum(self, value_T, value_h):
+        cc = serial.Serial(port='COM3', baudrate=9600, parity="N", stopbits=1, timeout=.3, bytesize=8)
+        cc.write(bytes('$01I\r', 'utf-8'))
+        time.sleep(6)
+        if value_T < 0:
+            print('boh')
+        #if type(value_T) == int:
+        if value_T > 0 and value_T < 100 :
+            cc.write(bytes('$01E 00'+value_T+'.0 00'+value_h+'.0 0100.0 0005.0 0030.0 00000000000000000000000000000000\r', 'utf-8'))
+        else:
+            cc.write(bytes(
+                '$01E 0' + value_T + '.0 00' + value_h + '.0 0100.0 0005.0 0030.0 00000000000000000000000000000000\r',
+                'utf-8'))
 
-    def set_hum(self, value):
-        resp = '0020.0 0000.0 0062.0 0000.0 0015.0 01000000000000000000000000000000\r'
+        cc.close()
+
+path_config = r'./Config/'
