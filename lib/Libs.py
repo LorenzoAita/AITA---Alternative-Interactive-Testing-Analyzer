@@ -402,6 +402,7 @@ class Regatron:
         INSTRUMENT_alim = self.rm
         INSTRUMENT_alim.write("topc:reg:writ #H5cc7,  " + str(curva))
 
+
 class Keysight:
     def __init__(self, rm):
         self.rm = rm
@@ -449,14 +450,17 @@ class Weiss():
                 cc.write(bytes(
                     '$01E -' + value_t + '.0 00' + value_h + '.0 0100.0 0005.0 0030.0 0' + value_on + '000000000000000000000000000000\r',
                     'utf-8'))
-        if value_t > 0 and value_t < 100 :
-            cc.write(bytes('$01E 00'+value_t+'.0 00'+value_h+'.0 0100.0 0005.0 0030.0 0'+value_on+'000000000000000000000000000000\r', 'utf-8'))
+        if value_t > 0 and value_t < 100:
+            cc.write(bytes(
+                '$01E 00' + value_t + '.0 00' + value_h + '.0 0100.0 0005.0 0030.0 0' + value_on + '000000000000000000000000000000\r',
+                'utf-8'))
         else:
             cc.write(bytes(
-                '$01E 0' + value_t + '.0 00' + value_h + '.0 0100.0 0005.0 0030.0 0'+value_on+'000000000000000000000000000000\r',
+                '$01E 0' + value_t + '.0 00' + value_h + '.0 0100.0 0005.0 0030.0 0' + value_on + '000000000000000000000000000000\r',
                 'utf-8'))
 
         cc.close()
+
 
 class Discovery():
     def __init__(self, com):
@@ -469,13 +473,13 @@ class Discovery():
             cc.write(prepare_packet(504, float(value_t)))
             time.sleep(3)
             if value_h < '15':
-                status_on_value = 2.3693558e-38             #valore accensione camera + temperatura
+                status_on_value = 2.3693558e-38  # valore accensione camera + temperatura
             else:
                 cc.write(prepare_packet(508, float(value_h)))
                 time.sleep(3)
-                status_on_value = 3.790969281401877e-37     #valore accensione camera + temp + umidità
+                status_on_value = 3.790969281401877e-37  # valore accensione camera + temp + umidità
         else:
-            status_on_value = 0     #spengi tutto
+            status_on_value = 0  # spengi tutto
         cc.write(prepare_packet(500, status_on_value))
 
         cc.close()
