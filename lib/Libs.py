@@ -439,8 +439,7 @@ class Regatron:
 
 class Weiss():
     def __init__(self, com):
-        test = pd.read_excel(path_config + 'Config_test.xlsx', sheet_name='Test')
-        self.com = com#test['CC_PORTA']
+        self.com = com
         self.bound_rate = 38400
         self.timeout = 30
 
