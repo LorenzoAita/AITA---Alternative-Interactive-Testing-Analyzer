@@ -291,7 +291,11 @@ def main_test():
                         print(test['ALIMENTATORE_PORTA'][j])
                         session = requests.Session()
                         rm = pyvisa.ResourceManager()
-                        alim = Regatron(porta=test['ALIMENTATORE_PORTA'][j], rm=rm)
+                        alim_open = rm.open_resource(test['ALIMENTATORE_PORTA'][j])
+                        if 'Regaton' in alim_open.query("*IDN?"):
+                            alim = Regatron(alim_open)
+                        elif 'Keysight' in alim_open.query("*IDN?"):
+                            alim = Keysight(alim_open)
                         alim.curva(cmd['ALIM_CURVA'][i])
                         time.sleep(0.2)
                         alim.power(cmd['ALIM_POW'][i])
@@ -317,7 +321,7 @@ def main_test():
                     if str(cmd['CC_ON/OFF'][j]) not in ['2', 'nan', '2.0'] and str(test['CC_ON/OFF'][j]) != 'nan':
                         test = pd.read_excel(path_config + 'Config_test.xlsx', sheet_name='Test')
                         cc = Weiss(com=test['CC_PORTA'])
-                        cc.set_temp_hum(cmd['CC_set point T'][j], cmd['CC_set point H'][j])
+                        cc.set_temp_hum(cmd['CC_set point T'][j], cmd['CC_set point H'][j], cmd['CC_ON/OFF'][j])
 
                 time.sleep(cmd['TEMPO'][i])
 

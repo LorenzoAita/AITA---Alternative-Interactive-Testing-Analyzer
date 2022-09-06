@@ -409,32 +409,58 @@ def WriteCol(reg, client, value, add):
 
 
 class Regatron:
-    def __init__(self, porta, rm):
-        self.porta = porta
+    def __init__(self, rm):
         self.rm = rm
 
     def stato(self, stato):
-        INSTRUMENT_alim = self.rm.open_resource(self.porta)
+        INSTRUMENT_alim = self.rm
         if stato == 1:
             INSTRUMENT_alim.write("OUTP ON")
         elif stato == 0:
             INSTRUMENT_alim.write("OUTP OFF")
 
     def power(self, pow):
-        INSTRUMENT_alim = self.rm.open_resource(self.porta)
+        INSTRUMENT_alim = self.rm
         INSTRUMENT_alim.write("POW " + str(pow))
 
     def voltage(self, volt):
-        INSTRUMENT_alim = self.rm.open_resource(self.porta)
+        INSTRUMENT_alim = self.rm
         INSTRUMENT_alim.write("VOLT " + str(volt))
 
     def current(self, cur):
-        INSTRUMENT_alim = self.rm.open_resource(self.porta)
+        INSTRUMENT_alim = self.rm
         INSTRUMENT_alim.write("CURR " + str(cur))
 
-    def curva(self, stato):
-        INSTRUMENT_alim = self.rm.open_resource(self.porta)
-        INSTRUMENT_alim.write("topc:reg:writ #H5cc7,  " + str(stato))
+    def curva(self, curva):
+        INSTRUMENT_alim = self.rm
+        INSTRUMENT_alim.write("topc:reg:writ #H5cc7,  " + str(curva))
+
+class Keysight:
+    def __init__(self, rm):
+        self.rm = rm
+
+    def stato(self, stato):
+        INSTRUMENT_alim = self.rm
+        if stato == 1:
+            INSTRUMENT_alim.write("OUTP ON")
+        elif stato == 0:
+            INSTRUMENT_alim.write("OUTP OFF")
+
+    def power(self, pow):
+        INSTRUMENT_alim = self.rm
+        INSTRUMENT_alim.write("POW " + str(pow))
+
+    def voltage(self, volt):
+        INSTRUMENT_alim = self.rm
+        INSTRUMENT_alim.write("VOLT " + str(volt))
+
+    def current(self, cur):
+        INSTRUMENT_alim = self.rm
+        INSTRUMENT_alim.write("CURR " + str(cur))
+
+    def curva(self, curva):
+        INSTRUMENT_alim = self.rm
+        INSTRUMENT_alim.write("topc:reg:writ #H5cc7,  " + str(curva))
 
 
 class Weiss():
@@ -443,18 +469,50 @@ class Weiss():
         self.bound_rate = 38400
         self.timeout = 30
 
-    def set_temp_hum(self, value_t, value_h):
+    def set_temp_hum(self, value_t, value_h, value_on):
         cc = serial.Serial(port=self.com, baudrate=9600, parity="N", stopbits=1, timeout=.3, bytesize=8)
         cc.write(bytes('$01I\r', 'utf-8'))
         time.sleep(6)
         if value_t < 0:
-            print('boh')
-        #if type(value_T) == int:
+            if value_t > 0 and value_t < 100:
+                cc.write(bytes(
+                    '$01E -0' + value_t + '.0 00' + value_h + '.0 0100.0 0005.0 0030.0 0' + value_on + '000000000000000000000000000000\r',
+                    'utf-8'))
+            else:
+                cc.write(bytes(
+                    '$01E -' + value_t + '.0 00' + value_h + '.0 0100.0 0005.0 0030.0 0' + value_on + '000000000000000000000000000000\r',
+                    'utf-8'))
         if value_t > 0 and value_t < 100 :
-            cc.write(bytes('$01E 00'+value_t+'.0 00'+value_h+'.0 0100.0 0005.0 0030.0 00000000000000000000000000000000\r', 'utf-8'))
+            cc.write(bytes('$01E 00'+value_t+'.0 00'+value_h+'.0 0100.0 0005.0 0030.0 0'+value_on+'000000000000000000000000000000\r', 'utf-8'))
         else:
             cc.write(bytes(
-                '$01E 0' + value_t + '.0 00' + value_h + '.0 0100.0 0005.0 0030.0 00000000000000000000000000000000\r',
+                '$01E 0' + value_t + '.0 00' + value_h + '.0 0100.0 0005.0 0030.0 0'+value_on+'000000000000000000000000000000\r',
+                'utf-8'))
+
+        cc.close()
+
+class Discovery():
+    def __init__(self, com):
+        self.com = com
+
+    def set_temp_hum(self, value_t, value_h, value_on):
+        cc = serial.Serial(port=self.com, baudrate=9600, parity="N", stopbits=1, timeout=.3, bytesize=8)
+        cc.write(bytes('$01I\r', 'utf-8'))
+        time.sleep(6)
+        if value_t < 0:
+            if value_t > 0 and value_t < 100:
+                cc.write(bytes(
+                    '$01E -0' + value_t + '.0 00' + value_h + '.0 0100.0 0005.0 0030.0 0' + value_on + '000000000000000000000000000000\r',
+                    'utf-8'))
+            else:
+                cc.write(bytes(
+                    '$01E -' + value_t + '.0 00' + value_h + '.0 0100.0 0005.0 0030.0 0' + value_on + '000000000000000000000000000000\r',
+                    'utf-8'))
+        if value_t > 0 and value_t < 100 :
+            cc.write(bytes('$01E 00'+value_t+'.0 00'+value_h+'.0 0100.0 0005.0 0030.0 0'+value_on+'000000000000000000000000000000\r', 'utf-8'))
+        else:
+            cc.write(bytes(
+                '$01E 0' + value_t + '.0 00' + value_h + '.0 0100.0 0005.0 0030.0 0'+value_on+'000000000000000000000000000000\r',
                 'utf-8'))
 
         cc.close()

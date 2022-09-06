@@ -29,7 +29,7 @@ class myThread (threading.Thread):
        if self.run_script == 2:
           VisualDati.main_grid()
        if self.run_script == 3:
-           Watchdog.main()
+          Watchdog.main()
 
 class MyWindow:
     def __init__(self, win):
@@ -706,12 +706,14 @@ class MyWindow:
         thread1 = myThread(1, "Log", 1, 0)
         thread2 = myThread(2, "RealTime", 2, 2)
         thread3 = myThread(3, "TestSeq", 3, 1)
-        thread3 = myThread(4, "Watchdog", 4, 3)
+        thread4 = myThread(4, "Watchdog", 4, 3)
 
         # Start new Threads
+        thread4.start()
         thread1.start()
         thread2.start()
         thread3.start()
+
 
     def end_test(self):
         # os.system('python VisualDati.py')

@@ -4,220 +4,12 @@ import struct
 
 from past.builtins import reduce
 
-class Weiss():
-   porta_camera = 'COM4'
-   def set_temperature(self, value):
-        self.temperature_setpoint = value
-        if value < 0:
-            strvalue = '-'
-        else:
-            strvalue = '0'
-        strvalue += '{:05.1f}'.format(abs(round(value, 1)))
-        address = self.porta_camera
-        command = '$' + '{:02d}'.format(address) + 'I' + chr(13)
-        count = 0
-        resp = ''
-        while len(resp) not in [82]:
-            count += 1
-            resp = self.query(command)
-            time.sleep(5)
-            if count == 5:
-                resp = '0020.0 0000.0 0062.0 0000.0 0015.0 01000000000000000000000000000000\r'
-                resp = [ord(c) for c in resp]
-                break
-        result = [chr(x) for x in resp]
-        result = ''.join(result)
-        cmd = '$' + '{:02d}'.format(address) + 'E' \
-              + ' ' + strvalue \
-              + ' ' + result[14:20] \
-              + ' ' + result[28:34] \
-              + ' ' + result[35:41] \
-              + ' ' + result[42:48] \
-              + ' ' + result[49:81] \
-              + chr(13)
-        self.write(cmd)
-        return
-
-    def get_temperature(self):
-        try:
-            address = self.connectionparameters['address']
-            command = '$' + '{:02d}'.format(address) + 'I' + chr(13)
-            resp = self.query(command)
-            result = [chr(x) for x in resp]
-            result = ''.join(result)
-            result = round(float(result[0:6]), 1)
-            self.temperature_setpoint = result
-        except Exception as e:
-            sleep(2)
-            result = self.temperature_setpoint
-            logger.exception(e.args[0])
-        return result
-
-    def get_temperature_measure(self):
-        try:
-            address = self.connectionparameters['address']
-            command = '$' + '{:02d}'.format(address) + 'I' + chr(13)
-            resp = self.query(command)
-            result = [chr(x) for x in resp]
-            result = ''.join(result)
-            result = round(float(result[7:13]), 1)
-            self.temperature_measure = result
-        except Exception as e:
-            sleep(2)
-            result = self.temperature_measure
-            logger.exception(e.args[0])
-        return result
-
-    def set_humidity(self, value):
-        if value > 100:
-            value = 100
-        if value < 0:
-            value = 0
-        self.humidity_setpoint = value
-        strvalue = '{:06.1f}'.format(abs(round(value, 1)))
-        address = self.connectionparameters['address']
-        command = '$' + '{:02d}'.format(address) + 'I' + chr(13)
-        count = 0
-        resp = ''
-        while len(resp) not in [82]:
-            count += 1
-            resp = self.query(command)
-            sleep(5)
-            if count == 5:
-                resp = '0020.0 0000.0 0062.0 0000.0 0015.0 01000000000000000000000000000000\r'
-                resp = [ord(c) for c in resp]
-                break
-        result = [chr(x) for x in resp]
-        result = ''.join(result)
-        cmd = '$' + '{:02d}'.format(address) + 'E' \
-              + ' ' + result[0:6] \
-              + ' ' + strvalue \
-              + ' ' + result[28:34] \
-              + ' ' + result[35:41] \
-              + ' ' + result[42:48] \
-              + ' ' + result[49:81] \
-              + chr(13)
-        self.write(cmd)
-        return
-
-    def get_humidity(self):
-        try:
-            address = self.connectionparameters['address']
-            command = '$' + '{:02d}'.format(address) + 'I' + chr(13)
-            resp = self.query(command)
-            result = [chr(x) for x in resp]
-            result = ''.join(result)
-            result = round(float(result[14:20]), 1)
-            self.humidity_setpoint = result
-        except Exception as e:
-            sleep(2)
-            result = self.humidity_setpoint
-            logger.exception(e.args[0])
-        return result
-
-    def get_humidity_measure(self):
-        try:
-            address = self.connectionparameters['address']
-            command = '$' + '{:02d}'.format(address) + 'I' + chr(13)
-            resp = self.query(command)
-            result = [chr(x) for x in resp]
-            result = ''.join(result)
-            result = round(float(result[21:27]), 1)
-            self.humidity_measure = result
-        except Exception as e:
-            sleep(2)
-            result = self.humidity_measure
-            logger.exception(e.args[0])
-        return result
-
-    def get_output(self):
-        try:
-            address = self.connectionparameters['address']
-            command = '$' + '{:02d}'.format(address) + 'I' + chr(13)
-            resp = self.query(command)
-            result = [chr(x) for x in resp]
-            result = ''.join(result)
-            if result[50] == str(1):
-                self.output = True
-            else:
-                self.output = False
-        except Exception as e:
-            sleep(2)
-            logger.exception(e.args[0])
-        return self.output
-
-    def set_output(self, enable):
-        address = self.connectionparameters['address']
-        command = '$' + '{:02d}'.format(address) + 'I' + chr(13)
-        count = 0
-        resp = ''
-        while len(resp) not in [82]:
-            count += 1
-            resp = self.query(command)
-            sleep(5)
-            if count == 5:
-                resp = '0020.0 0000.0 0062.0 0000.0 0015.0 01000000000000000000000000000000\r'
-                resp = [ord(c) for c in resp]
-                break
-        result = [chr(x) for x in resp]
-        result = ''.join(result)
-        if enable:
-            cmd = '$' + '{:02d}'.format(address) + 'E' \
-                  + ' ' + result[0:6] \
-                  + ' ' + result[14:20] \
-                  + ' ' + result[28:34] \
-                  + ' ' + result[35:41] \
-                  + ' ' + result[42:48] \
-                  + ' ' + result[49] + str(1) + result[51:81] \
-                  + chr(13)
-            self.output = True
-        else:
-            cmd = '$' + '{:02d}'.format(address) + 'E' \
-                  + ' ' + result[0:6] \
-                  + ' ' + result[14:20] \
-                  + ' ' + result[28:34] \
-                  + ' ' + result[35:41] \
-                  + ' ' + result[42:48] \
-                  + ' ' + result[49] + str(0) + result[51:81] \
-                  + chr(13)
-            self.output = True
-        self.write(cmd)
-        return
-
-
-class WeissClimeEvent(Weiss):
-    def __init__(self, category, instrumentdescription, modelsparameters,
-                 sn, code, connectionparameters, configurationparameters, caldue, atpcontext):
-        ClimaticChamber.__init__(self, category, instrumentdescription, modelsparameters,
-                                 sn, code, connectionparameters,
-                                 configurationparameters, caldue, atpcontext)
-
-    def get_idn(self):
-        resp = 'WeissClimeEvent'
-        return resp
-
-
 class Discovery(ClimaticChamber):
     run_status = False
     status_on_value = 2.3693558e-38
     status_off_value = 0.0
     sleep_read = 3
 
-    def __init__(self, category, instrumentdescription, modelsparameters,
-                 sn, code, connectionparameters, configurationparameters, caldue, atpcontext):
-        ClimaticChamber.__init__(self, category, instrumentdescription, modelsparameters,
-                                 sn, code, connectionparameters,
-                                 configurationparameters, caldue, atpcontext)
-
-    def connect(self):
-        return ClimaticChamber.connect(self)
-
-    def afterconnect(self, connection=None):
-        pass
-
-    def get_idn(self):
-        resp = 'Discovery'
-        return resp
 
     def set_temperature(self, value):
         if value > self.configurationparameters['max temperature']:
@@ -388,19 +180,19 @@ class TH1000(TH500):
         return resp
 
 
-# ASCII CODES
-STX = "02"
-ETX = "03"
-EOT = "04"
-ENQ = "05"
-ACK = "06"
-NAK = "15"
-
-# Euroterm 2408 values as per documentation
-# group_id
-GID = "30"
-# unit_id
-UID = "31"
+# # ASCII CODES
+# STX = "02"
+# ETX = "03"
+# EOT = "04"
+# ENQ = "05"
+# ACK = "06"
+# NAK = "15"
+#
+# # Euroterm 2408 values as per documentation
+# # group_id
+# GID = "30"
+# # unit_id
+# UID = "31"
 
 
 # [START] Euroterm 2408 EI-bisync protocol helpers

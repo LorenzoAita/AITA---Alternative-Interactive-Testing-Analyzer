@@ -14,5 +14,7 @@ pip install openpyxl
 pip install pymodbus
 pip install tkinter
 pip install pandastable
+pip install PyQt5
+pip install PyQtWebEngine
 
 pause
