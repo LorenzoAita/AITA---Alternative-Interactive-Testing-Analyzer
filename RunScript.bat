@@ -26,7 +26,7 @@
 ::ZQ0/vhVqMQ3MEVWAtB9wSA==
 ::Zg8zqx1/OA3MEVWAtB9wSA==
 ::dhA7pRFwIByZRRnk
-::Zh4grVQjdCyDJGyX8VAjFDJgYCujFV+GIrof/eX+4f6UnmoUQMoqerP0yL2BLswc7ULhZ6oM/0572IZMWk9adwblaxcxyQ==
+::Zh4grVQjdCyDJGyX8VAjFDJgYCujFV+GIrof/eX+4f6UnmoUQMoqerP0yL2BLswc7ULhZ6oM/0572IZMWk9adwbrI08wrGxXsSqAL8L8
 ::YB416Ek+ZG8=
 ::
 ::
@@ -34,10 +34,6 @@
 echo off
 cls
 
-start img\ATP.png
-timeout 3
-for /F "tokens=2 delims= " %%i in ('tasklist /v /fo table ^| findstr /i ATP') do set pid=%%i
-taskkill /PID %pid%
 python Pannellino.py
 
 echo QUIT
