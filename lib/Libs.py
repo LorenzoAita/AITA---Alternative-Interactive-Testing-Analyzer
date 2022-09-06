@@ -323,39 +323,6 @@ def meas_bridge(inst, log, data, path, save):
     return True
 
 
-# json_config = None
-# def read_regs(connection, start_address, length, timeout_reply=1):
-#     if timeout_reply != connection.timeout:
-#         connection.close()
-#         connection.timeout = timeout_reply
-#         connection.connect()
-#     response = connection.read_holding_registers(address=start_address,
-#                                                   count=length,
-#                                                   unit=int(json_config["MODBUS_SLAVE_ADDRESS"]))
-#     if not response.isError():
-#         print(">>> R ADDRESS " + str(start_address) + ":\t" + list_to_string(response.registers))
-#         return response.registers
-#     else:
-#         print(">>> R FAIL ADDRESS " + str(start_address))
-#         raise TimeoutError
-#
-#
-# def list_to_string(s):
-#     # initialize an empty string
-#     str1 = ""
-#     try:
-#         for ele in s:
-#             if type(ele) is int:
-#                 str1 += str(ele)
-#             else:
-#                 str1 += ele
-#             str1 += " "
-#     except TypeError:
-#         str1 = str(s)
-#     except NameError:  # traverse in the string
-#         str1 = "none"
-#     return str1
-#
 def ReadCol(reg, client, add):
     result = client.read_holding_registers(reg['address'],
                                            reg['length'],
@@ -497,24 +464,63 @@ class Discovery():
 
     def set_temp_hum(self, value_t, value_h, value_on):
         cc = serial.Serial(port=self.com, baudrate=9600, parity="N", stopbits=1, timeout=.3, bytesize=8)
-        cc.write(bytes('$01I\r', 'utf-8'))
-        time.sleep(6)
-        if value_t < 0:
-            if value_t > 0 and value_t < 100:
-                cc.write(bytes(
-                    '$01E -0' + value_t + '.0 00' + value_h + '.0 0100.0 0005.0 0030.0 0' + value_on + '000000000000000000000000000000\r',
-                    'utf-8'))
+
+        if value_on == '1':
+            cc.write(prepare_packet(504, float(value_t)))
+            time.sleep(3)
+            if value_h < '15':
+                status_on_value = 2.3693558e-38             #valore accensione camera + temperatura
             else:
-                cc.write(bytes(
-                    '$01E -' + value_t + '.0 00' + value_h + '.0 0100.0 0005.0 0030.0 0' + value_on + '000000000000000000000000000000\r',
-                    'utf-8'))
-        if value_t > 0 and value_t < 100 :
-            cc.write(bytes('$01E 00'+value_t+'.0 00'+value_h+'.0 0100.0 0005.0 0030.0 0'+value_on+'000000000000000000000000000000\r', 'utf-8'))
+                cc.write(prepare_packet(508, float(value_h)))
+                time.sleep(3)
+                status_on_value = 3.790969281401877e-37     #valore accensione camera + temp + umidità
         else:
-            cc.write(bytes(
-                '$01E 0' + value_t + '.0 00' + value_h + '.0 0100.0 0005.0 0030.0 0'+value_on+'000000000000000000000000000000\r',
-                'utf-8'))
+            status_on_value = 0     #spengi tutto
+        cc.write(prepare_packet(500, status_on_value))
 
         cc.close()
+
+
+def four_numbers(val):
+    return list(reversed(list(struct.pack('f', val))))
+
+
+def crc_modbus(msg):
+    data = bytearray(msg)
+    crc = 0xFFFF
+    for pos in data:
+        crc ^= pos
+        for i in range(8):
+            if (crc & 1) != 0:
+                crc >>= 1
+                crc ^= 0xA001
+            else:
+                crc >>= 1
+    return crc & 0xFF, crc >> 8
+
+
+def answer_to_float(answer):
+    partial = list(answer)
+    result = struct.unpack('f', bytearray([partial[6], partial[5], partial[4], partial[3]]))
+    result = float(result[0])
+    return round(result, 1)
+
+
+def register_address(address):
+    if address > 256:
+        return 1, address - 256
+    return 0, address
+
+
+def prepare_packet(register, value=None):
+    address = register_address(register)
+    msg = [17, 3 if value is None else 16, address[0], address[1], 0, 2]
+    if value is not None:
+        msg.append(4)
+        msg.extend(four_numbers(value))
+
+    msg.extend(crc_modbus(msg))
+    return msg
+
 
 path_config = r'./Config/'

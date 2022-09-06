@@ -294,7 +294,7 @@ def main_test():
                         alim_open = rm.open_resource(test['ALIMENTATORE_PORTA'][j])
                         if 'Regaton' in alim_open.query("*IDN?"):
                             alim = Regatron(alim_open)
-                        elif 'N8957APV' in alim_open.query("*IDN?"):
+                        elif 'Keysight' in alim_open.query("*IDN?"):
                             alim = Keysight(alim_open)
                         alim.curva(cmd['ALIM_CURVA'][i])
                         time.sleep(0.2)
@@ -320,7 +320,10 @@ def main_test():
                 for j in range(0, len(test['CC_PORTA'])):
                     if str(cmd['CC_ON/OFF'][j]) not in ['2', 'nan', '2.0'] and str(test['CC_ON/OFF'][j]) != 'nan':
                         test = pd.read_excel(path_config + 'Config_test.xlsx', sheet_name='Test')
-                        cc = Weiss(com=test['CC_PORTA'])
+                        if test['CC_ID'] == 'Weiss':
+                            cc = Weiss(com=test['CC_PORTA'])
+                        elif test['CC_ID'] == 'Angelantoni':
+                            cc = Discovery(com=test['CC_PORTA'])
                         cc.set_temp_hum(cmd['CC_set point T'][j], cmd['CC_set point H'][j], cmd['CC_ON/OFF'][j])
 
                 time.sleep(cmd['TEMPO'][i])
