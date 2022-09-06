@@ -409,17 +409,19 @@ def WriteCol(reg, client, value, add):
 
 
 class Regatron:
-    pvmode = None
-    voc_old = 0
-    isc_old = 0
-    vdc_old = 0
-    idc_old = 0
-    voc = 0
-    isc = 0
-    sleew = 0
-
     def __init__(self, rm):
         self.rm = rm
+        self.pv_mode = None
+        self.voc_old = 0
+        self.isc_old = 0
+        self.vdc_old = 0
+        self.idc_old = 0
+        self.voc = 0
+        self.isc = 0
+        self.sleew = 0
+        self.over_voltage_protection = 1000
+        self.units_number = 1
+        self.max_output_current = 40
 
     def stato(self, stato):
         INSTRUMENT_alim = self.rm
