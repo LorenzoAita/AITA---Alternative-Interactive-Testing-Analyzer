@@ -306,11 +306,18 @@ def main_test():
                 for j in range(0, len(test['INV_PORTA'])):
                     if str(cmd['INV_VAR'][j]) not in ['2', 'nan', '2.0'] and str(test['INV_VAR'][j]) != 'nan':
                         OrionProtocol.write(test['INV_VAR'][j], test['INV_VAL'][j])
+                # ora gestisco le colonnine
                 for j in range(0, len(test['COL_PORTA'])):
                     telemetry_col, reg, com_colonna, addresses = config_colonnina(path_config)
                     if str(cmd['COL_VAR'][j]) not in ['2', 'nan', '2.0'] and str(test['COL_VAR'][j]) != 'nan':
                         for k in addresses:
                             WriteCol(test['COL_VAR'][j], com_colonna, test['COL_VAL'][j], k)
+                # ora gestisco la camera cliamtica
+                for j in range(0, len(test['CC_PORTA'])):
+                    if str(cmd['CC_ON/OFF'][j]) not in ['2', 'nan', '2.0'] and str(test['CC_ON/OFF'][j]) != 'nan':
+                        test = pd.read_excel(path_config + 'Config_test.xlsx', sheet_name='Test')
+                        cc = Weiss(com=test['CC_PORTA'])
+                        cc.set_temp_hum(cmd['CC_set point T'][j], cmd['CC_set point H'][j])
 
                 time.sleep(cmd['TEMPO'][i])
 

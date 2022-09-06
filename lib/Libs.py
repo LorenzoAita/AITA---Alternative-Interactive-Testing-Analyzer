@@ -438,24 +438,24 @@ class Regatron:
 
 
 class Weiss():
-    def __init__(self):
+    def __init__(self, com):
         test = pd.read_excel(path_config + 'Config_test.xlsx', sheet_name='Test')
-        self.com = test['CC_PORTA']
+        self.com = com#test['CC_PORTA']
         self.bound_rate = 38400
         self.timeout = 30
 
-    def set_temp_hum(self, value_T, value_h):
+    def set_temp_hum(self, value_t, value_h):
         cc = serial.Serial(port=self.com, baudrate=9600, parity="N", stopbits=1, timeout=.3, bytesize=8)
         cc.write(bytes('$01I\r', 'utf-8'))
         time.sleep(6)
-        if value_T < 0:
+        if value_t < 0:
             print('boh')
         #if type(value_T) == int:
-        if value_T > 0 and value_T < 100 :
-            cc.write(bytes('$01E 00'+value_T+'.0 00'+value_h+'.0 0100.0 0005.0 0030.0 00000000000000000000000000000000\r', 'utf-8'))
+        if value_t > 0 and value_t < 100 :
+            cc.write(bytes('$01E 00'+value_t+'.0 00'+value_h+'.0 0100.0 0005.0 0030.0 00000000000000000000000000000000\r', 'utf-8'))
         else:
             cc.write(bytes(
-                '$01E 0' + value_T + '.0 00' + value_h + '.0 0100.0 0005.0 0030.0 00000000000000000000000000000000\r',
+                '$01E 0' + value_t + '.0 00' + value_h + '.0 0100.0 0005.0 0030.0 00000000000000000000000000000000\r',
                 'utf-8'))
 
         cc.close()
