@@ -308,23 +308,26 @@ def main_test():
 
                 # ora gestisco gli inverter
                 for j in range(0, len(test['INV_PORTA'])):
-                    if str(cmd['INV_VAR'][j]) not in ['2', 'nan', '2.0'] and str(test['INV_VAR'][j]) != 'nan':
-                        OrionProtocol.write(test['INV_VAR'][j], test['INV_VAL'][j])
+                    if str(cmd['INV_VAR'][i]) not in ['2', 'nan', '2.0'] and str(test['INV_PORTA'][j]) != 'nan':
+                        OrionProtocol.write(test['INV_VAR'][i], test['INV_VAL'][i])
                 # ora gestisco le colonnine
                 for j in range(0, len(test['COL_PORTA'])):
                     telemetry_col, reg, com_colonna, addresses = config_colonnina(path_config)
-                    if str(cmd['COL_VAR'][j]) not in ['2', 'nan', '2.0'] and str(test['COL_VAR'][j]) != 'nan':
+                    if str(cmd['COL_VAR'][i]) not in ['2', 'nan', '2.0'] and str(test['COL_PORTA'][j]) != 'nan':
                         for k in addresses:
-                            WriteCol(test['COL_VAR'][j], com_colonna, test['COL_VAL'][j], k)
+                            WriteCol(test['COL_VAR'][i], com_colonna, test['COL_VAL'][i], k)
                 # ora gestisco la camera cliamtica
                 for j in range(0, len(test['CC_PORTA'])):
-                    if str(cmd['CC_ON/OFF'][j]) not in ['2', 'nan', '2.0'] and str(test['CC_ON/OFF'][j]) != 'nan':
+                    if str(cmd['CC_ON/OFF'][i]) not in ['2', 'nan', '2.0'] and str(test['CC_PORTA'][j]) != 'nan':
                         test = pd.read_excel(path_config + 'Config_test.xlsx', sheet_name='Test')
                         if test['CC_ID'] == 'Weiss':
                             cc = Weiss(com=test['CC_PORTA'])
                         elif test['CC_ID'] == 'Angelantoni':
                             cc = Discovery(com=test['CC_PORTA'])
-                        cc.set_temp_hum(cmd['CC_set point T'][j], cmd['CC_set point H'][j], cmd['CC_ON/OFF'][j])
+                        elif test['CC_ID'] == 'Endurance':
+                            cc = Endurance(com=test['CC_PORTA'])
+
+                        cc.set_temp_hum(cmd['CC_set point T'][i], cmd['CC_set point H'][i], cmd['CC_ON/OFF'][i])
 
                 time.sleep(cmd['TEMPO'][i])
 

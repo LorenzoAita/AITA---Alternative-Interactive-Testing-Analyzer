@@ -4,6 +4,8 @@ import pandas as pd
 import struct
 import time
 import serial
+from pymodbus.client.sync import ModbusSerialClient as ModbusClient  # initialize a serial RTU client instance
+from datetime import datetime
 
 
 class OrionProtocol:
@@ -525,6 +527,27 @@ def prepare_packet(register, value=None):
 
     msg.extend(crc_modbus(msg))
     return msg
+
+
+class Endurance(ModbusBaseClient):
+    def __init__(self, com):
+        self.com = com
+
+    def set_temp_hum(self, value_t, value_h, value_on):
+        cc = ModbusClient(method="rtu", port=self.com, stopbits=1, bytesize=8, parity='N', baudrate=9600)
+        cc.connect()
+
+        if value_on == '1':
+            cc.write_register(306, value_t*10, unit=1) #il *10 perché la camera lo vede come decimale
+            cc.write_coil(8205, 1, unit=1)
+            cc.write_coil(8205, 0, unit=1)
+            cc.write_coil(8193, 1, unit=1)
+            cc.write_coil(8193, 0, unit=1)
+        else:
+            cc.write_coil(8194, 1, unit=1)
+            cc.write_coil(8194, 0, unit=1)
+
+        cc.close()
 
 
 path_config = r'./Config/'
