@@ -482,7 +482,8 @@ class Discovery():
                         status_on_value = 3.790969281401877e-37  # valore accensione camera + temp + umidità
         else:
             status_on_value = 0  # spengi tutto
-        cc.write(prepare_packet(500, status_on_value))
+        if value_on != '':
+            cc.write(prepare_packet(500, status_on_value))
 
         cc.close()
 
@@ -542,8 +543,9 @@ class Endurance():
                 cc.write_register(306, int(value_t)*10, unit=1)  # il *10 perché la camera lo vede come decimale
                 cc.write_coil(8205, 1, unit=1)
                 cc.write_coil(8205, 0, unit=1)
-            cc.write_coil(8193, 1, unit=1)
-            cc.write_coil(8193, 0, unit=1)
+            if value_on != '':
+                cc.write_coil(8193, 1, unit=1)
+                cc.write_coil(8193, 0, unit=1)
         else:
             cc.write_coil(8194, 1, unit=1)
             cc.write_coil(8194, 0, unit=1)
