@@ -473,16 +473,14 @@ class Discovery():
             if str(value_t) not in ['', 'nan']:
                 cc.write(prepare_packet(504, float(value_t)))
                 time.sleep(3)
-                if str(value_h) not in ['', 'nan']:
-                    if int(value_h) < 15:
-                        status_on_value = 2.3693558e-38  # valore accensione camera + temperatura
-                    else:
-                        cc.write(prepare_packet(508, float(value_h)))
-                        time.sleep(3)
-                        status_on_value = 3.790969281401877e-37  # valore accensione camera + temp + umidità
+                status_on_value = 2.3693558e-38  # valore accensione camera + temperatura
+            if str(value_h) not in ['', 'nan'] and float(value_h) > 15:
+                cc.write(prepare_packet(508, float(value_h)))
+                time.sleep(3)
+                status_on_value = 3.790969281401877e-37  # valore accensione camera + temp + umidità
         else:
             status_on_value = 0  # spengi tutto
-        if value_on != '':
+        if str(value_on) != '':
             cc.write(prepare_packet(500, status_on_value))
 
         cc.close()
