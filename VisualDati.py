@@ -5,6 +5,8 @@ import time
 import plotly.graph_objects as go
 
 path_config = r'./Config/'
+bg = "#f5f6f7"
+width = 20
 device = list(pd.read_excel(path_config + 'Config.xlsx', sheet_name='Strumenti')['ELENCO STRUMENTI'])
 
 
@@ -42,6 +44,9 @@ class MyWindow:
         self.b2 = Button(win, text='Grafico', command=self.graph, width=width, bg='lightblue')
         self.b1.place(x=80, y=25)
         self.b2.place(x=270, y=25)
+
+        self.b3 = Button(win, text='Camera Climatica', command=self.cc, width=width, bg='lightblue')
+        self.b3.place(x=80, y=75)
 
     def data(self):
         TestApp()
@@ -182,13 +187,61 @@ class MyWindow:
                                 name=list_plot[i])
         fig.show()
 
+    def cc(self):       #____________PANNELLINO CAMERA CLIMATICA!_______________
+        newWindow = Toplevel(self.win)
+        newWindow.title("AITA - Command Climatic Chamber")
+        newWindow.geometry("750x200")
+        self.lbl1 = Label(newWindow, text='Modello', bg=bg)
+        self.lbl2 = Label(newWindow, text='Porta', bg=bg)
+        self.lbl5 = Label(newWindow, text='Temperature', bg=bg)
+        self.lbl3 = Label(newWindow, text='Humidity', bg=bg)
+        self.lbl4 = Label(newWindow, text='ON/OFF', bg=bg)
+
+        OPTIONS = ["Weiss", "Angelantoni", "Endurance"]
+        self.WT = StringVar(newWindow)
+        self.WT.set(OPTIONS[0])  # default value
+        self.t1 = OptionMenu(newWindow, self.WT, *OPTIONS)
+        self.t1.pack() #tipologia camera
+
+        self.t2 = Entry(newWindow, bd=3) #com
+        self.t3 = Entry(newWindow, bd=3) #Umidità
+        self.t4 = Entry(newWindow, bd=3) #On/Off
+        self.t5 = Entry(newWindow, bd=3) #Temperature
+
+        self.lbl1.place(x=100, y=30)
+        self.t1.place(x=100, y=60)
+        self.lbl2.place(x=250, y=30)
+        self.t2.place(x=250, y=70)
+
+        self.lbl5.place(x=100, y=100)
+        self.t5.place(x=100, y=130)
+        self.lbl3.place(x=300, y=100)
+        self.t3.place(x=300, y=130)
+        self.lbl4.place(x=500, y=100)
+        self.t4.place(x=500, y=130)
+
+        self.b1 = Button(newWindow, text='Send', command=self.send_cc, width=width, bg='lightgreen')
+        self.b1.place(x=500, y=50)
+
+    def send_cc(self):
+        value = [self.WT.get(), self.t2.get(), self.t3.get(),
+                 self.t4.get(), self.t5.get()]
+        if value[0] == 'Weiss':
+            camera_climatica = Weiss(com=value[1])
+        elif value[0] == 'Angelantoni':
+            camera_climatica = Discovery(com=value[1])
+        elif value[0] == 'Endurance':
+            camera_climatica = Endurance(com=value[1])
+
+        camera_climatica.set_temp_hum(value[4], value[2], value[3])
+
 
 def main_grid():
     try:
         width = 20
         window2 = Tk()
         window2.title('AITA - Run Time Log')
-        window2.geometry("500x100")
+        window2.geometry("500x200")
         MyWindow(window2, width)
         # b1 = Button(window2, text='Raw Data', command=data(window2), width=width, bg='lightgreen')
         # b2 = Button(window2, text='Grafico', command=graph(window2), width=width, bg='lightblue')
@@ -204,7 +257,6 @@ def main_grid():
 
     except:
         path_watchdog = r'S:\@Solar\Reliability Laboratory\0_Stazioni di Test\10_AITA\0_misc/watchdog.txt'
-        file_object = open(path_watchdog, "W")
+        file_object = open(path_watchdog, "w")
         file_object.write('3')
         file_object.close()
-
