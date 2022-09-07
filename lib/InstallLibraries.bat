@@ -16,5 +16,6 @@ pip install tkinter
 pip install pandastable
 pip install PyQt5
 pip install PyQtWebEngine
+pip install pymodbus
 
 pause
