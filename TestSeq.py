@@ -319,13 +319,12 @@ def main_test():
                 # ora gestisco la camera cliamtica
                 for j in range(0, len(test['CC_PORTA'])):
                     if str(cmd['CC_ON/OFF'][i]) not in ['2', 'nan', '2.0'] and str(test['CC_PORTA'][j]) != 'nan':
-                        test = pd.read_excel(path_config + 'Config_test.xlsx', sheet_name='Test')
-                        if test['CC_ID'] == 'Weiss':
-                            cc = Weiss(com=test['CC_PORTA'])
-                        elif test['CC_ID'] == 'Angelantoni':
-                            cc = Discovery(com=test['CC_PORTA'])
-                        elif test['CC_ID'] == 'Endurance':
-                            cc = Endurance(com=test['CC_PORTA'])
+                        if test['CC_ID'][0] == 'Weiss':
+                            cc = Weiss(com=test['CC_PORTA'][0])
+                        elif test['CC_ID'][0] == 'Angelantoni':
+                            cc = Discovery(com=test['CC_PORTA'][0])
+                        elif test['CC_ID'][0] == 'Endurance':
+                            cc = Endurance(com=test['CC_PORTA'][0])
 
                         cc.set_temp_hum(cmd['CC_set point T'][i], cmd['CC_set point H'][i], cmd['CC_ON/OFF'][i])
 
@@ -337,6 +336,6 @@ def main_test():
                 a = False
     except:
         path_watchdog = r'S:\@Solar\Reliability Laboratory\0_Stazioni di Test\10_AITA\0_misc/watchdog.txt'
-        file_object = open(path_watchdog, "W")
+        file_object = open(path_watchdog, "w")
         file_object.write('2')
         file_object.close()

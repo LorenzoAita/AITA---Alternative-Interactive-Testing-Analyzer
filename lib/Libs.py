@@ -471,10 +471,10 @@ class Discovery():
     def set_temp_hum(self, value_t, value_h, value_on):
         cc = serial.Serial(port=self.com, baudrate=9600, parity="N", stopbits=1, timeout=.3, bytesize=8)
 
-        if value_on == '1':
+        if value_on == 1:
             cc.write(prepare_packet(504, float(value_t)))
             time.sleep(3)
-            if value_h < '15':
+            if value_h < 15:
                 status_on_value = 2.3693558e-38  # valore accensione camera + temperatura
             else:
                 cc.write(prepare_packet(508, float(value_h)))
@@ -529,7 +529,7 @@ def prepare_packet(register, value=None):
     return msg
 
 
-class Endurance(ModbusBaseClient):
+class Endurance():
     def __init__(self, com):
         self.com = com
 
