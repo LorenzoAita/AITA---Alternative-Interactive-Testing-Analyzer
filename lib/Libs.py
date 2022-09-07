@@ -436,29 +436,27 @@ class Keysight:
 class Weiss():
     def __init__(self, com):
         self.com = com
-        self.bound_rate = 38400
-        self.timeout = 30
 
     def set_temp_hum(self, value_t, value_h, value_on):
         cc = serial.Serial(port=self.com, baudrate=9600, parity="N", stopbits=1, timeout=.3, bytesize=8)
         cc.write(bytes('$01I\r', 'utf-8'))
         time.sleep(6)
-        if value_t < 0:
-            if value_t > 0 and value_t < 100:
+        if float(value_t) < 0:
+            if float(value_t) > 0 and float(value_t) < 100:
                 cc.write(bytes(
-                    '$01E -0' + value_t + '.0 00' + value_h + '.0 0100.0 0005.0 0030.0 0' + value_on + '000000000000000000000000000000\r',
+                    '$01E -0' + str(value_t) + '.0 00' + str(value_h) + '.0 0100.0 0005.0 0030.0 0' + str(value_on) + '000000000000000000000000000000\r',
                     'utf-8'))
             else:
                 cc.write(bytes(
-                    '$01E -' + value_t + '.0 00' + value_h + '.0 0100.0 0005.0 0030.0 0' + value_on + '000000000000000000000000000000\r',
+                    '$01E -' + str(value_t) + '.0 00' + str(value_h) + '.0 0100.0 0005.0 0030.0 0' + str(value_on) + '000000000000000000000000000000\r',
                     'utf-8'))
-        if value_t > 0 and value_t < 100:
+        if float(value_t) > 0 and float(value_t) < 100:
             cc.write(bytes(
-                '$01E 00' + value_t + '.0 00' + value_h + '.0 0100.0 0005.0 0030.0 0' + value_on + '000000000000000000000000000000\r',
+                '$01E 00' + str(value_t) + '.0 00' + str(value_h) + '.0 0100.0 0005.0 0030.0 0' + str(value_on) + '000000000000000000000000000000\r',
                 'utf-8'))
         else:
             cc.write(bytes(
-                '$01E 0' + value_t + '.0 00' + value_h + '.0 0100.0 0005.0 0030.0 0' + value_on + '000000000000000000000000000000\r',
+                '$01E 0' + str(value_t) + '.0 00' + str(value_h) + '.0 0100.0 0005.0 0030.0 0' + str(value_on) + '000000000000000000000000000000\r',
                 'utf-8'))
 
         cc.close()
@@ -471,15 +469,17 @@ class Discovery():
     def set_temp_hum(self, value_t, value_h, value_on):
         cc = serial.Serial(port=self.com, baudrate=9600, parity="N", stopbits=1, timeout=.3, bytesize=8)
 
-        if value_on == 1:
-            cc.write(prepare_packet(504, float(value_t)))
-            time.sleep(3)
-            if value_h < 15:
-                status_on_value = 2.3693558e-38  # valore accensione camera + temperatura
-            else:
-                cc.write(prepare_packet(508, float(value_h)))
+        if int(value_on) == 1:
+            if str(value_t) not in ['', 'nan']:
+                cc.write(prepare_packet(504, float(value_t)))
                 time.sleep(3)
-                status_on_value = 3.790969281401877e-37  # valore accensione camera + temp + umidità
+                if str(value_h) not in ['', 'nan']:
+                    if int(value_h) < 15:
+                        status_on_value = 2.3693558e-38  # valore accensione camera + temperatura
+                    else:
+                        cc.write(prepare_packet(508, float(value_h)))
+                        time.sleep(3)
+                        status_on_value = 3.790969281401877e-37  # valore accensione camera + temp + umidità
         else:
             status_on_value = 0  # spengi tutto
         cc.write(prepare_packet(500, status_on_value))
@@ -538,9 +538,10 @@ class Endurance():
         cc.connect()
 
         if value_on == '1':
-            cc.write_register(306, value_t*10, unit=1) #il *10 perché la camera lo vede come decimale
-            cc.write_coil(8205, 1, unit=1)
-            cc.write_coil(8205, 0, unit=1)
+            if value_t != '':
+                cc.write_register(306, int(value_t)*10, unit=1)  # il *10 perché la camera lo vede come decimale
+                cc.write_coil(8205, 1, unit=1)
+                cc.write_coil(8205, 0, unit=1)
             cc.write_coil(8193, 1, unit=1)
             cc.write_coil(8193, 0, unit=1)
         else:
