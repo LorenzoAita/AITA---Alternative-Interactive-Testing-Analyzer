@@ -380,6 +380,17 @@ def WriteCol(reg, client, value, add):
 class Regatron:
     def __init__(self, rm):
         self.rm = rm
+        self.pv_mode = None
+        self.voc_old = 0
+        self.isc_old = 0
+        self.vdc_old = 0
+        self.idc_old = 0
+        self.voc = 0
+        self.isc = 0
+        self.sleew = 0
+        self.over_voltage_protection = 1000
+        self.units_number = 1
+        self.max_output_current = 40
 
     def stato(self, stato):
         INSTRUMENT_alim = self.rm
@@ -400,7 +411,7 @@ class Regatron:
         INSTRUMENT_alim = self.rm
         INSTRUMENT_alim.write("CURR " + str(cur))
 
-    def curva(self, curva):
+    def pv_curve(self, curva):
         INSTRUMENT_alim = self.rm
         INSTRUMENT_alim.write("topc:reg:writ #H5cc7,  " + str(curva))
 
@@ -408,6 +419,17 @@ class Regatron:
 class Keysight:
     def __init__(self, rm):
         self.rm = rm
+        self.pv_mode = None
+        self.voc_old = 0
+        self.isc_old = 0
+        self.vdc_old = 0
+        self.idc_old = 0
+        self.voc = 0
+        self.isc = 0
+        self.sleew = 0
+        self.over_voltage_protection = 1000
+        self.units_number = 1
+        self.max_output_current = 30
 
     def stato(self, stato):
         INSTRUMENT_alim = self.rm
@@ -422,15 +444,79 @@ class Keysight:
 
     def voltage(self, volt):
         INSTRUMENT_alim = self.rm
-        INSTRUMENT_alim.write("VOLT " + str(volt))
+        if self.pv_mode == "PS":  # set voltage in power supply mode
+            value = volt
+            INSTRUMENT_alim.write("VOLT " + str(value))
+        else: # set voltage in curve mode
+            value = volt / float(self.voc) * 100
+            INSTRUMENT_alim.write("sas:scal:volt " + str(value))
+        self.voc_old = value
+        self.vdc_old = value
 
     def current(self, cur):
         INSTRUMENT_alim = self.rm
-        INSTRUMENT_alim.write("CURR " + str(cur))
+        if self.pv_mode == "PS":  # set current in power supply mode
+            value = cur
+            INSTRUMENT_alim.write("CURR " + str(cur))
+        else:  # set voltage in curve mode
+            value = cur / float(self.isc) * 100
+            if self.sleew == 0:
+                INSTRUMENT_alim.write("sas:scal:curr " + str(value))
+            else:
+                INSTRUMENT_alim.write("DIAG:SAS:SCAL:CURR:SLEW " + str((abs(value -
+                                                                 (self.isc_old / float(self.isc) * 100)))
+                                                            / self.sleew))
+                INSTRUMENT_alim.write("DIAG:SAS:SCAL:TCUR " + str(value))
+        self.isc_old = value
+        self.idc_old = value
 
-    def curva(self, curva):
+    def set_sleew(self, sleew):
         INSTRUMENT_alim = self.rm
-        INSTRUMENT_alim.write("topc:reg:writ #H5cc7,  " + str(curva))
+        if sleew > 100000:
+            sleew = 100000
+        elif sleew < 0.2:
+            sleew = 0
+        INSTRUMENT_alim.write("DIAG:MEAS:BUFF:INT 15")
+        self.sleew = sleew
+
+    def pv_mode(self, enable):
+        INSTRUMENT_alim = self.rm
+        INSTRUMENT_alim.stato(0)
+        time.sleep(0.3)
+        if enable is True:
+            self.pvmode = "PV"
+            tempmode = "TABL"
+            INSTRUMENT_alim.write("'SAS:TABL:ACT")
+        else:
+            self.pvmode = "PS"
+            tempmode = "FIX"
+        time.sleep(0.2)
+        INSTRUMENT_alim.write("SAS:MODE " + tempmode)
+        time.sleep(0.2)
+
+    def pv_curve(self, pvcurveresult):
+        INSTRUMENT_alim = self.rm
+        INSTRUMENT_alim.stato(0)
+        time.sleep(0.3)
+        temp_v = ""
+        temp_i = ""
+        for i in range(len(pvcurveresult.vdc)):
+            temp_v = temp_v + "," + '{:.3f}'.format(float(pvcurveresult.vdc[len(pvcurveresult.vdc) - i - 1])
+                                                    * self.over_voltage_protection)
+            temp_i = temp_i + "," + '{:.4f}'.format(float(pvcurveresult.idc[len(pvcurveresult.vdc) - i - 1])
+                                                    * self.units_number * self.max_output_current)
+        INSTRUMENT_alim.write(":MEM:TABL:VOLT " + temp_v[1:])
+        time.sleep(0.25)
+        INSTRUMENT_alim.write(":MEM:TABL:CURR " + temp_i[1:])
+        time.sleep(0.25)
+        INSTRUMENT_alim.write("SAS:TABL:ACT")
+        time.sleep(0.25)
+        INSTRUMENT_alim.write("SAS:MODE TABL")
+        time.sleep(0.25)
+        self.voc_old = self.over_voltage_protection
+        self.isc_old = self.units_number * self.max_output_current
+        self.voc = self.over_voltage_protection
+        self.isc = self.units_number * self.max_output_current
 
 
 class Weiss():
