@@ -26,3 +26,4 @@ lib/__pycache__/Libs.cpython-38.pyc
 .idea/AITA---Alternative-Interactive-Testing-Analyzer.iml
 .idea/inspectionProfiles/profiles_settings.xml
 Config/Config.xlsx
+lib/prova.py

@@ -419,7 +419,7 @@ class Regatron:
 class Keysight:
     def __init__(self, rm):
         self.rm = rm
-        self.pv_mode = None
+        self.pv_mode = "PS"
         self.voc_old = 0
         self.isc_old = 0
         self.vdc_old = 0
