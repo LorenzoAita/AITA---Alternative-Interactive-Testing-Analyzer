@@ -292,10 +292,15 @@ def main_test():
                         session = requests.Session()
                         rm = pyvisa.ResourceManager()
                         alim_open = rm.open_resource(test['ALIMENTATORE_PORTA'][j])
-                        if 'Regaton' in alim_open.query("*IDN?"):
+                        if 'REGATRON' in alim_open.query("*IDN?"):
                             alim = Regatron(alim_open)
-                        elif 'Keysight' in alim_open.query("*IDN?"):
+                        elif 'N8957APV' in alim_open.query("*IDN?"):
                             alim = Keysight(alim_open)
+                        elif 'SORRENSEN' in alim_open.query("*IDN?"):
+                            alim = Sorrensen(alim_open)
+                        elif 'LAMBDA' in alim_open.query("*IDN?"):
+                            alim = Lambda(alim_open)
+
                         alim.curva(cmd['ALIM_CURVA'][i])
                         time.sleep(0.2)
                         alim.power(cmd['ALIM_POW'][i])

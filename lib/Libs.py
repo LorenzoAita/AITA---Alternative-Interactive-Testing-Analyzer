@@ -457,7 +457,7 @@ class Keysight:
         INSTRUMENT_alim = self.rm
         if self.pv_mode == "PS":  # set current in power supply mode
             value = cur
-            INSTRUMENT_alim.write("CURR " + str(cur))
+            INSTRUMENT_alim.write("CURR " + str(value))
         else:  # set voltage in curve mode
             value = cur / float(self.isc) * 100
             if self.sleew == 0:
@@ -517,6 +517,73 @@ class Keysight:
         self.isc_old = self.units_number * self.max_output_current
         self.voc = self.over_voltage_protection
         self.isc = self.units_number * self.max_output_current
+
+
+class Lambda:
+    def __init__(self, rm):
+        self.rm = rm
+        self.pv_mode = None
+        self.vdc_old = 0
+        self.idc_old = 0
+        self.over_voltage_protection = 80
+        self.units_number = 1
+        self.max_output_current = 19
+
+    def stato(self, stato):
+        INSTRUMENT_alim = self.rm
+        if stato == 1:
+            INSTRUMENT_alim.write("OUTP:STAT ON")
+        elif stato == 0:
+            INSTRUMENT_alim.write("OUTP:STAT OFF")
+
+    def power(self, pow):
+        pass
+
+    def voltage(self, volt):
+        INSTRUMENT_alim = self.rm
+        value = volt
+        INSTRUMENT_alim.write(":VOLT " + str(value))
+        self.vdc_old = value
+
+    def current(self, cur):
+        INSTRUMENT_alim = self.rm
+        value = cur
+        INSTRUMENT_alim.write(":CURR " + str(value))
+        self.idc_old = value
+
+
+class Sorrensen:
+    def __init__(self, rm):
+        self.rm = rm
+        self.pv_mode = None
+        self.vdc_old = 0
+        self.idc_old = 0
+        self.over_voltage_protection = 80
+        self.units_number = 1
+        self.max_output_current = 19
+
+    def stato(self, stato):
+        INSTRUMENT_alim = self.rm
+        if stato == 1:
+            INSTRUMENT_alim.write("OUTP:STAT ON")
+        elif stato == 0:
+            INSTRUMENT_alim.write("OUTP:STAT OFF")
+
+    def power(self, pow):
+        INSTRUMENT_alim = self.rm
+        INSTRUMENT_alim.write("SOUR:POW " + str(pow))
+
+    def voltage(self, volt):
+        INSTRUMENT_alim = self.rm
+        value = volt
+        INSTRUMENT_alim.write("SOUR:VOLT " + str(value))
+        self.vdc_old = value
+
+    def current(self, cur):
+        INSTRUMENT_alim = self.rm
+        value = cur
+        INSTRUMENT_alim.write("SOUR:CURR " + str(value))
+        self.idc_old = value
 
 
 class Weiss():
