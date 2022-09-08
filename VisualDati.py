@@ -4,6 +4,8 @@ import pandas as pd
 import time
 import plotly.graph_objects as go
 
+from lib.Libs import *
+
 path_config = r'./Config/'
 bg = "#f5f6f7"
 width = 20
@@ -26,7 +28,7 @@ class TestApp(Frame):
         if str(namefile) == 'nan':
             namefile = 'Data'
         if str(pd.read_excel(r'.\Config\Config.xlsx', sheet_name='Strumenti')['PERCORSO OUTPUT'][0]) == 'nan':
-            path_save = ''
+            path_save = 'data/'
         else:
             path_save = pd.read_excel(r'.\Config\Config.xlsx', sheet_name='Strumenti')['PERCORSO OUTPUT'][0]
         self.table = pt = Table(f,
@@ -256,7 +258,7 @@ def main_grid():
         #          app_w.mainloop()
 
     except:
-        path_watchdog = './misc/watchdog.txt'
+        path_watchdog = 'misc/watchdog.txt'
         file_object = open(path_watchdog, "w")
         file_object.write('3')
         file_object.close()

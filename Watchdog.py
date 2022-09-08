@@ -15,7 +15,8 @@ def main():
     if file_object.readline() == '1':
         print('l\'errore è nel log!')
         # provo a farli ripartire
-        os.system('python Watchdog.py & LogAita.py')
+        os.system('python Watchdog.py &')
+        os.system('python LogAita.py &')
     if file_object.readline() == '2':
         print('l\'errore è nella sequenza di test!')
         # killo tutti i processi
@@ -25,6 +26,7 @@ def main():
     if file_object.readline() == '3':
         print('l\'errore è nella visualizzazione dei dati!')
         # provo a farli ripartire
-        os.system('python Watchdog.py & visulaDati.py')
+        os.system('python Watchdog.py &')
+        os.system('python VisulaDati.py')
 
 main()
