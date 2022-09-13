@@ -12,6 +12,7 @@ import Watchdog
 
 exitFlag = 0
 
+
 class myThread (threading.Thread):
     def __init__(self, threadID, name, counter, run_script):
        threading.Thread.__init__(self)
@@ -31,84 +32,34 @@ class myThread (threading.Thread):
        if self.run_script == 3:
           Watchdog.main()
 
+
 class MyWindow:
     def __init__(self, win):
-        # self.lbl1 = Label(win, text='Config. Agilent', bg=bg)
-        # self.lbl2 = Label(win, text='Config. Inverter', bg=bg)
-        # self.lbl3 = Label(win, text='Config. Wattmeter2', bg=bg)
-        # self.lbl4 = Label(win, text='Config. Inverter', bg=bg)
-        # self.lbl5 = Label(win, text='Config. Wattmeter', bg=bg)
-        # self.lbl6 = Label(win, text='Config. Wattmeter2', bg=bg)
-        # self.lbl7 = Label(win, text='Config. Bridge', bg=bg)
-        # self.lbl8 = Label(win, text='Config. Colonnina', bg=bg)
-        # self.lbl9 = Label(win, text='', bg=bg)
-        # self.t1 = Entry(bd=3)
-        # self.t2 = Entry(bd=3)
-        # self.t3 = Entry(bd=3)
-        # self.t4 = Entry(bd=3)
-        # self.t5 = Entry(bd=3)
-        # self.t6 = Entry(bd=3)
-        # self.t7 = Entry(bd=3)
-        # self.t8 = Entry(bd=3)
-        # self.t9 = Entry(bd=3, state='disabled')
-        # self.t10 = Entry(bd=3, state='disabled')
-        # self.t11 = Entry(bd=3, state='disabled')
-        # self.btn1 = Button(win, text='Chiusura Interruttori')
-        # self.btn2 = Button(win, text='Set V DC')
-        # self.btn3 = Button(win, text='Set Tamb')
-        # self.btn4 = Button(win, text='Read V DC')
-        # self.btn5 = Button(win, text='Read Tamb')
-        # self.btn6 = Button(win, text='Read Setpoint Tamb')
+
         self.b7 = Button(win, text='START TEST', command=self.start, width=width, bg='lightgreen')
-        # self.b8 = Button(win, text='UTA OFF', command=self.spengi_UTA, width=width, bg='red')
-        # variac
-        # self.lbl1.place(x=100, y=30)
-        # self.t1.place(x=100, y=70)
-        # self.lbl7.place(x=250, y=30)
-        # self.t7.place(x=200, y=70)
-        # interruttori
-        # self.lbl5.place(x=100, y=100)
-        # self.t5.place(x=100, y=140)
-        # self.lbl6.place(x=250, y=100)
-        # self.t6.place(x=200, y=140)
-        # uta
-        # self.lbl2.place(x=100, y=170)
-        # self.t2.place(x=100, y=210)
-        # self.lbl8.place(x=250, y=170)
-        # self.t8.place(x=200, y=210)
-        # self.b7.place(x=120, y=250)
-        # self.b8.place(x=230, y=250)
-        # results
-        # self.lbl9.place(x=820, y=40)
 
         self.b1 = Button(win, text='Config. Wattmeter', command=self.wt1, width=width, bg='#00FFFF')
         self.b2 = Button(win, text='Config. Agilent', command=self.agilent, width=width, bg='#00FFFF')
         self.b3 = Button(win, text='Config. Bridge', command=self.bridge, width=width, bg='#00FFFF')
         self.b4 = Button(win, text='Config. Inverter', command=self.inv, width=width, bg='#00FFFF')
         self.b5 = Button(win, text='Config. Wattmeter2', command=self.wt2, width=width, bg='#00FFFF')
-        # self.b8 = Button(win, text='Chiusura Tutti\rInterruttori AC', command=self.cmdplc_all_AC, width=width, bg='#00FFFF')
         self.b6 = Button(win, text='Config. Colonnina', command=self.ACStation, width=width, bg='#00FFFF')
-        # self.b7 = Button(win, text='Read setpoint\rTamb', command=self.read_settemp, width=width, bg='#00FFFF')
-        # self.b2.bind('<Button-1>', self.set_vdc)
         # interruttori
         self.b1.place(x=100, y=65)
         self.b5.place(x=270, y=65)
-        # self.b8.place(x=650, y=125)
-        # self.t9.place(x=820, y=140)
         # variac
         self.b2.place(x=100, y=25)
         self.b3.place(x=270, y=25)
-        # self.t10.place(x=820, y=70)
         # uta
         self.b4.place(x=100, y=105)
         self.b6.place(x=270, y=105)
         self.b7.place(x=190, y=145)
-        # self.t11.place(x=820, y=210)
 
     def ACStation(self):
         newWindow = Toplevel(window)
         newWindow.title("AC Station Config")
         newWindow.geometry("800x750")
+        newWindow.iconbitmap('img/logo_hEC_icon.ico')
 
         self.lbl1 = Label(newWindow, text='Ip o COM', bg=bg)
         self.lbl2 = Label(newWindow, text='Porta', bg=bg)
@@ -154,6 +105,7 @@ class MyWindow:
         newWindow = Toplevel(window)
         newWindow.title("Bridge Config")
         newWindow.geometry("700x1000")
+        newWindow.iconbitmap('img/logo_hEC_icon.ico')
 
         self.lbl1 = Label(newWindow, text='Tipo di misura', bg=bg)
         self.lbl2 = Label(newWindow, text='Freq min', bg=bg)
@@ -215,6 +167,7 @@ class MyWindow:
         newWindow = Toplevel(window)
         newWindow.title("Wattmeter Config")
         newWindow.geometry("900x800")
+        newWindow.iconbitmap('img/logo_hEC_icon.ico')
 
         self.lbl1 = Label(newWindow, text='Modello', bg=bg)
         self.lbl2 = Label(newWindow, text='Porta', bg=bg)
@@ -269,6 +222,7 @@ class MyWindow:
         newWindow = Toplevel(window)
         newWindow.title("Wattmeter Config")
         newWindow.geometry("900x800")
+        newWindow.iconbitmap('img/logo_hEC_icon.ico')
 
         self.lbl1 = Label(newWindow, text='Modello', bg=bg)
         self.lbl2 = Label(newWindow, text='Porta', bg=bg)
@@ -323,6 +277,7 @@ class MyWindow:
         newWindow = Toplevel(window)
         newWindow.title("Orion Inverter Config")
         newWindow.geometry("600x750")
+        newWindow.iconbitmap('img/logo_hEC_icon.ico')
 
         self.lbl1 = Label(newWindow, text='Ip o COM', bg=bg)
         self.lbl2 = Label(newWindow, text='Seriale', bg=bg)
@@ -351,6 +306,7 @@ class MyWindow:
         newWindow = Toplevel(window)
         newWindow.title("Datalogger Config")
         newWindow.geometry("1050x800")
+        newWindow.iconbitmap('img/logo_hEC_icon.ico')
 
         self.lbl1 = Label(newWindow, text='Modello', bg=bg)
         self.lbl2 = Label(newWindow, text='Porta', bg=bg)
@@ -394,7 +350,7 @@ class MyWindow:
         self.b1.place(x=710, y=400)
 
     def send_colonna(self):
-        excel_config = pd.DataFrame()  # .read_excel(path_config + 'Config.xlsx', sheet_name='Colonnina')
+        excel_config = pd.DataFrame()
         # nome = ['Ip o COM', 'Porta', 'Modalità', 'Address', 'Telemetrie', 'Registri']
         value = [self.t1.get(), self.t2.get(), self.t3.get(), self.t4.get(),
                  list(self.t5.get("1.0", 'end-1c').split('\n')),
@@ -563,6 +519,7 @@ class MyWindow:
         newWindow = Toplevel(window)
         newWindow.title("Test Config")
         newWindow.geometry("800x350")
+        newWindow.iconbitmap('img/logo_hEC_icon.ico')
 
         self.t1 = IntVar()
         c1 = Checkbutton(newWindow, text='Bridge', variable=self.t1, onvalue=1, offvalue=0)
@@ -615,25 +572,8 @@ class MyWindow:
         self.lbl5.place(x=450, y=120)
         self.t10.place(x=450, y=150)
 
-        # self.lbl6 = Label(newWindow, text='Grandezze da graficare', bg=bg)
-        # self.t11 = Text(newWindow, bd=3, height=10, width=20)
-        # self.lbl6.place(x=650, y=20)
-        # self.t11.place(x=650, y=50)
-        #
-        # self.lbl7 = Label(newWindow, text='Asse di riferimento', bg=bg)
-        # self.t12 = Text(newWindow, bd=3, height=10, width=20)
-        # self.lbl7.place(x=870, y=20)
-        # self.t12.place(x=870, y=50)
-        #
-        # self.lbl8 = Label(newWindow, text='Refresh del grafico', bg=bg)
-        # self.t13 = Entry(newWindow, bd=3)
-        # self.lbl8.place(x=650, y=270)
-        # self.t13.place(x=650, y=300)
-
         self.b1 = Button(newWindow, text='Start Test', command=self.start_test, width=width, bg='lightgreen')
         self.b1.place(x=250, y=240)
-        # self.b2 = Button(newWindow, text='Visual Data', command=self.end_test, width=width, bg='lightblue')
-        # self.b2.place(x=450, y=240)
 
     def start_test(self):
         strumenti = list()
@@ -649,29 +589,6 @@ class MyWindow:
             strumenti.append('Inverter')
         if self.t6.get() != 0:
             strumenti.append('Colonnina')
-        # if self.tg.get() != 0:
-        #     strumenti.append('Grafico')
-        #
-        # value = [self.t11.get("1.0", 'end-1c').split('\n'), self.t12.get("1.0", 'end-1c').split('\n'), self.t13.get()]
-        # excel_config = pd.DataFrame()
-        # list_app = list()
-        # for i in value[0]:
-        #     list_app.append(i)
-        # excel_config['PLOT'] = list_app
-        # df1 = pd.DataFrame()
-        # list_app = list()
-        # for i in value[1]:
-        #     list_app.append(i)
-        # df1['ASSE'] = list_app
-        # excel_config = pd.concat([excel_config, df1], axis=1)
-        # df1 = pd.DataFrame()
-        # list_app = list()
-        # list_app.append(value[2])
-        # df1['REFRESH TIME'] = list_app
-        # excel_config = pd.concat([excel_config, df1], axis=1)
-        # del df1, list_app
-        # excel_config.to_excel(writer, sheet_name='Grafico', index=False)
-        # writer.save()
 
         value = [self.t7.get("1.0", 'end-1c').split('\n'), self.t8.get("1.0", 'end-1c').split('\n'),
                  self.t9.get(), self.t10.get()]
@@ -714,10 +631,7 @@ class MyWindow:
         thread2.start()
         thread3.start()
 
-
     def end_test(self):
-        # os.system('python VisualDati.py')
-        # writer.close()
         quit()
 
 
@@ -738,4 +652,5 @@ window = Tk()
 mywin = MyWindow(window)
 window.title('AITA - Config. Pannel')
 window.geometry("550x200")
+window.iconbitmap('img/logo_hEC_icon.ico')
 window.mainloop()
