@@ -44,8 +44,8 @@ def main_log():
         if 'Wattmeter' in device:
             config_WATT = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Wattmeter')
         # Wattmetro2
-        if 'Wattmeter2' in device:
-            config_WATT2 = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Wattmeter2')
+        # if 'Wattmeter2' in device:
+        #     config_WATT2 = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Wattmeter2')
         # if 'Grafico' in device:
         #     # Grafico
         #     time_refresh = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Grafico')['REFRESH TIME'][0]
@@ -87,14 +87,14 @@ def main_log():
                 if i != '':
                     col.append(i)
                     stamp_WT.append(i)
-        if 'Wattmeter2' in device:
-            logger_WT2, porta_WT2 = config_wt2(rm, path_config, config_WATT['MODELLO'][0])
-            logger_WT2 = logger_WT2.fillna('')
-            stamp_WT2 = list()
-            for i in logger_WT2:
-                if i != '':
-                    col.append(i)
-                    stamp_WT2.append(i)
+        # if 'Wattmeter2' in device:
+        #     logger_WT2, porta_WT2 = config_wt2(rm, path_config, config_WATT['MODELLO'][0])
+        #     logger_WT2 = logger_WT2.fillna('')
+        #     stamp_WT2 = list()
+        #     for i in logger_WT2:
+        #         if i != '':
+        #             col.append(i)
+        #             stamp_WT2.append(i)
         j = 0
         if 'Bridge' in device:
             logger_bridge, porta_bridge = config_ponte(rm, path_config)
@@ -186,20 +186,20 @@ def main_log():
                         telemetries.append(float(j[0:15]))
                         # print('>>> log la telemetry\t' + str(stamp_WT[i]))
                         i += 1
-            if 'Wattmeter2' in device:
-                i = 0
-                # data_WT2 = list()
-                print('>>> Apro la Comunicazione con il ' + config_WATT2['MODELLO'][0])
-                INSTRUMENT = rm.open_resource(porta_WT2)
-                if config_WATT2['MODELLO'][0] == 'WT230':
-                    a = INSTRUMENT.query('MEAS:NORM:VAL?').split(',')
-                if config_WATT2['MODELLO'][0] == 'WT500' or config_WATT2['MODELLO'][0] == 'WT3000':
-                    a = INSTRUMENT.query(':NUM:NORM:VAL?').split(',')
-                for j in a:
-                    if '+' in j or '-' in j:
-                        telemetries.append(float(j[0:15]))
-                        # print('>>> log la telemetry\t' + str(stamp_WT2[i]))
-                        i += 1
+            # if 'Wattmeter2' in device:
+            #     i = 0
+            #     # data_WT2 = list()
+            #     print('>>> Apro la Comunicazione con il ' + config_WATT2['MODELLO'][0])
+            #     INSTRUMENT = rm.open_resource(porta_WT2)
+            #     if config_WATT2['MODELLO'][0] == 'WT230':
+            #         a = INSTRUMENT.query('MEAS:NORM:VAL?').split(',')
+            #     if config_WATT2['MODELLO'][0] == 'WT500' or config_WATT2['MODELLO'][0] == 'WT3000':
+            #         a = INSTRUMENT.query(':NUM:NORM:VAL?').split(',')
+            #     for j in a:
+            #         if '+' in j or '-' in j:
+            #             telemetries.append(float(j[0:15]))
+            #             # print('>>> log la telemetry\t' + str(stamp_WT2[i]))
+            #             i += 1
             if 'Bridge' in device:
                 i = 0
                 data_bridge = pd.DataFrame()
