@@ -704,4 +704,50 @@ class Endurance():
         cc.close()
 
 
+class RS90:
+    def __init__(self, rm):
+        self.rm = rm
+        self.sleew_v = 100000
+        self.sleew_f = 100000
+
+    def set_output(self, stato):
+        INSTRUMENT_alim = self.rm
+        if stato == 1:
+            INSTRUMENT_alim.write("OUTP 1")
+        elif stato == 0:
+            INSTRUMENT_alim.write("OUTP 0")
+
+    def set_regenerative(self, stato):
+        INSTRUMENT_alim = self.rm
+        self.set_output(0)
+        INSTRUMENT_alim.write("INST:COUP ALL")
+        if bool(stato) == 1:
+            INSTRUMENT_alim.write("REG:STAT ON")
+        elif bool(stato) == 0:
+            INSTRUMENT_alim.write("REG:STAT OFF")
+
+    def get_regenerative(self):
+        INSTRUMENT_alim = self.rm
+        INSTRUMENT_alim.write("*CLS")
+        if int(INSTRUMENT_alim.query("REG:STAT?")) == 0:
+            INSTRUMENT_alim.write("*CLS")
+            return False
+        INSTRUMENT_alim.write("*CLS")
+        return True
+
+    def set_volt(self, value):
+        INSTRUMENT_alim = self.rm
+        INSTRUMENT_alim.write("INST:COUP ALL")
+        INSTRUMENT_alim.write("VOLT:MODE FIX")
+        INSTRUMENT_alim.write("VOLT:SLEW" + str(self.sleew_v))
+        INSTRUMENT_alim.write("VOLT " + str(round(float(value), 3)))
+
+    def set_freq(self, value):
+        INSTRUMENT_alim = self.rm
+        INSTRUMENT_alim.write("INST:COUP ALL")
+        INSTRUMENT_alim.write("VOLT:MODE FIX")
+        INSTRUMENT_alim.write("FREQ:SLEW " + str(self.sleew_f))
+        INSTRUMENT_alim.write("FREQ " + str(round(float(value), 3)))
+
+
 path_config = r'./Config/'

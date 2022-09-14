@@ -63,6 +63,9 @@ class MyWindow:
         self.b8 = Button(win, text='Colonnina', command=self.ac_ctrl, width=width, bg='lightblue')
         self.b8.place(x=270, y=125)
 
+        self.b17 = Button(win, text='AC Source', command=self.ac_source, width=width, bg='lightblue')
+        self.b17.place(x=80, y=175)
+
         self.my_label = '0'
         self.ids_eut = '0'
         self.ips_col = 0
@@ -292,10 +295,97 @@ class MyWindow:
 
         self.b1 = Button(dc_source, text='Send', command=self.send_dc_source, width=width, bg='lightgreen')
         self.b1.place(x=470, y=45)
-        self.b2 = Button(dc_source, text='ON', command=self.output_dc_source(1), width=10, bg='red')
+        self.b2 = Button(dc_source, text='ON', command=self.output_dc_source_on, width=10, bg='red')
         self.b2.place(x=450, y=130)
-        self.b3 = Button(dc_source, text='OFF', command=self.output_dc_source(0), width=10, bg='lightgreen')
+        self.b3 = Button(dc_source, text='OFF', command=self.output_dc_source_off, width=10, bg='lightgreen')
         self.b3.place(x=550, y=130)
+
+    def ac_source(self):
+        ac_source = Toplevel(self.win)
+        ac_source.title("AITA - Command AC Source")
+        ac_source.geometry("750x200")
+        self.lbl1 = Label(ac_source, text='Modello')
+        self.lbl2 = Label(ac_source, text='Porta')
+        self.lbl3 = Label(ac_source, text='Voltage')
+        self.lbl4 = Label(ac_source, text='Frequency')
+        self.lbl5 = Label(ac_source, text='Regenerative')
+        self.lbl6 = Label(ac_source, text='Output')
+
+        OPTIONS = ["RS90"]
+        self.AC = StringVar(ac_source)
+        self.AC.set(OPTIONS[0])  # default value
+        self.t1 = OptionMenu(ac_source, self.AC, *OPTIONS)
+        self.t1.pack()  # tipologia ac supply
+
+        self.t2 = Entry(ac_source, bd=3)  # com
+        self.t3 = Entry(ac_source, width=10, bd=3)  # voltage
+        self.t4 = Entry(ac_source, width=10, bd=3)  # frequency
+        OPTIONS = ["ON", "OFF"]
+        self.AC_reg = StringVar(ac_source)
+        self.AC_reg.set(OPTIONS[0])  # default value
+        self.t5 = OptionMenu(ac_source, self.AC_reg, *OPTIONS)
+        self.t5.pack()  # tipologia ac supply  # regenerative
+
+        self.lbl1.place(x=100, y=30)
+        self.t1.place(x=100, y=60)
+        self.lbl2.place(x=250, y=30)
+        self.t2.place(x=250, y=60)
+
+        self.lbl3.place(x=100, y=100)
+        self.t3.place(x=100, y=130)
+        self.lbl4.place(x=200, y=100)
+        self.t4.place(x=200, y=130)
+        self.lbl5.place(x=300, y=100)
+        self.t5.place(x=300, y=130)
+
+        # self.get_ac_regen()
+
+        self.lbl6.place(x=520, y=100)
+
+        self.b1 = Button(ac_source, text='Send', command=self.send_ac_source, width=width, bg='lightgreen')
+        self.b1.place(x=470, y=45)
+        self.b2 = Button(ac_source, text='ON', command=self.output_ac_source_on, width=10, bg='red')
+        self.b2.place(x=450, y=130)
+        self.b3 = Button(ac_source, text='OFF', command=self.output_ac_source_off, width=10, bg='lightgreen')
+
+    def send_ac_source(self):
+        value = [self.AC.get(), self.t2.get(), self.t3.get(),
+                 self.t4.get(), self.AC_reg.get()]
+
+        session = requests.Session()
+        rm = pyvisa.ResourceManager()
+        alim_open = rm.open_resource(value[1])
+        if self.AC.get() == 'RS90':
+            ac_source = RS90(alim_open)
+
+        ac_source.set_volt(value[2])
+        ac_source.set_freq(value[3])
+        if value[4] in ['ON', 'On', 'on']:
+            value[4] = 1
+        if value[4] in ['OFF', 'Off', 'off']:
+            value[4] = 0
+        ac_source.set_regenerative(value[4])
+        # self.get_ac_regen()
+
+    def output_ac_source_on(self):
+        value = 1
+        session = requests.Session()
+        rm = pyvisa.ResourceManager()
+        alim_open = rm.open_resource(self.t2.get())
+        if self.AC.get() == 'RS90':
+            ac_source = RS90(alim_open)
+
+        ac_source.set_output(value)
+
+    def output_ac_source_off(self):
+        value = 0
+        session = requests.Session()
+        rm = pyvisa.ResourceManager()
+        alim_open = rm.open_resource(self.t2.get())
+        if self.AC.get() == 'RS90':
+            ac_source = RS90(alim_open)
+
+        ac_source.set_output(value)
 
     def eut_control(self):
         eut = Toplevel(self.win)
@@ -398,7 +488,24 @@ class MyWindow:
         dc_source.current(value[3])
         dc_source.power(value[4])
 
-    def output_dc_source(self, value):
+    def output_dc_source_on(self):
+        value = 1
+        session = requests.Session()
+        rm = pyvisa.ResourceManager()
+        alim_open = rm.open_resource(self.t2.get())
+        if self.DC.get() == 'Regatron':
+            dc_source = Regatron(alim_open)
+        elif self.DC.get() == 'Keysight':
+            dc_source = Keysight(alim_open)
+        elif self.DC.get() == 'Lambda':
+            dc_source = Lambda(alim_open)
+        elif self.DC.get() == 'Sorrensen':
+            dc_source = Sorrensen(alim_open)
+
+        dc_source.stato(value)
+
+    def output_dc_source_off(self):
+        value = 0
         session = requests.Session()
         rm = pyvisa.ResourceManager()
         alim_open = rm.open_resource(self.t2.get())
