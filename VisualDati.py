@@ -508,4 +508,3 @@ def main_grid():
 
 
 window_graph = None
-main_grid()
