@@ -1,6 +1,9 @@
 import time
 from tkinter import *
 import os
+from pymodbus.client.sync import ModbusTcpClient as ModbusClientTCP
+from pymodbus.client.sync import ModbusSerialClient as ModbusClient
+import pyvisa
 from pandastable import Table  # , TableModel
 from lib.Libs import *
 from html2image import Html2Image
@@ -43,15 +46,26 @@ class MyWindow:
     def __init__(self, win, width, value):
         self.value = value
         self.win = win
-        self.b1 = Button(win, text='Raw Data', command=self.data, width=width, bg='lightgreen')
-        self.b2 = Button(win, text='Grafico', command=self.graph, width=width, bg='lightblue')
+        self.b1 = Button(win, text='Raw Data', command=self.data, width=width, bg='#FFDB58')
+        self.b2 = Button(win, text='Grafico', command=self.graph, width=width, bg='#FFDB58')
         self.b1.place(x=80, y=25)
         self.b2.place(x=270, y=25)
 
         self.b3 = Button(win, text='Camera Climatica', command=self.cc, width=width, bg='lightblue')
         self.b3.place(x=80, y=75)
 
+        self.b6 = Button(win, text='DC Supply', command=self.dc_source, width=width, bg='lightblue')
+        self.b6.place(x=270, y=75)
+
+        self.b7 = Button(win, text='Orion Inverter', command=self.eut_control, width=width, bg='lightblue')
+        self.b7.place(x=80, y=125)
+
+        self.b8 = Button(win, text='Colonnina', command=self.ac_ctrl, width=width, bg='lightblue')
+        self.b8.place(x=270, y=125)
+
         self.my_label = '0'
+        self.ids_eut = '0'
+        self.ips_col = 0
 
     def data(self):
         TestApp()
@@ -66,7 +80,7 @@ class MyWindow:
         yscrollbar.pack(side=RIGHT, fill=Y)
 
         self.listbox = Listbox(newWindow, selectmode="multiple",
-                               yscrollcommand=yscrollbar.set, width=50, height=35)
+                               yscrollcommand=yscrollbar.set, width=70, height=35)
         self.listbox.pack(padx=10, pady=10,
                           expand=YES, fill="y"
                           )
@@ -87,8 +101,7 @@ class MyWindow:
 
         yscrollbar.config(command=self.listbox.yview)
         self.b4 = Button(newWindow, text='Grafico', command=self.print_d, width=20, bg='lightgreen')
-        self.b4.place(x=10, y=10)
-        
+        self.b4.place(x=10, y=20)
 
     def print_d(self):
         global window_graph
@@ -98,7 +111,7 @@ class MyWindow:
 
         window_graph = Toplevel(self.win)
         window_graph.title("AITA - Graph")
-        window_graph.geometry("1100x740")
+        window_graph.geometry('%dx%d+%d+%d' % (1100, 740, 500, 100))
         window_graph.iconbitmap('img/logo_hEC_icon.ico')
         value = self.value
         namefile = pd.read_excel(r'.\Config\Config.xlsx', sheet_name='Strumenti')['NOME OUTPUT'][0]
@@ -192,8 +205,7 @@ class MyWindow:
             html_file='./img/GraphData.html', save_as='GraphData.png', size=[(1080, 720)]
         )
         os.replace("GraphData.png", "img/GraphData.png")
-        time.sleep(1)
-
+        time.sleep(0.1)
         # aggiunta dell'img nel tkinter
         try:
             img = Image.open('img/GraphData.png')
@@ -203,12 +215,13 @@ class MyWindow:
         self.my_label = Label(window_graph, image=self.my_img)
         self.my_label.pack()
         self.my_label.place(x=10, y=10)
-        window_graph.after(5000, self.print_d)
+        window_graph.after(10000, self.print_d)
 
     def cc(self):  # ____________PANNELLINO CAMERA CLIMATICA!_______________
         newWindow = Toplevel(self.win)
         newWindow.title("AITA - Command Climatic Chamber")
         newWindow.geometry("750x200")
+        newWindow.iconbitmap('img/logo_hEC_icon.ico')
         self.lbl1 = Label(newWindow, text='Modello', bg=bg)
         self.lbl2 = Label(newWindow, text='Porta', bg=bg)
         self.lbl5 = Label(newWindow, text='Temperature', bg=bg)
@@ -241,6 +254,119 @@ class MyWindow:
         self.b1 = Button(newWindow, text='Send', command=self.send_cc, width=width, bg='lightgreen')
         self.b1.place(x=500, y=50)
 
+    def dc_source(self):
+        dc_source = Toplevel(self.win)
+        dc_source.title("AITA - Command DC Source")
+        dc_source.geometry("750x200")
+        dc_source.iconbitmap('img/logo_hEC_icon.ico')
+        self.lbl1 = Label(dc_source, text='Modello')
+        self.lbl2 = Label(dc_source, text='Porta')
+        self.lbl3 = Label(dc_source, text='Voltage')
+        self.lbl4 = Label(dc_source, text='Current')
+        self.lbl5 = Label(dc_source, text='Power')
+        self.lbl6 = Label(dc_source, text='Output')
+
+        OPTIONS = ["Regatron", "Keysight", "Lambda", "Sorrensen"]
+        self.DC = StringVar(dc_source)
+        self.DC.set(OPTIONS[0])  # default value
+        self.t1 = OptionMenu(dc_source, self.DC, *OPTIONS)
+        self.t1.pack()  # tipologia dc supply
+
+        self.t2 = Entry(dc_source, bd=3)  # com
+        self.t3 = Entry(dc_source, width=10, bd=3)  # voltage
+        self.t4 = Entry(dc_source, width=10, bd=3)  # current
+        self.t5 = Entry(dc_source, width=10, bd=3)  # power
+
+        self.lbl1.place(x=100, y=30)
+        self.t1.place(x=100, y=60)
+        self.lbl2.place(x=250, y=30)
+        self.t2.place(x=250, y=60)
+
+        self.lbl3.place(x=100, y=100)
+        self.t3.place(x=100, y=130)
+        self.lbl4.place(x=200, y=100)
+        self.t4.place(x=200, y=130)
+        self.lbl5.place(x=300, y=100)
+        self.t5.place(x=300, y=130)
+        self.lbl6.place(x=520, y=100)
+
+        self.b1 = Button(dc_source, text='Send', command=self.send_dc_source, width=width, bg='lightgreen')
+        self.b1.place(x=470, y=45)
+        self.b2 = Button(dc_source, text='ON', command=self.output_dc_source(1), width=10, bg='red')
+        self.b2.place(x=450, y=130)
+        self.b3 = Button(dc_source, text='OFF', command=self.output_dc_source(0), width=10, bg='lightgreen')
+        self.b3.place(x=550, y=130)
+
+    def eut_control(self):
+        eut = Toplevel(self.win)
+        eut.title("AITA - Command EUT")
+        eut.geometry("750x200")
+        eut.iconbitmap('img/logo_hEC_icon.ico')
+        self.lbl0 = Label(eut, text='Inverter')
+        self.lbl1 = Label(eut, text='Attribute')
+        self.lbl2 = Label(eut, text='Value')
+
+        OPTIONS_eut = list()
+        for i in list(pd.read_excel(path_config + 'Config.xlsx', sheet_name='Inverter')['ID']):
+            if str(i) != 'nan':
+                OPTIONS_eut.append(i)
+        if len(OPTIONS_eut)>1:
+            OPTIONS_eut.append('ALL')
+        self.EUT = StringVar(eut)
+        self.EUT.set(OPTIONS_eut[0])  # default value
+        self.t0 = OptionMenu(eut, self.EUT, *OPTIONS_eut)
+        self.t0.pack()  # quale inverter mettere
+
+        self.ids_eut = OPTIONS_eut
+
+        self.t1 = Entry(eut, width=60, bd=3)  # attribute
+        self.t2 = Entry(eut, bd=3)  # value
+
+        self.lbl0.place(x=10, y=30)
+        self.t0.place(x=10, y=50)
+        self.lbl1.place(x=150, y=30)
+        self.t1.place(x=150, y=60)
+        self.lbl2.place(x=550, y=30)
+        self.t2.place(x=550, y=60)
+
+        self.b1 = Button(eut, text='Send', width=width, command=self.send_inv, bg='lightgreen')
+        self.b1.place(x=300, y=90)
+
+    def ac_ctrl(self):
+        win_col = Toplevel(self.win)
+        win_col.title("AITA - Command AC Station")
+        win_col.geometry("750x200")
+        win_col.iconbitmap('img/logo_hEC_icon.ico')
+        self.lbl0 = Label(win_col, text='Colonnina')
+        self.lbl1 = Label(win_col, text='Registro')
+        self.lbl2 = Label(win_col, text='Value')
+
+        OPTIONS_col = list()
+        for i in list(pd.read_excel(path_config + 'Config.xlsx', sheet_name='Colonnina')['IP']):
+            if str(i) != 'nan':
+                OPTIONS_col.append(i)
+        if len(OPTIONS_col) > 1:
+            OPTIONS_col.append('ALL')
+        self.COL = StringVar(win_col)
+        self.COL.set(OPTIONS_col[0])  # default value
+        self.t0 = OptionMenu(win_col, self.COL, *OPTIONS_col)
+        self.t0.pack()  # quale inverter mettere
+
+        self.ips_col = OPTIONS_col
+
+        self.t1 = Entry(win_col, width=60, bd=3)  # attribute
+        self.t2 = Entry(win_col, bd=3)  # value
+
+        self.lbl0.place(x=10, y=30)
+        self.t0.place(x=10, y=50)
+        self.lbl1.place(x=150, y=30)
+        self.t1.place(x=150, y=60)
+        self.lbl2.place(x=550, y=30)
+        self.t2.place(x=550, y=60)
+
+        self.b1 = Button(win_col, text='Send', width=width, command=self.send_col, bg='lightgreen')
+        self.b1.place(x=300, y=90)
+
     def send_cc(self):
         value = [self.WT.get(), self.t2.get(), self.t3.get(),
                  self.t4.get(), self.t5.get()]
@@ -252,6 +378,97 @@ class MyWindow:
             camera_climatica = Endurance(com=value[1])
 
         camera_climatica.set_temp_hum(value[4], value[2], value[3])
+
+    def send_dc_source(self):
+        value = [self.DC.get(), self.t2.get(), self.t3.get(),
+                 self.t4.get()]
+        session = requests.Session()
+        rm = pyvisa.ResourceManager()
+        alim_open = rm.open_resource(value[1])
+        if value[0] == 'Regatron':
+            dc_source = Regatron(alim_open)
+        elif value[0] == 'Keysight':
+            dc_source = Keysight(alim_open)
+        elif value[0] == 'Lambda':
+            dc_source = Lambda(alim_open)
+        elif value[0] == 'Sorrensen':
+            dc_source = Sorrensen(alim_open)
+
+        dc_source.voltage(value[2])
+        dc_source.current(value[3])
+        dc_source.power(value[4])
+
+    def output_dc_source(self, value):
+        session = requests.Session()
+        rm = pyvisa.ResourceManager()
+        alim_open = rm.open_resource(self.t2.get())
+        if self.DC.get() == 'Regatron':
+            dc_source = Regatron(alim_open)
+        elif self.DC.get() == 'Keysight':
+            dc_source = Keysight(alim_open)
+        elif self.DC.get() == 'Lambda':
+            dc_source = Lambda(alim_open)
+        elif self.DC.get() == 'Sorrensen':
+            dc_source = Sorrensen(alim_open)
+
+        dc_source.stato(value)
+
+    def send_inv(self):
+        ids = self.ids_eut
+        value = [self.EUT.get(), self.t1.get(), self.t2.get()]
+        if value[0] != 'ALL':
+            df_eut = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Inverter')
+            ip = list(df_eut['IP DEVICE'][df_eut['ID'] == value[0]])[0]
+            obj_com = OrionProtocol(ip=value[0], device_id=ip)
+            obj_com.write(value[1], value[2])
+        else:
+            for i in ids:
+                df_eut = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Inverter')
+                ip = df_eut['IP DEVICE'][df_eut['ID'] == i]
+                obj_com = OrionProtocol(ip=value[0], device_id=ip)
+                obj_com.write(value[1], value[2])
+        del df_eut
+
+    def send_col(self):
+        ids = self.ips_col
+        value = [self.COL.get(), self.t1.get(), self.t2.get()]
+        if value[0] != 'ALL':
+            df_eut = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Colonnina')
+            ip = str(df_eut['IP'][df_eut['IP']==value[0]][0])
+            if df_eut['MODALITA\''][df_eut['IP']==value[0]][0] == 'RTU':
+                baud_rate = 115200
+                com = ModbusClient(method='rtu',
+                                   port=ip,
+                                   baudrate=baud_rate,
+                                   timeout=1,
+                                   parity='N',
+                                   stopbits=1,
+                                   strict=False)
+            elif df_eut['MODALITA\''][df_eut['IP']==value[0]][0] == 'TCP':
+                port = int(df_eut['PORTA'][df_eut['IP']==value[0]][0])
+                com = ModbusClientTCP(host=ip, port=int(port))
+
+            WriteCol(value[1], com, value[2], df_eut['ADDRESS'][df_eut['IP']==value[0]][0])
+
+        else:
+            for i in ids:
+                df_eut = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Colonnina')
+                ip = str(df_eut['IP'][df_eut['IP'] == i][0])
+                if df_eut['MODALITA\''][df_eut['IP'] == i][0] == 'RTU':
+                    baud_rate = 115200
+                    com = ModbusClient(method='rtu',
+                                       port=ip,
+                                       baudrate=baud_rate,
+                                       timeout=1,
+                                       parity='N',
+                                       stopbits=1,
+                                       strict=False)
+                elif df_eut['MODALITA\''][df_eut['IP'] == i][0] == 'TCP':
+                    port = int(df_eut['PORTA'][df_eut['IP'] == i][0])
+                    com = ModbusClientTCP(host=ip, port=int(port))
+
+                WriteCol(value[1], com, value[2], df_eut['ADDRESS'][df_eut['IP'] == i][0])
+        del df_eut
 
 
 def main_grid():
@@ -289,4 +506,6 @@ def main_grid():
         file_object.write('3')
         file_object.close()
 
+
 window_graph = None
+main_grid()
