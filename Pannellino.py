@@ -22,7 +22,6 @@ class myThread (threading.Thread):
        self.run_script = run_script
 
     def run(self):
-       #print ("Starting " + self.name)
        if self.run_script == 0:
           LogAITA.main_log()
        if self.run_script == 1:
@@ -530,18 +529,12 @@ class MyWindow:
         self.t3 = IntVar()
         c3 = Checkbutton(newWindow, text='Wattmeters', variable=self.t3, onvalue=1, offvalue=0)
         c3.pack()
-        self.t4 = IntVar()
-        # c4 = Checkbutton(newWindow, text='Second Wattmeter', variable=self.t4, onvalue=1, offvalue=0)
-        # c4.pack()
         self.t5 = IntVar()
         c5 = Checkbutton(newWindow, text='Orion Inverters', variable=self.t5, onvalue=1, offvalue=0)
         c5.pack()
         self.t6 = IntVar()
         c6 = Checkbutton(newWindow, text='AC Stations', variable=self.t6, onvalue=1, offvalue=0)
         c6.pack()
-        # self.tg = IntVar()
-        # c7 = Checkbutton(newWindow, text='Grafico Real Time', variable=self.tg, onvalue=1, offvalue=0)
-        # c7.pack()
         self.lbl1 = Label(newWindow, text='Strumenti', bg=bg)
         self.lbl1.place(x=50, y=20)
         c1.place(x=50, y=50)
@@ -549,8 +542,6 @@ class MyWindow:
         c3.place(x=50, y=130)
         c6.place(x=50, y=170)
         c5.place(x=50, y=210)
-        #c6.place(x=50, y=250)
-        # c7.place(x=50, y=290)
 
         self.lbl2 = Label(newWindow, text='Percorso Output', bg=bg)
         self.t7 = Text(newWindow, bd=3, height=1, width=16)
@@ -583,8 +574,6 @@ class MyWindow:
             strumenti.append('Datalogger')
         if self.t3.get() != 0:
             strumenti.append('Wattmeter')
-        # if self.t4.get() != 0:
-        #     strumenti.append('Wattmeter2')
         if self.t5.get() != 0:
             strumenti.append('Inverter')
         if self.t6.get() != 0:

@@ -188,7 +188,7 @@ class MyWindow:
             list_plot.append(self.listbox.get(i))
         for i in range(len(value)):
             for j in list_plot:
-                if value[i][0] == j:
+                if value[i][0] in j:
                     if value[i][1] in ['V', 'VDC', 'VAC', 'URMS', 'UDC', 'UAC', 'U', 'UMN', 'UPP', 'UMP']:
                         fig.add_scatter(x=plot_df['Date'], y=plot_df[j], mode='lines', yaxis='y2',
                                         name=j)
@@ -602,7 +602,7 @@ def main_grid():
         width = 20
         window2 = Tk()
         window2.title('AITA - Run Time Log')
-        window2.geometry("500x200")
+        window2.geometry("500x250")
         window2.iconbitmap('img/logo_hEC_icon.ico')
         MyWindow(window2, width, value)
         window2.mainloop()
