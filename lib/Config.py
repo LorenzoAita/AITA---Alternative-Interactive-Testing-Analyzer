@@ -211,7 +211,7 @@ def config_colonnina(path):
         if str(config_inv['IP'][k]) != 'nan':
             ip = str(config_inv['IP'][k])
             com = 0
-            df_col = config_inv['ID_LETTURA COL'+str(k)==1]
+            df_col = config_inv[config_inv['ID_LETTURA COL'+str(k+1)]==1]
             if config_inv['MODALITA\''][k] == 'RTU':
                 baud_rate = 115200
                 com = ModbusClient(method='rtu',

@@ -133,15 +133,14 @@ def main_log():
                                 telemetries.append(0)
                             break
             if 'Colonnina' in device:
-                for k in coms_colonna:
-                    print('>>> log colonnina\t' + str(k))
-                    for i in range(0, len(telemetrys_col)):
-                        for z in range(0, len(i)):
-                            try:
-                                data_col = ReadCol(regs[i][z], k, addresses[i][z])
-                                telemetries.append(data_col)
-                            except:
-                                telemetries.append(0)
+                for k in range(0, len(coms_colonna)):
+                    print('>>> log colonnina\t' + str(coms_colonna[k]))
+                    for i in range(0, len(telemetrys_col[k])):
+                        try:
+                            data_col = ReadCol(regs[k][i], coms_colonna[k], addresses[k][i])
+                            telemetries.append(data_col)
+                        except:
+                            telemetries.append(0)
 
             if 'Datalogger' in device:
                 for k in porta_DAQs:
@@ -200,5 +199,3 @@ def main_log():
         file_object.write('1')
         file_object.close()
 
-
-main_log()
