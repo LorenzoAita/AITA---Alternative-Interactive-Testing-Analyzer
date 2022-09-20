@@ -582,7 +582,7 @@ def main_grid():
     try:
         col = list(pd.read_excel(r'.\Config\Config.xlsx', sheet_name='Strumenti')['ELENCO STRUMENTI'])
         value = list()
-        if 'Agilent' in col:
+        if 'Datalogger' in col:
             strumento = pd.read_excel(r'.\Config\Config.xlsx', sheet_name='Agilent')
             for i in range(0, len(strumento['LABEL'])):
                 value.append([strumento['LABEL'][i], strumento['TIPOLOGIA'][i]])
@@ -596,8 +596,8 @@ def main_grid():
                 value.append([strumento['LABEL'][i], strumento['TYPE TELEMETRIA'][i]])
         if 'Colonnina' in col:
             strumento = pd.read_excel(r'.\Config\Config.xlsx', sheet_name='Colonnina')
-            for i in range(0, len(strumento['LABEL'])):
-                value.append([strumento['LABEL'][i], strumento['TYPE TELEMETRIA'][i]])
+            for i in range(0, len(strumento['TELEMETRIE'])):
+                value.append([strumento['TELEMETRIE'][i], strumento['TYPE TELEMETRIA'][i]])
         del strumento, col
         width = 20
         window2 = Tk()
