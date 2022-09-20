@@ -222,10 +222,10 @@ def main_test():
             for i in range(0, len(cmd['TEMPO'])):
                 # ora gestisco i relay
                 for j in range(0, 8, 1):
-                    if str(cmd['ARDU_RELAY' + str(j+1)][i]) not in ['nan', '2', '2.0']:
+                    if str(cmd['ARDU_RELAY' + str(j + 1)][i]) not in ['nan', '2', '2.0']:
 
-                        cmd_relay = int(100 + cmd['ARDU_RELAY' + str(j+1)][i])
-                        num_relay = int(j+1)
+                        cmd_relay = int(100 + cmd['ARDU_RELAY' + str(j + 1)][i])
+                        num_relay = int(j + 1)
                         if i in [1, 2]:
                             var1 = 1
                             if num_relay < 5:
@@ -239,14 +239,15 @@ def main_test():
                         arduino_cmd = serial.Serial(port=test['ARDUINO_PORTA'][0], baudrate=38400, timeout=.3)
                         time.sleep(0.2)
                         arduino_cmd.write(bytes(
-                            '1 ' + str(cmd_relay) + ' ' + str(num_relay) + ' ' + str(var1) + ' ' + str(var2) + ' ' + str(
+                            '1 ' + str(cmd_relay) + ' ' + str(num_relay) + ' ' + str(var1) + ' ' + str(
+                                var2) + ' ' + str(
                                 1 + cmd_relay + num_relay + var1 + var2), 'utf-8'))
                         time.sleep(1)
 
                         data = arduino_cmd.readline()
                         print(data)
-                        #if (len(data) > 16) and ('CRC' not in str(data)) and ('nan' not in str(data)) and i != 0 and j in [1, 5]:# and (cmd['EVENTO'][i] == 1):
-                            # va chiuso il relay e letta la frequenza. Se c'è, la prendo e chiudo i relay
+                        # if (len(data) > 16) and ('CRC' not in str(data)) and ('nan' not in str(data)) and i != 0 and j in [1, 5]:# and (cmd['EVENTO'][i] == 1):
+                        # va chiuso il relay e letta la frequenza. Se c'è, la prendo e chiudo i relay
                         #    try:
                         #        session = requests.Session()
                         #        rm = pyvisa.ResourceManager()
@@ -281,13 +282,13 @@ def main_test():
                         #            time.sleep(0.2)
                         #            alim.stato(1)
 
-
                         time.sleep(0.2)
                         arduino_cmd.close()
 
                 # ora gestisco i regatron
                 for j in range(0, len(test['ALIMENTATORE_PORTA'])):
-                    if str(cmd['ALIM_ON/OFF'][i]) not in ['2', 'nan', '2.0'] and str(test['ALIMENTATORE_PORTA'][j]) != 'nan':
+                    if str(cmd['ALIM_ON/OFF'][i]) not in ['2', 'nan', '2.0'] and str(
+                            test['ALIMENTATORE_PORTA'][j]) != 'nan':
                         print(test['ALIMENTATORE_PORTA'][j])
                         session = requests.Session()
                         rm = pyvisa.ResourceManager()
@@ -314,13 +315,30 @@ def main_test():
                 # ora gestisco gli inverter
                 for j in range(0, len(test['INV_PORTA'])):
                     if str(cmd['INV_VAR'][i]) not in ['2', 'nan', '2.0'] and str(test['INV_PORTA'][j]) != 'nan':
-                        OrionProtocol.write(test['INV_VAR'][i], test['INV_VAL'][i])
+                        df_eut = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Inverter')
+                        df_eut = df_eut[df_eut['ID'] == j].reset_index()
+                        obj_com =OrionProtocol(ip=df_eut['IP'][0], device_id=j)
+                        obj_com.write(test['INV_VAR'][i], test['INV_VAL'][i])
+                        del df_eut
                 # ora gestisco le colonnine
                 for j in range(0, len(test['COL_PORTA'])):
-                    telemetry_col, reg, com_colonna, addresses = config_colonnina(path_config)
                     if str(cmd['COL_VAR'][i]) not in ['2', 'nan', '2.0'] and str(test['COL_PORTA'][j]) != 'nan':
-                        for k in addresses:
-                            WriteCol(test['COL_VAR'][i], com_colonna, test['COL_VAL'][i], k)
+                        df_col = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Colonnina')
+                        df_col = df_col[df_col['IP'] == test['COL_PORTA'][j]].reset_index()
+                        if df_col['MODALITA\''][0] == 'RTU':
+                            baud_rate = 115200
+                            com = ModbusClient(method='rtu',
+                                               port=test['COL_PORTA'][j],
+                                               baudrate=baud_rate,
+                                               timeout=1,
+                                               parity='N',
+                                               stopbits=1,
+                                               strict=False)
+                        elif df_col['MODALITA\''][0] == 'TCP':
+                            port = int(df_col['PORTA'][0])
+                            com = df_col(host=test['COL_PORTA'][j], port=int(port))
+                        WriteCol(test['COL_VAR'][i], com, test['COL_VAL'][i], df_col['ADDRESS'][0])
+                        del df_col
                 # ora gestisco la camera cliamtica
                 for j in range(0, len(test['CC_PORTA'])):
                     if str(cmd['CC_ON/OFF'][i]) not in ['2', 'nan', '2.0'] and str(test['CC_PORTA'][j]) != 'nan':
