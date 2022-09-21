@@ -74,11 +74,6 @@ class MyWindow:
         self.ips_col = 0
 
     def exit(self):
-        # newWindow = Toplevel(self.win)
-        # newWindow = newWindow
-        # newWindow.title("AITA - exit")
-        # newWindow.geometry("1x1")
-        # newWindow.iconbitmap('img/logo_hEC_icon.ico')
         os.system('taskkill /F /IM python.exe')
 
     def data(self):
