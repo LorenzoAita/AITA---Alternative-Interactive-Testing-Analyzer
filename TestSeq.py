@@ -176,7 +176,8 @@ def main_test():
                 a = True
             else:
                 a = False
-    except:
+    except OSError as err:
+        print(err)
         path_watchdog = 'misc/watchdog.txt'
         file_object = open(path_watchdog, "w")
         file_object.write('2')

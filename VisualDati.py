@@ -66,9 +66,20 @@ class MyWindow:
         self.b17 = Button(win, text='AC Source', command=self.ac_source, width=width, bg='lightblue')
         self.b17.place(x=80, y=175)
 
+        self.b19 = Button(win, text='Quit', command=self.exit, width=width, bg='red')
+        self.b19.place(x=270, y=175)
+
         self.my_label = '0'
         self.ids_eut = '0'
         self.ips_col = 0
+
+    def exit(self):
+        # newWindow = Toplevel(self.win)
+        # newWindow = newWindow
+        # newWindow.title("AITA - exit")
+        # newWindow.geometry("1x1")
+        # newWindow.iconbitmap('img/logo_hEC_icon.ico')
+        os.system('taskkill /F /IM python.exe')
 
     def data(self):
         TestApp()
@@ -598,7 +609,10 @@ def main_grid():
             strumento = pd.read_excel(r'.\Config\Config.xlsx', sheet_name='Colonnina')
             for i in range(0, len(strumento['TELEMETRIE'])):
                 value.append([strumento['TELEMETRIE'][i], strumento['TYPE TELEMETRIA'][i]])
-        del strumento, col
+        try:
+            del strumento, col
+        except:
+            print('nessuno strumento')
         width = 20
         window2 = Tk()
         window2.title('AITA - Run Time Log')
@@ -607,7 +621,8 @@ def main_grid():
         MyWindow(window2, width, value)
         window2.mainloop()
 
-    except:
+    except OSError as err:
+        print(err)
         path_watchdog = 'misc/watchdog.txt'
         file_object = open(path_watchdog, "w")
         file_object.write('3')

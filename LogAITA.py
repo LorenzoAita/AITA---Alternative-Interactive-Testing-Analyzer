@@ -192,7 +192,8 @@ def main_log():
             print('>>>')
 
         print('>>> End')
-    except:
+    except OSError as err:
+        print(err)
         path_watchdog = 'misc/watchdog.txt'
         file_object = open(path_watchdog, "w")
         file_object.write('1')
