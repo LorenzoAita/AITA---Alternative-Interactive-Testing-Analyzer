@@ -131,26 +131,28 @@ def config_inverter(path):
     return ids, ips, telemetrie_tot, labels
 
 
-def config_wt(rm, path, model):
+def config_wt(rm, path):
     print('>>> Config Wattmeter')
     print('>>>')
     path_config = path
     config_WT = pd.read_excel(path_config + 'Config.xlsx', sheet_name='Wattmeter')
     porta_list = list()
     meas_list = list()
-    for k in range(0, len(config_WT['PORTA WT'])):
+    for k in range(0, len(config_WT['MODELLO'])):
         if str(config_WT['PORTA WT'][k]) != 'nan':
             porta = config_WT['PORTA WT'][k]
             porta_list.append(porta)
-            df_wt = config_WT[config_WT['ID_LETTURA WT' + str(k + 1)] == 1].reset_index()
+            df_wt_model = pd.read_excel(path_config + 'Config.xlsx', sheet_name=config_WT['MODELLO'][k])
+            df_wt = df_wt_model[df_wt_model['ID_LETTURA WT' + str(k + 1)] == 1].reset_index()
             inst = rm.open_resource(porta)
             print('>>> ' + inst.query("*IDN?").split('\n')[0])
-            if model == 'WT230':
+            model = config_WT['MODELLO'][k]
+            if model in ['WT230', 'WT210']:
                 inst.write('MEAS:NORM:ITEM:PRES CLE')
                 for i in range(0, len(df_wt['CHANNEL'])):
                     if str(config_WT['CHANNEL'][i]) != 'nan':
                         inst.write("MEASURE:NORMAL:ITEM:"+str(df_wt['TIPOLOGIA'][i])+":ELEMENT"+str(int(df_wt['CHANNEL'][i]))+" ON")
-            if model == 'WT500' or model == 'WT3000':
+            if model in ['WT500', 'WT3000', 'WT1800']:
                 inst.write(':NUM:NORM:CLE ALL')
                 if model == 'WT500':
                     inst.write(':NUM:FORM ASC')
@@ -162,7 +164,7 @@ def config_wt(rm, path, model):
                         j += 1
 
             meas_list.append(list(df_wt['LABEL']))
-    return meas_list, porta_list
+    return meas_list, porta_list, df_wt_model, df_wt
 
 
 def config_ponte(rm, path):

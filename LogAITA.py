@@ -73,8 +73,7 @@ def main_log():
                         col.append(j)
                         stamp_daq.append(j)
         if 'Wattmeter' in device:
-            logger_WTs, porta_WTs = config_wt(rm, path_config, config_WATT['MODELLO'][0])
-            #logger_WTs = logger_WTs.fillna('')
+            logger_WTs, porta_WTs = config_wt(rm, path_config)
             stamp_WT = list()
             for i in logger_WTs:
                 for j in i:
@@ -161,9 +160,9 @@ def main_log():
                     i = 0
                     print('>>> Apro la Comunicazione con il ' + config_WATT[config_WATT['PORTA WT'] == k].reset_index()['MODELLO'][0])
                     INSTRUMENT = rm.open_resource(k)
-                    if config_WATT[config_WATT['PORTA WT'] == k].reset_index()['MODELLO'][0] == 'WT230':
+                    if config_WATT[config_WATT['PORTA WT'] == k].reset_index()['MODELLO'][0] in ['WT230', 'WT210']:
                         a = INSTRUMENT.query('MEAS:NORM:VAL?').split(',')
-                    if config_WATT[config_WATT['PORTA WT'] == k].reset_index()['MODELLO'][0] == 'WT500' or config_WATT[config_WATT['PORTA WT'] == k].reset_index()['MODELLO'][0] == 'WT3000':
+                    if config_WATT[config_WATT['PORTA WT'] == k].reset_index()['MODELLO'][0] in ['WT500', 'WT3000', 'WT1800']:
                         a = INSTRUMENT.query(':NUM:NORM:VAL?').split(',')
                     for j in a:
                         if '+' in j or '-' in j:
