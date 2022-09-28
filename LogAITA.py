@@ -175,7 +175,7 @@ def main_log():
                 INSTRUMENT = rm.open_resource(porta_bridge)
                 meas_bridge(INSTRUMENT, stamp_bridge, data_bridge, path_config, path_save)
 
-            if 'Bridge' not in device:
+            if ('Bridge' not in device) and (len(telemetries) == len(col)):
                 dati_T = pd.DataFrame()
                 dati_T = dati_T.append(telemetries)
                 dati = pd.concat([dati, dati_T.T], axis=0, ignore_index=True)

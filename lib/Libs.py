@@ -749,5 +749,19 @@ class RS90:
         INSTRUMENT_alim.write("FREQ:SLEW " + str(self.sleew_f))
         INSTRUMENT_alim.write("FREQ " + str(round(float(value), 3)))
 
+    def set_phase(self, phr, phs, pht):
+        INSTRUMENT_alim = self.rm
+        INSTRUMENT_alim.write("INST:COUP NONE")
+        time.sleep(0.1)
+        INSTRUMENT_alim.write("INSTrument:NSELect r")
+        INSTRUMENT_alim.write("PHASe " + str(round(float(phr), 3)))
+        time.sleep(0.1)
+        INSTRUMENT_alim.write("INSTrument:NSELect s")
+        INSTRUMENT_alim.write("PHASe " + str(round(float(phs), 3)))
+        time.sleep(0.1)
+        INSTRUMENT_alim.write("INSTrument:NSELect t")
+        INSTRUMENT_alim.write("PHASe " + str(round(float(pht), 3)))
+        time.sleep(0.1)
+
 
 path_config = r'./Config/'

@@ -1,8 +1,33 @@
 import time
 import os
-from Pannellino import myThread
+import threading
 
-def main():
+import LogAITA
+import VisualDati
+import TestSeq
+import Watchdog
+
+
+class myThread (threading.Thread):
+    def __init__(self, threadID, name, counter, run_script):
+       threading.Thread.__init__(self)
+       self.threadID = threadID
+       self.name = name
+       self.counter = counter
+       self.run_script = run_script
+
+    def run(self):
+       if self.run_script == 0:
+          LogAITA.main_log()
+       if self.run_script == 1:
+          TestSeq.main_test()
+       if self.run_script == 2:
+          VisualDati.main_grid()
+       if self.run_script == 3:
+          Watchdog.main_wd()
+
+
+def main_wd():
     path_watchdog = 'misc/watchdog.txt'
     file_object = open(path_watchdog, "w")
     file_object.write('0')
@@ -39,10 +64,6 @@ def main():
         print('l\'errore è nella sequenza di test!')
         # killo tutti i processi
         os.system('taskkill /F /IM python.exe')
-        # os.system('wmic process where "commandline like \'%%LogAITA.py%%\'" delete')
-        # os.system('wmic process where "commandline like \'%%VisualDati.py%%\'" delete')
-        # os.system('wmic process where "commandline like \'%%TestSeq.py%%\'" delete')
-
     if lines.split('\n', 1)[0] == '3':
         print('l\'errore è nella visualizzazione dei dati!')
         # provo a farli ripartire
@@ -53,6 +74,5 @@ def main():
         # Start new Threads
         thread4.start()
         thread2.start()
-
 
 # main()

@@ -29,7 +29,7 @@ class myThread (threading.Thread):
        if self.run_script == 2:
           VisualDati.main_grid()
        if self.run_script == 3:
-          Watchdog.main()
+          Watchdog.main_wd()
 
 
 class MyWindow:
@@ -130,7 +130,7 @@ class MyWindow:
         thread4 = myThread(4, "Watchdog", 4, 3)
 
         # Start new Threads
-        thread4.start()
+        #thread4.start()
         thread1.start()
         thread2.start()
         thread3.start()

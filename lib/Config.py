@@ -164,7 +164,8 @@ def config_wt(rm, path):
                         j += 1
 
             meas_list.append(list(df_wt['LABEL']))
-    return meas_list, porta_list, df_wt_model, df_wt
+            del df_wt_model, df_wt
+    return meas_list, porta_list
 
 
 def config_ponte(rm, path):

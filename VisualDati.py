@@ -19,12 +19,12 @@ class TestApp(Frame):
     def __init__(self, parent=None):
         self.parent = parent
         Frame.__init__(self)
-        self.main = self.master
+        newWindow = Toplevel(self.master)
         # w, h = self.main.winfo_screenwidth(), self.main.winfo_screenheight()
-        self.main.geometry("1800x950+0+0")
+        newWindow.geometry("1800x950+0+0")
         # self.main.attributes('-fullscreen', True)
-        self.main.title('Table Data')
-        f = Frame(self.main)
+        newWindow.title('Table Data')
+        f = Frame(newWindow)
         f.pack(fill=BOTH, expand=1)
         # df = TableModel.getSampleData()
         namefile = pd.read_excel(r'.\Config\Config.xlsx', sheet_name='Strumenti')['NOME OUTPUT'][0]
@@ -309,7 +309,7 @@ class MyWindow:
     def ac_source(self):
         ac_source = Toplevel(self.win)
         ac_source.title("AITA - Command AC Source")
-        ac_source.geometry("750x200")
+        ac_source.geometry("750x300")
         self.lbl1 = Label(ac_source, text='Modello')
         self.lbl2 = Label(ac_source, text='Porta')
         self.lbl3 = Label(ac_source, text='Voltage')
@@ -353,10 +353,41 @@ class MyWindow:
         self.b2 = Button(ac_source, text='ON', command=self.output_ac_source_on, width=10, bg='red')
         self.b2.place(x=450, y=130)
         self.b3 = Button(ac_source, text='OFF', command=self.output_ac_source_off, width=10, bg='lightgreen')
+        self.b3.place(x=550, y=130)
+
+        self.lbl23 = Label(ac_source, text='Ph.R')
+        self.lbl24 = Label(ac_source, text='Ph.S')
+        self.lbl25 = Label(ac_source, text='Ph.T')
+        
+        OPTIONS = ["0", "120", "240"]
+        self.AC_phr = StringVar(ac_source)
+        self.AC_phr.set(OPTIONS[0])  # default value
+        self.t23 = OptionMenu(ac_source, self.AC_phr, *OPTIONS)
+        self.t23.pack()  #
+
+        OPTIONS = ["0", "120", "240"]
+        self.AC_phs = StringVar(ac_source)
+        self.AC_phs.set(OPTIONS[1])  # default value
+        self.t24 = OptionMenu(ac_source, self.AC_phs, *OPTIONS)
+        self.t24.pack()  #
+
+        OPTIONS = ["0", "120", "240"]
+        self.AC_pht = StringVar(ac_source)
+        self.AC_pht.set(OPTIONS[2])  # default value
+        self.t25 = OptionMenu(ac_source, self.AC_pht, *OPTIONS)
+        self.t25.pack()  #
+        
+        self.lbl23.place(x=100, y=170)
+        self.t23.place(x=100, y=200)
+        self.lbl24.place(x=200, y=170)
+        self.t24.place(x=200, y=200)
+        self.lbl25.place(x=300, y=170)
+        self.t25.place(x=300, y=200)
 
     def send_ac_source(self):
         value = [self.AC.get(), self.t2.get(), self.t3.get(),
-                 self.t4.get(), self.AC_reg.get()]
+                 self.t4.get(), self.AC_reg.get(),
+                 self.AC_phr.get(),  self.AC_phs.get(),  self.AC_pht.get()]
 
         session = requests.Session()
         rm = pyvisa.ResourceManager()
@@ -364,14 +395,18 @@ class MyWindow:
         if self.AC.get() == 'RS90':
             ac_source = RS90(alim_open)
 
-        ac_source.set_volt(value[2])
-        ac_source.set_freq(value[3])
+        if value[2] != '':
+            ac_source.set_volt(value[2])
+        if value[3] != '':
+            ac_source.set_freq(value[3])
         if value[4] in ['ON', 'On', 'on']:
             value[4] = 1
+            ac_source.set_regenerative(value[4])
         if value[4] in ['OFF', 'Off', 'off']:
             value[4] = 0
-        ac_source.set_regenerative(value[4])
-        # self.get_ac_regen()
+            ac_source.set_regenerative(value[4])
+        if str(value[5]) != '':
+            ac_source.set_phase(value[5], value[6], value[7])
 
     def output_ac_source_on(self):
         value = 1
@@ -593,9 +628,12 @@ def main_grid():
             for i in range(0, len(strumento['LABEL'])):
                 value.append([strumento['LABEL'][i], strumento['TIPOLOGIA'][i]])
         if 'Wattmeter' in col:
-            strumento = pd.read_excel(r'.\Config\Config.xlsx', sheet_name='Wattmeter')
-            for i in range(0, len(strumento['LABEL'])):
-                value.append([strumento['LABEL'][i], strumento['TIPOLOGIA'][i]])
+            strumento_wt = pd.read_excel(r'.\Config\Config.xlsx', sheet_name='Wattmeter')
+            for j in strumento_wt['MODELLO']:
+                if j != 'nan':
+                    strumento = pd.read_excel(r'.\Config\Config.xlsx', sheet_name=str(j))
+                    for i in range(0, len(strumento['LABEL'])):
+                        value.append([strumento['LABEL'][i], strumento['TIPOLOGIA'][i]])
         if 'Inverter' in col:
             strumento = pd.read_excel(r'.\Config\Config.xlsx', sheet_name='Inverter')
             for i in range(0, len(strumento['LABEL'])):
