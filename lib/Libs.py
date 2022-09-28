@@ -753,13 +753,13 @@ class RS90:
         INSTRUMENT_alim = self.rm
         INSTRUMENT_alim.write("INST:COUP NONE")
         time.sleep(0.1)
-        INSTRUMENT_alim.write("INSTrument:NSELect r")
+        INSTRUMENT_alim.write("INSTrument:NSELect 1")
         INSTRUMENT_alim.write("PHASe " + str(round(float(phr), 3)))
         time.sleep(0.1)
-        INSTRUMENT_alim.write("INSTrument:NSELect s")
+        INSTRUMENT_alim.write("INSTrument:NSELect 2")
         INSTRUMENT_alim.write("PHASe " + str(round(float(phs), 3)))
         time.sleep(0.1)
-        INSTRUMENT_alim.write("INSTrument:NSELect t")
+        INSTRUMENT_alim.write("INSTrument:NSELect 3")
         INSTRUMENT_alim.write("PHASe " + str(round(float(pht), 3)))
         time.sleep(0.1)
 
